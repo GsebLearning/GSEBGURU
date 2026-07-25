@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>બાળ શિક્ષણ પોર્ટલ</title>
+<title>બાળ શિક્ષણ વિશ્વ</title>
 
 <style>
 
@@ -12,115 +11,135 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:'Arial',sans-serif;
+font-family:'Poppins',sans-serif;
 }
 
 body{
-background:linear-gradient(135deg,#87CEEB,#E0F7FA);
+background:linear-gradient(135deg,#4facfe,#00f2fe);
 min-height:100vh;
 }
 
 header{
 text-align:center;
-padding:30px;
+padding:50px 20px;
 color:white;
-background:linear-gradient(45deg,#ff9800,#ff5722);
-box-shadow:0 3px 10px rgba(0,0,0,0.2);
 }
 
 header h1{
-font-size:40px;
+font-size:55px;
+text-shadow:2px 2px 10px rgba(0,0,0,0.3);
 }
 
 header p{
-font-size:18px;
+font-size:22px;
 margin-top:10px;
 }
 
 .hero{
-text-align:center;
-padding:30px;
-}
-
-.hero img{
-width:180px;
-}
-
-.hero h2{
-color:#333;
-margin-top:15px;
-font-size:30px;
-}
-
-.container{
-width:90%;
 max-width:1200px;
 margin:auto;
+text-align:center;
+padding:20px;
+}
+
+.hero-box{
+background:white;
+padding:40px;
+border-radius:30px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.hero-box h2{
+font-size:40px;
+color:#ff5722;
+margin-bottom:15px;
+}
+
+.hero-box p{
+font-size:20px;
+color:#555;
+}
+
+.classes{
+max-width:1200px;
+margin:40px auto;
+padding:20px;
 
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
-
-padding:30px 0;
 }
 
 .card{
-background:white;
 text-decoration:none;
-color:#333;
-
-padding:25px;
-border-radius:20px;
+background:white;
+padding:30px;
+border-radius:25px;
 text-align:center;
-
-box-shadow:0 5px 15px rgba(0,0,0,0.15);
-
-transition:0.3s;
+transition:.4s;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
 }
 
 .card:hover{
-transform:translateY(-8px);
-background:#fff8e1;
+transform:translateY(-10px) scale(1.05);
 }
 
-.card .emoji{
-font-size:50px;
+.card span{
+font-size:60px;
+display:block;
 }
 
 .card h3{
-margin-top:10px;
+margin-top:15px;
+font-size:28px;
+color:#333;
 }
 
 .features{
-padding:40px 20px;
-text-align:center;
+max-width:1200px;
+margin:auto;
+padding:20px;
 }
 
 .features h2{
-margin-bottom:20px;
+text-align:center;
+font-size:40px;
+color:white;
+margin-bottom:30px;
 }
 
-.feature-box{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
 gap:20px;
 }
 
 .feature{
 background:white;
-padding:20px;
-width:250px;
-border-radius:15px;
-box-shadow:0 3px 10px rgba(0,0,0,0.1);
+padding:25px;
+border-radius:20px;
+text-align:center;
+}
+
+.feature div{
+font-size:50px;
+}
+
+.feature h3{
+margin:10px 0;
+color:#ff5722;
+}
+
+.feature p{
+color:#555;
 }
 
 footer{
-background:#333;
-color:white;
+margin-top:40px;
+padding:20px;
 text-align:center;
-padding:15px;
-margin-top:30px;
+background:#222;
+color:white;
 }
 
 </style>
@@ -129,88 +148,91 @@ margin-top:30px;
 <body>
 
 <header>
-<h1>📚 બાળ શિક્ષણ પોર્ટલ</h1>
-<p>ધોરણ 1 થી 8 માટે મજા સાથે અભ્યાસ</p>
+<h1>📚 બાળ શિક્ષણ વિશ્વ</h1>
+<p>રમતા રમતા શીખીએ • ધોરણ 1 થી 8</p>
 </header>
 
 <section class="hero">
-
-<h2>🌟 આવો શીખીએ રમતાં રમતાં 🌟</h2>
-
+<div class="hero-box">
+<h2>🌟 Welcome Kids 🌟</h2>
 <p>
-ગુજરાતી • ગણિત • વિજ્ઞાન • અંગ્રેજી • ક્વિઝ • પ્રશ્નબેંક
+ગુજરાતી • ગણિત • વિજ્ઞાન • અંગ્રેજી • Quiz • પ્રશ્નબેંક
 </p>
-
+</div>
 </section>
 
-<div class="container">
+<section class="classes">
 
 std1.html
-<div class="emoji">🎈</div>
+<span>🎈</span>
 <h3>ધોરણ 1</h3>
 </a>
 
 std2.html
-<div class="emoji">🧸</div>
+<span>🧸</span>
 <h3>ધોરણ 2</h3>
 </a>
 
 std3.html
-<div class="emoji">🎨</div>
+<span>🎨</span>
 <h3>ધોરણ 3</h3>
 </a>
 
 std4.html
-<div class="emoji">🚀</div>
+<span>🚀</span>
 <h3>ધોરણ 4</h3>
 </a>
 
 std5.html
-<div class="emoji">🌍</div>
+<span>🌍</span>
 <h3>ધોરણ 5</h3>
 </a>
 
 std6.html
-<div class="emoji">🔬</div>
+<span>🔬</span>
 <h3>ધોરણ 6</h3>
 </a>
 
 std7.html
-<div class="emoji">📖</div>
+<span>📖</span>
 <h3>ધોરણ 7</h3>
 </a>
 
 std8.html
-<div class="emoji">🏆</div>
+<span>🏆</span>
 <h3>ધોરણ 8</h3>
 </a>
 
-</div>
+</section>
 
 <section class="features">
 
-<h2>✨ અમારી વિશેષતાઓ ✨</h2>
+<h2>✨ ખાસ સુવિધાઓ ✨</h2>
 
-<div class="feature-box">
+<div class="feature-grid">
 
 <div class="feature">
-📘<br>
-પ્રકરણવાર પ્રશ્નો
+<div>📚</div>
+<h3>પ્રકરણવાર પ્રશ્નો</h3>
+<p>દરેક પાઠના પ્રશ્નો અને જવાબો</p>
 </div>
 
 <div class="feature">
-✅<br>
-MCQ ક્વિઝ
+<div>✅</div>
+<h3>MCQ Quiz</h3>
+<p>ઓનલાઇન ક્વિઝ અને સ્કોર</p>
 </div>
 
 <div class="feature">
-🏅<br>
-ઓનલાઇન ટેસ્ટ
+<div>🏅</div>
+<h3>બેજ અને સર્ટિફિકેટ</h3>
+<p>સારી કામગીરી માટે ઇનામ</p>
 </div>
 
 <div class="feature">
-📄<br>
-PDF ડાઉનલોડ
+<div>📄</div>
+<h3>PDF Download</h3>
+<p>વર્કશીટ અને નોટ્સ</p>
 </div>
 
 </div>
@@ -218,7 +240,8 @@ PDF ડાઉનલોડ
 </section>
 
 <footer>
-© 2026 બાળ શિક્ષણ પોર્ટલ 
+👨‍🏫 Developed By Vinodkumar Chamar<br>
+© 2026 બાળ શિક્ષણ વિશ્વ
 </footer>
 
 </body>
