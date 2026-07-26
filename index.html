@@ -1,164 +1,98 @@
 <!DOCTYPE html>
 <html lang="gu">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GSEB Smart Learning Ultimate</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/style.css">
+<title>GSEB GURU</title>
 
-    <!-- Icons -->
-    <link rel="icon" href="assets/icons/logo.png">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2563eb">
 
-    <!-- Manifest -->
-    <link rel="manifest" href="manifest.json">
-
-    <!-- Theme -->
-    <meta name="theme-color" content="#4F46E5">
 </head>
 
 <body>
-    <body>
 
-<!-- Splash Screen -->
-<div id="splash"></div>
-
-<!-- Sidebar -->
-<aside id="sidebar"></aside>
-
-<!-- Header -->
-<header id="header"></header>
-
-<!-- Main -->
-<main id="app">
-
-<section id="hero"></section>
-
-<section id="dashboard"></section>
-
-<section id="quickAccess"></section>
-
-<section id="classes"></section>
-
-<section id="subjects"></section>
-
-<section id="todayQuiz"></section>
-
-<section id="games"></section>
-
-<section id="news"></section>
-
-<section id="downloads"></section>
-
-</main>
-
-<!-- Bottom Navigation -->
-<nav id="bottomNav"></nav>
-
-<!-- Footer -->
-<footer id="footer"></footer>
-
-<script src="assets/js/app.js"></script>
-
-    </body>
+<!-- Splash -->
 <div id="splash">
 
-<img src="assets/icons/logo.png" width="120">
+<img src="assets/icons/logo.png" class="logoImg">
 
-<h1>GSEB Smart Learning</h1>
+<h1>GSEB GURU</h1>
 
-<p>Loading...</p>
+<p>Learn • Play • Grow</p>
 
 </div>
-<!-- Loading Screen -->
-<div id="loader">
-    <h1>GSEB Smart Learning</h1>
-</div>
 
-<!-- Header -->
+<!-- Sidebar -->
+
+<aside id="sidebar">
+
+<h2>📚 GSEB GURU</h2>
+
+<a href="#">🏠 Home</a>
+<a href="#">📘 Std 1</a>
+<a href="#">📗 Std 2</a>
+<a href="#">📙 Std 3</a>
+<a href="#">📕 Std 4</a>
+<a href="#">📒 Std 5</a>
+<a href="#">📘 Std 6</a>
+<a href="#">📗 Std 7</a>
+<a href="#">📙 Std 8</a>
+<a href="#">📕 Std 9</a>
+<a href="#">📒 Std 10</a>
+<a href="#">📘 Std 11</a>
+<a href="#">📗 Std 12</a>
+
+<hr>
+
+<a href="#">📝 Quiz</a>
+<a href="#">🎮 Games</a>
+<a href="#">📄 Notes</a>
+<a href="#">📚 PDF</a>
+<a href="#">🎥 Videos</a>
+<a href="#">🏆 Certificates</a>
+
+</aside>
+
 <header>
 
+<button id="menuBtn">☰</button>
+
 <div class="logo">
-📚 GSEB Smart Learning
+
+📚 GSEB GURU
+
 </div>
 
 <input
-type="text"
-placeholder="Search..."
-id="searchBox">
+id="searchBox"
+placeholder="Search...">
 
 <button id="darkBtn">
+
 🌙
+
 </button>
 
 </header>
 
-<!-- Navigation -->
-<button id="menuBtn">☰</button>
-
-<div id="sidebar">
-
-<h2>📚 Menu</h2>
-
-<a href="#">🏠 Home</a>
-<a href="#">📘 Std 1–12</a>
-<a href="#">📝 Quiz</a>
-<a href="#">🎮 Games</a>
-<a href="#">📄 Notes</a>
-<a href="#">🎥 Videos</a>
-<a href="#">🏆 Certificates</a>
-<a href="#">👤 Profile</a>
-<a href="#">⚙️ Settings</a>
-
-<hr>
-
-<select id="language">
-    <option value="gu">🇮🇳 ગુજરાતી</option>
-    <option value="en">🇬🇧 English</option>
-    <option value="hi">🇮🇳 हिन्दी</option>
-</select>
-
-</div>
-<nav>
-
-<a href="#">🏠 Home</a>
-
-<a href="#">📘 Std 1-12</a>
-
-<a href="#">📝 Quiz</a>
-
-<a href="#">🎮 Games</a>
-
-<a href="#">📄 Notes</a>
-
-<a href="#">🎥 Videos</a>
-
-<a href="#">🏆 Certificates</a>
-
-<a href="#">👤 Profile</a>
-
-<a href="#">⚙️ Settings</a>
-
-</nav>
-
-<!-- Hero -->
-
 <section class="hero">
 
 <h1>
+
 Welcome to
+
 <br>
-GSEB Smart Learning
+
+GSEB GURU
+
 </h1>
 
 <p>
 
-Learn Smart...
-
-Play Smart...
-
-Become Smart...
+Gujarat's Smart Learning Platform
 
 </p>
 
@@ -169,148 +103,20 @@ Start Learning
 </button>
 
 </section>
-    <section class="dashboard">
 
-<div class="card">
-<h2>📚 Total Classes</h2>
-<h1>12</h1>
-</div>
+<section id="dashboard"></section>
 
-<div class="card">
-<h2>📝 Total Quiz</h2>
-<h1>5000+</h1>
-</div>
+<section id="quickAccess"></section>
 
-<div class="card">
-<h2>🎮 Games</h2>
-<h1>25+</h1>
-</div>
+<section id="todayQuiz"></section>
 
-<div class="card">
-<h2>🏆 Certificates</h2>
-<h1>Unlimited</h1>
-</div>
+<section id="games"></section>
 
-    </section>
-    
-<section class="quick">
-
-<h2>⚡ Quick Access</h2>
-
-<div class="quickGrid">
-
-<button>📘 Std 1</button>
-<button>📗 Std 2</button>
-<button>📙 Std 3</button>
-<button>📕 Std 4</button>
-
-<button>➗ Maths</button>
-<button>🔬 Science</button>
-
-<button>🎮 Games</button>
-
-<button>📝 Quiz</button>
-
-</div>
-
-</section>
-    <section class="todayQuiz">
-
-<h2>🔥 Today's Quiz</h2>
-
-<div class="quizCard">
-
-<h3>Science Quiz</h3>
-
-<p>10 Questions</p>
-
-<button>
-
-Start Quiz
-
-</button>
-
-</div>
-
-    </section>
-<!-- Classes -->
-
-<section>
-
-<h2>
-
-Choose Your Class
-
-</h2>
-
-<div class="classes">
-
-<button>Std 1</button>
-<button>Std 2</button>
-<button>Std 3</button>
-<button>Std 4</button>
-<button>Std 5</button>
-<button>Std 6</button>
-<button>Std 7</button>
-<button>Std 8</button>
-<button>Std 9</button>
-<button>Std 10</button>
-<button>Std 11</button>
-<button>Std 12</button>
-
-</div>
-
-</section>
-    
-<section class="progress">
-
-<h2>📈 Progress</h2>
-
-<div class="progressBox">
-
-<div class="circle">
-
-80%
-
-</div>
-
-<p>
-
-Overall Learning
-
-</p>
-
-</div>
-
-</section>
-    <section class="news">
-
-<h2>📰 Latest Updates</h2>
-
-<div class="newsCard">
-
-New Quiz Added
-
-</div>
-
-<div class="newsCard">
-
-New Games Coming
-
-</div>
-
-<div class="newsCard">
-
-New PDF Uploaded
-
-</div>
-
-    </section>
-<!-- Footer -->
+<section id="news"></section>
 
 <footer>
 
-© 2026 GSEB Smart Learning Ultimate
+©2026 GSEB GURU
 
 </footer>
 
