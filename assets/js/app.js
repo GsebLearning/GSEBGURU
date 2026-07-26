@@ -129,3 +129,43 @@ document.querySelector(".hero button")
 
 // ---------------------------
 //
+// =========================
+// Mobile Menu
+// =========================
+
+const menuBtn = document.getElementById("menuBtn");
+const sidebar = document.getElementById("sidebar");
+
+menuBtn.addEventListener("click",()=>{
+
+sidebar.classList.toggle("active");
+
+});
+
+// =========================
+// Language Switch
+// =========================
+
+const language=document.getElementById("language");
+
+language.addEventListener("change",()=>{
+
+alert("Language: "+language.value);
+
+});
+
+// Sidebar બહાર ક્લિક કરો તો બંધ થઈ જાય
+
+document.addEventListener("click",(e)=>{
+
+if(
+!sidebar.contains(e.target)
+&&
+e.target!==menuBtn
+){
+
+sidebar.classList.remove("active");
+
+}
+
+});
