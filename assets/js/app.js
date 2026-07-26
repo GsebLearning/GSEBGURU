@@ -185,3 +185,20 @@ console.log("Service Worker Registered");
 });
 
 }
+const splash=document.getElementById("splash");
+
+window.addEventListener("load",()=>{
+
+setTimeout(()=>{
+
+splash.style.opacity="0";
+
+setTimeout(()=>{
+
+splash.style.display="none";
+
+},600);
+
+},1500);
+
+});
