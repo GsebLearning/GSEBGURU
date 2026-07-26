@@ -3,53 +3,121 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>PARROT Learning Portal</title>
 
-https://fonts.googleapis.com
-https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
 
-style.css
+body{
+background:linear-gradient(135deg,#0f172a,#1e3a8a);
+color:white;
+}
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px;
+background:rgba(255,255,255,0.1);
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin:0 10px;
+}
+
+.hero{
+height:80vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{
+font-size:50px;
+margin-bottom:10px;
+}
+
+.hero p{
+font-size:20px;
+margin-bottom:20px;
+}
+
+.btn{
+background:#22c55e;
+padding:12px 25px;
+border-radius:25px;
+color:white;
+text-decoration:none;
+}
+
+.section{
+padding:50px 20px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:15px;
+}
+
+.card{
+background:rgba(255,255,255,0.1);
+padding:20px;
+border-radius:15px;
+text-align:center;
+}
+
+footer{
+text-align:center;
+padding:20px;
+background:rgba(0,0,0,0.3);
+}
+</style>
 </head>
 
 <body>
 
-<nav class="navbar">
-
+<nav>
 <div class="logo">🦜 PARROT</div>
 
-<ul class="nav-links">
-<li>#homeHome</a></li>
-<li>#classesClasses</a></li>
-<li>#subjectsSubjects</a></li>
-<li>#materialsMaterials</a></li>
-<li>#quizQuiz</a></li>
-<li>#teacherTeacher</a></li>
-</ul>
-
-<input type="text" placeholder="Search...">
-
-<button onclick="toggleDarkMode()">🌙</button>
-
+<div>
+#classesClasses</a>
+#subjectsSubjects</a>
+#materialsMaterials</a>
+#quizQuiz</a>
+</div>
 </nav>
 
-<section id="home" class="hero">
-
-<div class="parrot">🦜</div>
+<section class="hero">
+<div style="font-size:100px;">🦜</div>
 
 <h1>PARROT Learning Portal</h1>
 
 <p>Learn • Practice • Achieve</p>
 
 #classesStart Learning 🚀</a>
-
 </section>
 
-<section id="classes">
-
+<section id="classes" class="section">
 <h2>📚 Standards 1-8</h2>
 
 <div class="grid">
-
 <div class="card">Std 1</div>
 <div class="card">Std 2</div>
 <div class="card">Std 3</div>
@@ -58,88 +126,52 @@ style.css
 <div class="card">Std 6</div>
 <div class="card">Std 7</div>
 <div class="card">Std 8</div>
-
 </div>
 
 </section>
 
-<section id="subjects">
-
+<section id="subjects" class="section">
 <h2>📖 Subjects</h2>
 
 <div class="grid">
-
 <div class="card">ગુજરાતી</div>
 <div class="card">English</div>
 <div class="card">Maths</div>
 <div class="card">Science</div>
 <div class="card">Social Science</div>
 <div class="card">Computer</div>
-<div class="card">Hindi</div>
-<div class="card">Sanskrit</div>
-
 </div>
 
 </section>
 
-<section id="materials">
-
-<h2>📂 Study Materials</h2>
+<section id="materials" class="section">
+<h2>📄 Materials</h2>
 
 <div class="grid">
-
 <div class="card">PDF Notes</div>
-<div class="card">Worksheets</div>
 <div class="card">Videos</div>
+<div class="card">Worksheets</div>
 <div class="card">Textbooks</div>
-
 </div>
 
 </section>
 
-<section id="quiz">
-
+<section id="quiz" class="section">
 <h2>📝 MCQ Quiz</h2>
 
 <div class="grid">
-
-<div class="card">Chapter Quiz</div>
-<div class="card">Subject Test</div>
+<div class="card">Chapter Test</div>
 <div class="card">Unit Test</div>
+<div class="card">Subject Quiz</div>
 <div class="card">Final Exam</div>
-
-</div>
-
-</section>
-
-<section id="teacher">
-
-<h2>👨‍🏫 Teacher Corner</h2>
-
-<div class="grid">
-
-<div class="card">Lesson Plans</div>
-<div class="card">Question Bank</div>
-<div class="card">Blueprint</div>
-<div class="card">Resources</div>
-
 </div>
 
 </section>
 
 <footer>
-
-<h3>🦜 PARROT Learning Portal</h3>
-
-<p>Designed By Vinodkumar Chamar</p>
-
+🦜 PARROT Learning Portal<br>
+Designed by Vinodkumar Chamar
 </footer>
-
-<div class="chatbot">🤖</div>
-
-<button id="topBtn">⬆</button>
-
-script.jsscript>
 
 </body>
 </html>
