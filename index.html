@@ -20,6 +20,7 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
 .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:6px}
 .std-tab{flex:1;padding:14px 8px;text-align:center;font-weight:700;border:none;cursor:pointer;font-size:14px;transition:.25s}
 .sub-pill{padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;border:none;cursor:pointer;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.empty-chap{border:2px dashed #c7d2fe;background:#f8fafc;border-radius:12px;padding:20px;text-align:center;color:#64748b}
 </style>
 </head>
 <body class="locked" id="appBody">
@@ -54,7 +55,7 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   <div class="card p-3.5 mb-5 flex gap-3 items-start bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
     <span class="text-xl">✨</span>
     <div id="infoBanner" class="text-sm leading-relaxed">
-      <b>સૂચના:</b> પ્રકરણનું નામ બદલી શકાય • નવો વિષય ઉમેરી શકાય • 25 Marks Test. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
+      <b>સૂચના:</b> દરેક પ્રકરણમાં <b>➕ પ્રશ્ન ઉમેરો</b> બટન છે. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
     </div>
   </div>
   <div id="dynamicArea"></div>
@@ -123,17 +124,21 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
 <div id="addModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
   <div class="card w-full max-w-lg p-5 space-y-3 max-h-[90vh] overflow-y-auto">
     <h3 id="modalTitle" class="text-lg font-bold text-indigo-700">➕ નવો પ્રશ્ન</h3>
-    <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રકરણનું નામ"/>
+    <label class="text-sm font-medium text-slate-600">પ્રકરણ</label>
+    <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રકરણનું નામ" readonly style="background:#f1f5f9"/>
+    <label class="text-sm font-medium text-slate-600">પ્રકાર</label>
     <select id="newType" class="w-full px-3 py-2.5 border rounded-xl">
       <option>MCQ</option><option>ખાલી જગ્યા</option><option>ટૂંકા જવાબ</option>
       <option>તફાવત</option><option>વૈજ્ઞાનિક કારણ</option><option>HOTS</option>
       <option>પ્રવૃત્તિ</option><option>મને ઓળખો</option><option>સાચું-ખોટું</option>
     </select>
-    <textarea id="newText" rows="3" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રશ્ન"></textarea>
-    <textarea id="newAnswer" rows="2" class="w-full px-3 py-2.5 border border-green-300 rounded-xl" placeholder="જવાબ"></textarea>
+    <label class="text-sm font-medium text-slate-600">પ્રશ્ન</label>
+    <textarea id="newText" rows="3" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રશ્ન લખો"></textarea>
+    <label class="text-sm font-medium text-slate-600">જવાબ</label>
+    <textarea id="newAnswer" rows="2" class="w-full px-3 py-2.5 border border-green-300 rounded-xl" placeholder="સાચો જવાબ"></textarea>
     <div class="flex gap-3 justify-end">
       <button onclick="closeModal('addModal')" class="btn bg-slate-200">રદ</button>
-      <button onclick="saveQuestion()" class="btn bg-indigo-600 text-white">સાચવો</button>
+      <button onclick="saveQuestion()" class="btn bg-indigo-600 text-white">💾 સાચવો</button>
     </div>
   </div>
 </div>
@@ -160,10 +165,10 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
 <script>
 const PASSWORD="imvnod@210124";
 const CLICKS=5;
-const STORE="gseb_v6";
-const UNLOCK="gseb_un_v6";
-const NOTESK="gseb_nt_v6";
-const SUBS_KEY="gseb_sub_v6";
+const STORE="gseb_v7";
+const UNLOCK="gseb_un_v7";
+const NOTESK="gseb_nt_v7";
+const SUBS_KEY="gseb_sub_v7";
 
 let subjects={
   "6":[{id:"sci",name:"વિજ્ઞાન",emoji:"🔬",color:"from-emerald-400 to-teal-500"},{id:"math",name:"ગણિત",emoji:"📐",color:"from-blue-400 to-cyan-500"}],
@@ -178,127 +183,128 @@ const data={
 {type:"MCQ",text:"સૂર્ય આપે છે?\n(A) પ્રકાશ (B) ગરમી (C) બંને (D) કંઈ નહીં",answer:"(C) બંને"},
 {type:"HOTS",text:"બીજમાંથી છોડ કેવી રીતે ઉગાડશો?",answer:"પલાળી, વાવી, પાણી અને સૂર્યપ્રકાશ આપી"}
 ]},
-{name:"2. સજીવ સૃષ્ટિમાં વિવિધતા",notes:"સજીવોમાં વિવિધતા જોવા મળે છે",questions:[
+{name:"2. સજીવ સૃષ્ટિમાં વિવિધતા",notes:"સજીવોમાં વિવિધતા",questions:[
 {type:"MCQ",text:"સજીવ કયું?\n(A) પથ્થર (B) છોડ (C) પાણી",answer:"(B) છોડ"},
 {type:"ખાલી જગ્યા",text:"વનસ્પતિના મુખ્ય ભાગો ____, ____ અને ____",answer:"મૂળ, થડ, પાંદડા"}
 ]},
-{name:"3. ઉચિત આહાર",notes:"સંતુલિત આહાર જરૂરી છે",questions:[
-{type:"MCQ",text:"ઊર્જા આપનાર મુખ્ય તત્ત્વ?",answer:"કાર્બોહાઇડ્રેટ"},
-{type:"ખાલી જગ્યા",text:"વિટામિન C ની ઉણપથી ____ રોગ થાય છે",answer:"સ્કર્વી"}
+{name:"3. ઉચિત આહાર",notes:"સંતુલિત આહાર",questions:[
+{type:"MCQ",text:"ઊર્જા આપનાર તત્ત્વ?",answer:"કાર્બોહાઇડ્રેટ"},
+{type:"ખાલી જગ્યા",text:"વિટામિન C ની ઉણપથી ____ રોગ",answer:"સ્કર્વી"}
 ]},
-{name:"4. ચુંબકને જાણીએ",notes:"ઉત્તર અને દક્ષિણ ધ્રુવ",questions:[
-{type:"MCQ",text:"ચુંબકના ધ્રુવો કયા?",answer:"ઉત્તર અને દક્ષિણ"},
-{type:"ખાલી જગ્યા",text:"સમાન ધ્રુવો એકબીજાને ____",answer:"ધકેલે"}
+{name:"4. ચુંબકને જાણીએ",notes:"ઉત્તર-દક્ષિણ ધ્રુવ",questions:[
+{type:"MCQ",text:"ચુંબકના ધ્રુવો?",answer:"ઉત્તર અને દક્ષિણ"},
+{type:"ખાલી જગ્યા",text:"સમાન ધ્રુવો ____",answer:"ધકેલે"}
 ]},
-{name:"5. લંબાઈનું માપન અને ગતિ",notes:"SI એકમ: મીટર",questions:[
+{name:"5. લંબાઈનું માપન અને ગતિ",notes:"SI: મીટર",questions:[
 {type:"MCQ",text:"લંબાઈનો SI એકમ?",answer:"મીટર (m)"},
-{type:"HOTS",text:"120 કિમી 2 કલાકમાં → ઝડપ?",answer:"60 કિમી/કલાક"}
+{type:"HOTS",text:"120 કિમી 2 કલાકમાં ઝડપ?",answer:"60 કિમી/કલાક"}
 ]},
-{name:"6. આપણી આસપાસની સામગ્રી",notes:"ઘન, પ્રવાહી, વાયુ",questions:[{type:"MCQ",text:"પારદર્શક પદાર્થ કયો?",answer:"કાચ / પાણી"}]},
-{name:"7. તાપમાન અને તેનું માપન",notes:"થર્મોમીટર, માનવ શરીર 37°C",questions:[
+{name:"6. આપણી આસપાસની સામગ્રી",notes:"ઘન, પ્રવાહી, વાયુ",questions:[{type:"MCQ",text:"પારદર્શક પદાર્થ?",answer:"કાચ / પાણી"}]},
+{name:"7. તાપમાન અને તેનું માપન",notes:"થર્મોમીટર, 37°C",questions:[
 {type:"MCQ",text:"તાપમાન માપવાનું સાધન?",answer:"થર્મોમીટર"},
-{type:"ખાલી જગ્યા",text:"માનવ શરીરનું તાપમાન ____ °C",answer:"37"}
+{type:"ખાલી જગ્યા",text:"માનવ શરીર ____ °C",answer:"37"}
 ]},
-{name:"8. પાણીની વિવિધ અવસ્થાઓ",notes:"ઘન, પ્રવાહી, વાયુ",questions:[{type:"MCQ",text:"પાણીની ત્રણ અવસ્થાઓ?",answer:"ઘન, પ્રવાહી, વાયુ"}]},
-{name:"9. અલગીકરણની પદ્ધતિઓ",notes:"ગાળણ, બાષ્પીભવન",questions:[{type:"MCQ",text:"મીઠું અને રેતી અલગ કરવાની પદ્ધતિ?",answer:"ઓગાળીને ગાળણ અને બાષ્પીભવન"}]},
+{name:"8. પાણીની વિવિધ અવસ્થાઓ",notes:"ઘન-પ્રવાહી-વાયુ",questions:[{type:"MCQ",text:"પાણીની ત્રણ અવસ્થાઓ?",answer:"ઘન, પ્રવાહી, વાયુ"}]},
+{name:"9. અલગીકરણની પદ્ધતિઓ",notes:"ગાળણ, બાષ્પીભવન",questions:[{type:"MCQ",text:"મીઠું+રેતી અલગ કરવાની પદ્ધતિ?",answer:"ઓગાળી ગાળણ + બાષ્પીભવન"}]},
 {name:"10. સજીવોની લાક્ષણિકતાઓ",notes:"વૃદ્ધિ, પ્રજનન, શ્વસન",questions:[{type:"ટૂંકા જવાબ",text:"સજીવોની મુખ્ય લાક્ષણિકતાઓ?",answer:"વૃદ્ધિ, પ્રજનન, શ્વસન, ચયાપચય"}]},
-{name:"11. કુદરતનો અમૂલ્ય ખજાનો",notes:"પુનઃપ્રાપ્ય અને પુનઃઅપ્રાપ્ય",questions:[{type:"ટૂંકા જવાબ",text:"કુદરતી સંસાધનોના ઉદાહરણ?",answer:"પાણી, હવા, જંગલ, કોલસો"}]},
+{name:"11. કુદરતનો અમૂલ્ય ખજાનો",notes:"પુનઃપ્રાપ્ય / અપ્રાપ્ય",questions:[{type:"ટૂંકા જવાબ",text:"કુદરતી સંસાધનો?",answer:"પાણી, હવા, જંગલ, કોલસો"}]},
 {name:"12. પૃથ્વીને પાર",notes:"પોપડો, પ્રવર, કેન્દ્ર",questions:[{type:"ટૂંકા જવાબ",text:"પૃથ્વીના મુખ્ય સ્તરો?",answer:"પોપડો, પ્રવર, કેન્દ્ર"}]}
 ]},
 "6-math":{title:"ધોરણ 6 ગણિત",color:"from-blue-500 to-cyan-600",chapters:[
-{name:"1. પેટર્ન્સ",notes:"પેટર્ન = પુનરાવર્તિત ક્રમ",questions:[{type:"HOTS",text:"પેટર્ન બનાવો અને નિયમ લખો",answer:"વિદ્યાર્થી પોતે"}]},
-{name:"2. સંખ્યાઓ સાથે રમત",notes:"સૌથી નાની 3 અંકની સંખ્યા = 100",questions:[{type:"ટૂંકા જવાબ",text:"સૌથી નાની 3 અંકની સંખ્યા?",answer:"100"}]},
-{name:"3. મૂળભૂત ક્રિયાઓ",notes:"સરવાળો, બાદબાકી, ગુણાકાર, ભાગાકાર",questions:[{type:"MCQ",text:"456 + 789 = ?",answer:"1245"}]},
-{name:"4. પૂર્ણાંકો",notes:"ધન, ઋણ, શૂન્ય",questions:[{type:"MCQ",text:"−5 અને 3 માંથી મોટું?",answer:"3"}]},
-{name:"5. અપૂર્ણાંકો",notes:"1/2 + 1/3 = 5/6",questions:[{type:"MCQ",text:"1/2 + 1/3 = ?",answer:"5/6"}]},
-{name:"6. દશાંશ",notes:"0.5 = 1/2",questions:[{type:"MCQ",text:"0.5 ને અપૂર્ણાંકમાં?",answer:"1/2"}]},
-{name:"7. બીજગણિત",notes:"x + 5 = 12 → x = 7",questions:[{type:"MCQ",text:"x + 5 = 12 તો x = ?",answer:"7"}]},
-{name:"8. ગુણોત્તર",notes:"સમપ્રમાણ",questions:[{type:"MCQ",text:"2:3 અને 4:6 સમપ્રમાણ છે?",answer:"હા"}]},
-{name:"9. માહિતી નિરૂપણ",notes:"બાર ગ્રાફ",questions:[{type:"પ્રવૃત્તિ",text:"આલેખ બનાવો",answer:"વિદ્યાર્થી પોતે"}]},
-{name:"10. માપન",notes:"1 m = 100 cm",questions:[{type:"MCQ",text:"1 મીટર = કેટલા સે.મી.?",answer:"100"}]},
-{name:"11. પરિમિતિ અને ક્ષેત્રફળ",notes:"ચોરસ = બાજુ × બાજુ",questions:[{type:"HOTS",text:"5 સે.મી. બાજુના ચોરસનું ક્ષેત્રફળ?",answer:"25 સે.મી.²"}]},
-{name:"12. વ્યવહારિક ભૂમિતિ",notes:"કોણમાપકથી કોણ માપો",questions:[{type:"પ્રવૃત્તિ",text:"કોણ માપો",answer:"વિદ્યાર્થી પોતે"}]}
+{name:"1. પેટર્ન્સ",notes:"પેટર્ન = પુનરાવર્તિત ક્રમ",questions:[{type:"HOTS",text:"પેટર્ન બનાવો",answer:"વિદ્યાર્થી"}]},
+{name:"2. સંખ્યાઓ સાથે રમત",notes:"સૌથી નાની 3 અંકની = 100",questions:[{type:"ટૂંકા જવાબ",text:"સૌથી નાની 3 અંકની સંખ્યા?",answer:"100"}]},
+{name:"3. મૂળભૂત ક્રિયાઓ",notes:"સરવાળો-બાદબાકી",questions:[{type:"MCQ",text:"456+789=?",answer:"1245"}]},
+{name:"4. પૂર્ણાંકો",notes:"ધન-ઋણ",questions:[{type:"MCQ",text:"−5 અને 3 માં મોટું?",answer:"3"}]},
+{name:"5. અપૂર્ણાંકો",notes:"1/2+1/3=5/6",questions:[{type:"MCQ",text:"1/2+1/3=?",answer:"5/6"}]},
+{name:"6. દશાંશ",notes:"0.5=1/2",questions:[{type:"MCQ",text:"0.5 ને અપૂર્ણાંકમાં?",answer:"1/2"}]},
+{name:"7. બીજગણિત",notes:"x+5=12 → x=7",questions:[{type:"MCQ",text:"x+5=12 → x=?",answer:"7"}]},
+{name:"8. ગુણોત્તર",notes:"સમપ્રમાણ",questions:[{type:"MCQ",text:"2:3 અને 4:6 સમપ્રમાણ?",answer:"હા"}]},
+{name:"9. માહિતી નિરૂપણ",notes:"બાર ગ્રાફ",questions:[{type:"પ્રવૃત્તિ",text:"આલેખ બનાવો",answer:"વિદ્યાર્થી"}]},
+{name:"10. માપન",notes:"1m=100cm",questions:[{type:"MCQ",text:"1 મીટર = ? સે.મી.",answer:"100"}]},
+{name:"11. પરિમિતિ ક્ષેત્રફળ",notes:"ચોરસ = બાજુ²",questions:[{type:"HOTS",text:"5 સે.મી. ચોરસ ક્ષેત્રફળ?",answer:"25 સે.મી.²"}]},
+{name:"12. વ્યવહારિક ભૂમિતિ",notes:"કોણ માપો",questions:[{type:"પ્રવૃત્તિ",text:"કોણ માપો",answer:"વિદ્યાર્થી"}]}
 ]},
 "7-sci":{title:"ધોરણ 7 વિજ્ઞાન",color:"from-violet-500 to-purple-700",chapters:[
 {name:"1. વનસ્પતિમાં પોષણ",notes:"પ્રકાશસંશ્લેષણ, રાઇઝોબિયમ",questions:[
 {type:"MCQ",text:"ઊર્જાનો મુખ્ય સ્ત્રોત?\n(A) સૂર્ય (B) ચંદ્ર (C) પવન",answer:"(A) સૂર્ય"},
-{type:"ખાલી જગ્યા",text:"નાઇટ્રોજન સ્થાપનમાં ____ બેક્ટેરિયા",answer:"રાઇઝોબિયમ"},
-{type:"HOTS",text:"પ્રકાશસંશ્લેષણનું સમીકરણ લખો",answer:"6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂"}
+{type:"ખાલી જગ્યા",text:"નાઇટ્રોજન સ્થાપન ____ બેક્ટેરિયા",answer:"રાઇઝોબિયમ"},
+{type:"HOTS",text:"પ્રકાશસંશ્લેષણ સમીકરણ",answer:"6CO₂+6H₂O→C₆H₁₂O₆+6O₂"}
 ]},
-{name:"2. પ્રાણીઓમાં પોષણ",notes:"પાચનતંત્ર",questions:[{type:"MCQ",text:"શોષણ સપાટી વધારો ક્યાં થાય?",answer:"નાના આંતરડામાં (વિલાઈ)"}]},
-{name:"3. ઉષ્મા",notes:"વહન, સંવહન, વિકિરણ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ઉનાળામાં હલકા રંગના કપડાં કેમ પહેરીએ?",answer:"ઓછી ઉષ્મા શોષે છે"}]},
-{name:"4. એસિડ, બેઈઝ અને ક્ષાર",notes:"તટસ્થીકરણ",questions:[{type:"MCQ",text:"લાલ લિટમસને વાદળી કોણ કરે?",answer:"બેઈઝ"}]},
-{name:"5. ભૌતિક અને રાસાયણિક ફેરફારો",notes:"નવો પદાર્થ બને/ન બને",questions:[{type:"તફાવત",text:"ભૌતિક vs રાસાયણિક ફેરફાર",answer:"નવો પદાર્થ ન બને vs બને"}]},
-{name:"6. સજીવોમાં શ્વસન",notes:"જારક અને અજારક",questions:[{type:"તફાવત",text:"જારક vs અજારક શ્વસન",answer:"O₂ સાથે વધુ ઊર્જા vs O₂ વગર ઓછી ઊર્જા"}]},
-{name:"7. વહન",notes:"હૃદય, ઝાયલેમ-ફ્લોએમ",questions:[{type:"MCQ",text:"રૂધિર ફેરવનાર અંગ?",answer:"હૃદય"}]},
-{name:"8. વનસ્પતિમાં પ્રજનન",notes:"પુષ્પ મુખ્ય અંગ",questions:[{type:"MCQ",text:"વનસ્પતિનું મુખ્ય પ્રજનન અંગ?",answer:"પુષ્પ"}]},
-{name:"9. ગતિ અને સમય",notes:"ઝડપ = અંતર / સમય",questions:[{type:"HOTS",text:"100 m 20 s માં → ઝડપ?",answer:"5 m/s = 18 km/h"}]},
-{name:"10. વિદ્યુતપ્રવાહ",notes:"તંતુ (ફિલામેન્ટ)",questions:[{type:"ખાલી જગ્યા",text:"બલ્બનો પાતળો તાર ____ કહેવાય",answer:"તંતુ / ફિલામેન્ટ"}]},
-{name:"11. પ્રકાશ",notes:"સમતલ અરીસો",questions:[{type:"MCQ",text:"સમતલ અરીસાના પ્રતિબિંબની લાક્ષણિકતા?",answer:"સમાન કદ, આભાસી, પાર્શ્વ પરિવર્તિત"}]},
-{name:"12. જંગલો",notes:"ધોવાણ અટકાવે",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"જંગલો ધોવાણ કેમ અટકાવે?",answer:"મૂળ જમીન પકડે, પાંદડા વરસાદ ધીમો કરે"}]},
-{name:"13. દૂષિત પાણી",notes:"તેલ ગટરમાં ન નાખો",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"તેલ ગટરમાં કેમ ન નાખવું?",answer:"ગટર બંધ થાય, શુદ્ધિકરણ મુશ્કેલ"}]}
+{name:"2. પ્રાણીઓમાં પોષણ",notes:"પાચનતંત્ર",questions:[{type:"MCQ",text:"શોષણ સપાટી વધારો ક્યાં?",answer:"નાના આંતરડામાં"}]},
+{name:"3. ઉષ્મા",notes:"વહન, સંવહન, વિકિરણ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ઉનાળામાં હલકા રંગના કપડાં?",answer:"ઓછી ઉષ્મા શોષે"}]},
+{name:"4. એસિડ બેઈઝ ક્ષાર",notes:"તટસ્થીકરણ",questions:[{type:"MCQ",text:"લાલ લિટમસ વાદળી કોણ કરે?",answer:"બેઈઝ"}]},
+{name:"5. ભૌતિક રાસાયણિક ફેરફારો",notes:"નવો પદાર્થ",questions:[{type:"તફાવત",text:"ભૌતિક vs રાસાયણિક",answer:"નવો પદાર્થ ન બને vs બને"}]},
+{name:"6. શ્વસન",notes:"જારક / અજારક",questions:[{type:"તફાવત",text:"જારક vs અજારક",answer:"O₂ સાથે vs વગર"}]},
+{name:"7. વહન",notes:"હૃદય, ઝાયલેમ",questions:[{type:"MCQ",text:"રૂધિર ફેરવનાર?",answer:"હૃદય"}]},
+{name:"8. વનસ્પતિમાં પ્રજનન",notes:"પુષ્પ",questions:[{type:"MCQ",text:"મુખ્ય પ્રજનન અંગ?",answer:"પુષ્પ"}]},
+{name:"9. ગતિ અને સમય",notes:"ઝડપ=અંતર/સમય",questions:[{type:"HOTS",text:"100m 20s ઝડપ?",answer:"5 m/s = 18 km/h"}]},
+{name:"10. વિદ્યુતપ્રવાહ",notes:"તંતુ",questions:[{type:"ખાલી જગ્યા",text:"બલ્બનો પાતળો તાર ____",answer:"તંતુ"}]},
+{name:"11. પ્રકાશ",notes:"સમતલ અરીસો",questions:[{type:"MCQ",text:"સમતલ અરીસાના પ્રતિબિંબની લાક્ષણિકતા?",answer:"સમાન કદ, આભાસી"}]},
+{name:"12. જંગલો",notes:"ધોવાણ અટકાવે",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"જંગલો ધોવાણ અટકાવે?",answer:"મૂળ જમીન પકડે"}]},
+{name:"13. દૂષિત પાણી",notes:"તેલ ગટરમાં ન નાખો",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"તેલ ગટરમાં ન નાખો?",answer:"ગટર બંધ થાય"}]}
 ]},
 "7-math":{title:"ધોરણ 7 ગણિત",color:"from-rose-500 to-pink-600",chapters:[
-{name:"1. પૂર્ણાંકો",notes:"",questions:[{type:"MCQ",text:"−7 + 5 = ?",answer:"−2"}]},
-{name:"2. અપૂર્ણાંક અને દશાંશ",notes:"",questions:[{type:"MCQ",text:"2/5 ને દશાંશમાં?",answer:"0.4"}]},
-{name:"3. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"બાર ગ્રાફ બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"4. સરળ સમીકરણો",notes:"",questions:[{type:"HOTS",text:"3x + 5 = 20 ઉકેલો",answer:"x = 5"}]},
-{name:"5. રેખાઓ અને કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સમાંતર રેખાઓના કોણો",answer:"અનુરૂપ કોણ સમાન, વૈકલ્પિક કોણ સમાન"}]},
-{name:"6. ત્રિકોણ",notes:"",questions:[{type:"MCQ",text:"ત્રિકોણના કોણનો સરવાળો?",answer:"180°"}]},
-{name:"7. સર્વસમતા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સર્વસમતાના નિયમો",answer:"SSS, SAS, ASA, RHS"}]},
-{name:"8. તુલનાત્મક અંકગણિત",notes:"",questions:[{type:"MCQ",text:"20% of 150 = ?",answer:"30"}]},
-{name:"9. પરિમેય અને ક્ષેત્રફળ",notes:"",questions:[{type:"HOTS",text:"12 × 8 નું ક્ષેત્રફળ",answer:"96 સે.મી.²"}]},
-{name:"10. બીજગણિતીય રાશિઓ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"બીજગણિતીય રાશિ એટલે શું?",answer:"સંખ્યા અને ચલથી બનેલી રાશિ"}]},
-{name:"11. ઘાત",notes:"",questions:[{type:"MCQ",text:"2³ × 2² = ?",answer:"32"}]},
-{name:"12. સમમિતિ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"સમમિત આકાર દોરો",answer:"વિદ્યાર્થી"}]},
-{name:"13. વિઝ્યુઅલાઈઝેશન",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ડબલ બાર ગ્રાફ શું છે?",answer:"બે ડેટા સેટની તુલના માટે"}]}
+{name:"1. પૂર્ણાંકો",notes:"",questions:[{type:"MCQ",text:"−7+5=?",answer:"−2"}]},
+{name:"2. અપૂર્ણાંક દશાંશ",notes:"",questions:[{type:"MCQ",text:"2/5 દશાંશ?",answer:"0.4"}]},
+{name:"3. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"ગ્રાફ બનાવો",answer:"વિદ્યાર્થી"}]},
+{name:"4. સરળ સમીકરણો",notes:"",questions:[{type:"HOTS",text:"3x+5=20",answer:"x=5"}]},
+{name:"5. રેખાઓ કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સમાંતર કોણો",answer:"અનુરૂપ=સમાન"}]},
+{name:"6. ત્રિકોણ",notes:"",questions:[{type:"MCQ",text:"ત્રિકોણ કોણ સરવાળો?",answer:"180°"}]},
+{name:"7. સર્વસમતા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સર્વસમતા નિયમો",answer:"SSS SAS ASA RHS"}]},
+{name:"8. તુલનાત્મક",notes:"",questions:[{type:"MCQ",text:"20% of 150",answer:"30"}]},
+{name:"9. પરિમેય ક્ષેત્રફળ",notes:"",questions:[{type:"HOTS",text:"12×8 ક્ષેત્રફળ",answer:"96"}]},
+{name:"10. બીજગણિતીય રાશિઓ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"બીજગણિતીય રાશિ?",answer:"સંખ્યા+ચલ"}]},
+{name:"11. ઘાત",notes:"",questions:[{type:"MCQ",text:"2³×2²",answer:"32"}]},
+{name:"12. સમમિતિ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"સમમિત આકાર",answer:"વિદ્યાર્થી"}]},
+{name:"13. વિઝ્યુઅલાઈઝેશન",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ડબલ બાર ગ્રાફ",answer:"બે ડેટા તુલના"}]}
 ]},
 "8-sci":{title:"ધોરણ 8 વિજ્ઞાન",color:"from-orange-500 to-red-600",chapters:[
-{name:"1. પાક ઉત્પાદન",notes:"રવિ અને ખરીફ પાક",questions:[
-{type:"MCQ",text:"ખેતીની સાચી ક્રમ?",answer:"જમીન તૈયાર → વાવણી → સિંચાઈ → લણણી"},
-{type:"મને ઓળખો",text:"નાઇટ્રોજન સ્થાપન કરનાર બેક્ટેરિયા",answer:"રાઇઝોબિયમ"}
+{name:"1. પાક ઉત્પાદન",notes:"રવિ-ખરીફ",questions:[
+{type:"MCQ",text:"ખેતીની ક્રમ?",answer:"જમીન→વાવણી→સિંચાઈ→લણણી"},
+{type:"મને ઓળખો",text:"નાઇટ્રોજન સ્થાપન બેક્ટેરિયા",answer:"રાઇઝોબિયમ"}
 ]},
-{name:"2. સૂક્ષ્મજીવો",notes:"મિત્ર અને શત્રુ",questions:[{type:"MCQ",text:"મેલેરિયાનો કારક?",answer:"પ્લાઝમોડિયમ"}]},
-{name:"3. કોલસો અને પેટ્રોલિયમ",notes:"કાળું સોનું",questions:[{type:"તફાવત",text:"પુનઃપ્રાપ્ય vs પુનઃઅપ્રાપ્ય",answer:"સૂર્ય, પવન vs કોલસો, પેટ્રોલિયમ"}]},
-{name:"4. દહન અને જ્યોત",notes:"LPG સ્વચ્છ ઇંધણ",questions:[{type:"MCQ",text:"દહનશીલ પદાર્થ?",answer:"કાગળ / લાકડું"}]},
-{name:"5. સંરક્ષણ",notes:"અભયારણ્ય અને રાષ્ટ્રીય ઉદ્યાન",questions:[{type:"તફાવત",text:"અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન",answer:"મર્યાદિત પ્રવૃત્તિ vs સંપૂર્ણ સુરક્ષિત"}]},
-{name:"6. પ્રાણીઓમાં પ્રજનન",notes:"લિંગી અને અલિંગી",questions:[{type:"MCQ",text:"નર પ્રજનન અંગ નથી?",answer:"અંડપિંડ"}]},
-{name:"7. કિશોરાવસ્થા",notes:"આયોડિન, પિટ્યુટરી",questions:[{type:"MCQ",text:"થાઇરોઇડ માટે જરૂરી તત્ત્વ?",answer:"આયોડિન"}]},
-{name:"8. બળ અને દબાણ",notes:"સંપર્ક અને બિનસંપર્ક",questions:[{type:"તફાવત",text:"સંપર્ક vs બિનસંપર્ક બળ",answer:"સ્પર્શથી vs સ્પર્શ વગર"}]},
-{name:"9. ઘર્ષણ",notes:"લોટણ < સરકતું",questions:[{type:"તફાવત",text:"લોટણ vs સરકતું ઘર્ષણ",answer:"ઓછું vs વધુ"}]},
-{name:"10. ધ્વનિ",notes:"માધ્યમ જોઈએ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ચંદ્ર પર ધ્વનિ કેમ ન સંભળાય?",answer:"વાતાવરણ નથી"}]},
-{name:"11. વિદ્યુતની રાસાયણિક અસરો",notes:"ઇલેક્ટ્રોપ્લેટિંગ",questions:[{type:"ટૂંકા જવાબ",text:"ઇલેક્ટ્રોપ્લેટિંગ એટલે શું?",answer:"વીજપ્રવાહથી ધાતુનું પડ ચઢાવવું"}]},
-{name:"12. કુદરતી ઘટનાઓ",notes:"વીજળી વાલક",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"વીજળી વાલક કેમ રાખીએ?",answer:"વીજળીને જમીનમાં સુરક્ષિત લઈ જાય"}]},
-{name:"13. પ્રકાશ",notes:"પરાવર્તન",questions:[{type:"MCQ",text:"સમતલ અરીસો મૂકતાં શું થાય?",answer:"નિયમિત પરાવર્તન"}]}
+{name:"2. સૂક્ષ્મજીવો",notes:"મિત્ર-શત્રુ",questions:[{type:"MCQ",text:"મેલેરિયા કારક?",answer:"પ્લાઝમોડિયમ"}]},
+{name:"3. કોલસો પેટ્રોલિયમ",notes:"કાળું સોનું",questions:[{type:"તફાવત",text:"પુનઃપ્રાપ્ય vs અપ્રાપ્ય",answer:"સૂર્ય vs કોલસો"}]},
+{name:"4. દહન જ્યોત",notes:"LPG સ્વચ્છ",questions:[{type:"MCQ",text:"દહનશીલ?",answer:"કાગળ/લાકડું"}]},
+{name:"5. સંરક્ષણ",notes:"અભયારણ્ય",questions:[{type:"તફાવત",text:"અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન",answer:"મર્યાદિત vs સંપૂર્ણ"}]},
+{name:"6. પ્રાણીઓમાં પ્રજનન",notes:"લિંગી/અલિંગી",questions:[{type:"MCQ",text:"નર અંગ નથી?",answer:"અંડપિંડ"}]},
+{name:"7. કિશોરાવસ્થા",notes:"આયોડિન",questions:[{type:"MCQ",text:"થાઇરોઇડ માટે?",answer:"આયોડિન"}]},
+{name:"8. બળ દબાણ",notes:"સંપર્ક/બિનસંપર્ક",questions:[{type:"તફાવત",text:"સંપર્ક vs બિનસંપર્ક",answer:"સ્પર્શથી vs વગર"}]},
+{name:"9. ઘર્ષણ",notes:"લોટણ < સરકતું",questions:[{type:"તફાવત",text:"લોટણ vs સરકતું",answer:"ઓછું vs વધુ"}]},
+{name:"10. ધ્વનિ",notes:"માધ્યમ જોઈએ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ચંદ્ર પર ધ્વનિ નથી?",answer:"વાતાવરણ નથી"}]},
+{name:"11. વિદ્યુત રાસાયણિક",notes:"ઇલેક્ટ્રોપ્લેટિંગ",questions:[{type:"ટૂંકા જવાબ",text:"ઇલેક્ટ્રોપ્લેટિંગ?",answer:"વીજથી ધાતુનું પડ"}]},
+{name:"12. કુદરતી ઘટનાઓ",notes:"વીજળી વાલક",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"વીજળી વાલક?",answer:"વીજળી જમીનમાં લઈ જાય"}]},
+{name:"13. પ્રકાશ",notes:"પરાવર્તન",questions:[{type:"MCQ",text:"સમતલ અરીસો મૂકતાં?",answer:"નિયમિત પરાવર્તન"}]}
 ]},
 "8-math":{title:"ધોરણ 8 ગણિત",color:"from-fuchsia-500 to-purple-700",chapters:[
-{name:"1. પરિમેયિક સંખ્યાઓ",notes:"",questions:[{type:"MCQ",text:"√16 = ?",answer:"4"}]},
-{name:"2. રેખીય સમીકરણો",notes:"",questions:[{type:"HOTS",text:"2x + 5 = 15 ઉકેલો",answer:"x = 5"}]},
-{name:"3. ચતુષ્કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ચતુષ્કોણના પ્રકારો",answer:"ચોરસ, લંબચોરસ, સમાંતરબાજુ, વજ્ર"}]},
+{name:"1. પરિમેયિક સંખ્યાઓ",notes:"",questions:[{type:"MCQ",text:"√16=?",answer:"4"}]},
+{name:"2. રેખીય સમીકરણો",notes:"",questions:[{type:"HOTS",text:"2x+5=15",answer:"x=5"}]},
+{name:"3. ચતુષ્કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ચતુષ્કોણ પ્રકારો",answer:"ચોરસ, લંબચોરસ, વજ્ર"}]},
 {name:"4. પ્રાયોગિક ભૂમિતિ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"ચોરસ બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"5. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"હિસ્ટોગ્રામ બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"6. વર્ગ અને વર્ગમૂળ",notes:"",questions:[{type:"MCQ",text:"√25 = ?",answer:"5"}]},
-{name:"7. ઘન અને ઘનમૂળ",notes:"",questions:[{type:"MCQ",text:"∛27 = ?",answer:"3"}]},
-{name:"8. તુલનાત્મક અંકગણિત",notes:"",questions:[{type:"HOTS",text:"15% of 200 = ?",answer:"30"}]},
-{name:"9. બીજગણિત ઓળખ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"(a+b)² = ?",answer:"a² + 2ab + b²"}]},
-{name:"10. માપન",notes:"",questions:[{type:"MCQ",text:"નળાકારનું ક્ષેત્રફળ સૂત્ર?",answer:"2πr(h+r)"}]},
-{name:"11. ઘાતાંક",notes:"",questions:[{type:"MCQ",text:"2⁴ × 2³ = ?",answer:"128"}]},
-{name:"12. પ્રમાણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સીધો vs વ્યસ્ત પ્રમાણ",answer:"વધે-વધે vs વધે-ઘટે"}]},
-{name:"13. કારક",notes:"",questions:[{type:"HOTS",text:"x² − 5x + 6 ના કારક",answer:"(x−2)(x−3)"}]},
+{name:"5. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"હિસ્ટોગ્રામ",answer:"વિદ્યાર્થી"}]},
+{name:"6. વર્ગ વર્ગમૂળ",notes:"",questions:[{type:"MCQ",text:"√25",answer:"5"}]},
+{name:"7. ઘન ઘનમૂળ",notes:"",questions:[{type:"MCQ",text:"∛27",answer:"3"}]},
+{name:"8. તુલનાત્મક",notes:"",questions:[{type:"HOTS",text:"15% of 200",answer:"30"}]},
+{name:"9. બીજગણિત ઓળખ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"(a+b)²",answer:"a²+2ab+b²"}]},
+{name:"10. માપન",notes:"",questions:[{type:"MCQ",text:"નળાકાર સૂત્ર",answer:"2πr(h+r)"}]},
+{name:"11. ઘાતાંક",notes:"",questions:[{type:"MCQ",text:"2⁴×2³",answer:"128"}]},
+{name:"12. પ્રમાણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સીધો vs વ્યસ્ત",answer:"વધે-વધે vs વધે-ઘટે"}]},
+{name:"13. કારક",notes:"",questions:[{type:"HOTS",text:"x²-5x+6",answer:"(x-2)(x-3)"}]},
 {name:"14. આલેખન",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"આલેખ દોરો",answer:"વિદ્યાર્થી"}]},
-{name:"15. માહિતી વ્યવસ્થા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"મધ્યક, મધ્યસ્થ, બહુલક",answer:"સરેરાશ, મધ્ય કિંમત, સૌથી વધુ વાર"}]}
+{name:"15. માહિતી વ્યવસ્થા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"મધ્યક મધ્યસ્થ બહુલક",answer:"સરેરાશ, મધ્ય, સૌથી વધુ"}]}
 ]}
 };
 
 let currentStd="6", currentSub="sci";
 let clickCount=0, isUnlocked=localStorage.getItem(UNLOCK)==="true";
 let editingIndex=null, currentTest=null, editingChap=null;
+let targetChapterIndex=null; // for adding question to specific chapter
 
 function loadAll(){
-  try{const s=localStorage.getItem(STORE);if(s)Object.assign(data,JSON.parse(s));}catch(e){}
-  try{const sub=localStorage.getItem(SUBS_KEY);if(sub)subjects=JSON.parse(sub);}catch(e){}
+  try{var s=localStorage.getItem(STORE);if(s)Object.assign(data,JSON.parse(s));}catch(e){}
+  try{var sub=localStorage.getItem(SUBS_KEY);if(sub)subjects=JSON.parse(sub);}catch(e){}
   try{
-    const n=JSON.parse(localStorage.getItem("gseb_names")||"{}");
+    var n=JSON.parse(localStorage.getItem("gseb_names")||"{}");
     if(n.title)document.getElementById("siteTitle").textContent=n.title;
     if(n.subtitle)document.getElementById("siteSubtitle").textContent=n.subtitle;
     if(n.footer)document.getElementById("footerTitle").textContent=n.footer;
@@ -307,7 +313,6 @@ function loadAll(){
 }
 function saveData(){try{localStorage.setItem(STORE,JSON.stringify(data));}catch(e){}}
 function saveSubjects(){try{localStorage.setItem(SUBS_KEY,JSON.stringify(subjects));}catch(e){}}
-
 function closeModal(id){document.getElementById(id).classList.add("hidden");}
 
 document.getElementById("mainHeader").addEventListener("click",function(){
@@ -322,10 +327,7 @@ document.getElementById("mainHeader").addEventListener("click",function(){
 });
 function checkPassword(){
   if(document.getElementById("passInput").value===PASSWORD){
-    isUnlocked=true;
-    localStorage.setItem(UNLOCK,"true");
-    applyUnlock();
-    closeModal("passModal");
+    isUnlocked=true;localStorage.setItem(UNLOCK,"true");applyUnlock();closeModal("passModal");
   }else document.getElementById("passError").classList.remove("hidden");
 }
 document.getElementById("passInput").addEventListener("keydown",function(e){if(e.key==="Enter")checkPassword();});
@@ -336,9 +338,8 @@ function applyUnlock(){
   document.getElementById("statusBadge").className="bg-green-500 px-3 py-1.5 rounded-full text-white text-xs";
   document.getElementById("btnName").classList.remove("hidden");
   document.getElementById("btnSub").classList.remove("hidden");
-  document.getElementById("infoBanner").innerHTML="<b>Edit Mode!</b> પ્રકરણનું નામ બદલો • નવો વિષય ઉમેરો • પ્રશ્નો એડિટ કરો.";
-  renderSubTabs();
-  render();
+  document.getElementById("infoBanner").innerHTML="<b>Edit Mode ON!</b> દરેક પ્રકરણમાં <b>➕ પ્રશ્ન ઉમેરો</b> બટનથી પ્રશ્ન ઉમેરો. નામ પણ બદલી શકો છો.";
+  renderSubTabs();render();
 }
 if(isUnlocked)applyUnlock();
 
@@ -382,8 +383,7 @@ function addSubject(){
   data[currentStd+"-"+id]={title:"ધોરણ "+currentStd+" "+name,color:color,chapters:[]};
   saveSubjects();saveData();
   closeModal("subjectModal");
-  currentSub=id;
-  renderSubTabs();render();
+  currentSub=id;renderSubTabs();render();
 }
 
 function openChapEdit(key,ci){
@@ -397,10 +397,7 @@ function saveChapName(){
   var name=document.getElementById("editChapName").value.trim();
   if(!name){alert("નામ લખો");return;}
   data[editingChap.key].chapters[editingChap.ci].name=name;
-  saveData();
-  closeModal("chapModal");
-  editingChap=null;
-  render();
+  saveData();closeModal("chapModal");editingChap=null;render();
 }
 
 function getNotes(k,ci){
@@ -410,6 +407,98 @@ function saveNotes(k,ci,t){
   try{var a=JSON.parse(localStorage.getItem(NOTESK)||"{}");a[k+"-"+ci]=t;localStorage.setItem(NOTESK,JSON.stringify(a));}catch(e){}
 }
 
+/* ===== ADD QUESTION TO SPECIFIC CHAPTER ===== */
+function openAddToChapter(key, ci){
+  if(!isUnlocked){alert("Edit Mode માટે હેડર પર 5 વાર ટચ કરો");return;}
+  editingIndex=null;
+  targetChapterIndex={key:key, ci:ci};
+  document.getElementById("modalTitle").textContent="➕ પ્રશ્ન ઉમેરો";
+  document.getElementById("newChap").value=data[key].chapters[ci].name;
+  document.getElementById("newChap").readOnly=true;
+  document.getElementById("newText").value="";
+  document.getElementById("newAnswer").value="";
+  document.getElementById("newType").value="MCQ";
+  document.getElementById("addModal").classList.remove("hidden");
+}
+
+function openAddModal(){
+  if(!isUnlocked){alert("હેડર પર 5 વાર ટચ કરી પાસવર્ડ નાખો");return;}
+  editingIndex=null;
+  targetChapterIndex=null;
+  document.getElementById("modalTitle").textContent="➕ નવો પ્રશ્ન";
+  document.getElementById("newChap").value="";
+  document.getElementById("newChap").readOnly=false;
+  document.getElementById("newText").value="";
+  document.getElementById("newAnswer").value="";
+  document.getElementById("addModal").classList.remove("hidden");
+}
+
+function saveQuestion(){
+  if(!isUnlocked)return;
+  var type=document.getElementById("newType").value;
+  var text=document.getElementById("newText").value.trim();
+  var ans=document.getElementById("newAnswer").value.trim();
+  if(!text){alert("પ્રશ્ન લખો!");return;}
+
+  if(editingIndex){
+    // Edit existing
+    var k=editingIndex.key, ci=editingIndex.ci, qi=editingIndex.qi;
+    data[k].chapters[ci].questions[qi]={type:type, text:text, answer:ans};
+  } else if(targetChapterIndex){
+    // Add to specific chapter
+    var k2=targetChapterIndex.key, ci2=targetChapterIndex.ci;
+    if(!data[k2].chapters[ci2].questions) data[k2].chapters[ci2].questions=[];
+    data[k2].chapters[ci2].questions.push({type:type, text:text, answer:ans});
+  } else {
+    // Add with chapter name
+    var chap=document.getElementById("newChap").value.trim()||"નવું પ્રકરણ";
+    var key=currentStd+"-"+currentSub;
+    if(!data[key]) data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
+    var ch=null;
+    for(var i=0;i<data[key].chapters.length;i++){
+      if(data[key].chapters[i].name===chap){ch=data[key].chapters[i];break;}
+    }
+    if(!ch){ch={name:chap,questions:[],notes:""};data[key].chapters.push(ch);}
+    ch.questions.push({type:type, text:text, answer:ans});
+  }
+  saveData();
+  closeModal("addModal");
+  editingIndex=null;
+  targetChapterIndex=null;
+  render();
+}
+
+function editQ(k,ci,qi){
+  if(!isUnlocked)return;
+  editingIndex={key:k,ci:ci,qi:qi};
+  targetChapterIndex=null;
+  var q=data[k].chapters[ci].questions[qi];
+  document.getElementById("modalTitle").textContent="✏️ પ્રશ્ન એડિટ";
+  document.getElementById("newChap").value=data[k].chapters[ci].name;
+  document.getElementById("newChap").readOnly=true;
+  document.getElementById("newType").value=q.type;
+  document.getElementById("newText").value=q.text;
+  document.getElementById("newAnswer").value=q.answer||"";
+  document.getElementById("addModal").classList.remove("hidden");
+}
+function delQ(k,ci,qi){
+  if(!isUnlocked)return;
+  if(confirm("પ્રશ્ન કાઢી નાખવો?")){data[k].chapters[ci].questions.splice(qi,1);saveData();render();}
+}
+function delChapter(k,ci){
+  if(!isUnlocked)return;
+  if(confirm("આખું પ્રકરણ કાઢી નાખવું?")){data[k].chapters.splice(ci,1);saveData();render();}
+}
+function addChapter(){
+  if(!isUnlocked)return;
+  var key=currentStd+"-"+currentSub;
+  if(!data[key])data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
+  var num=data[key].chapters.length+1;
+  data[key].chapters.push({name:num+". નવું પ્રકરણ",notes:"",questions:[]});
+  saveData();render();
+}
+
+/* TEST */
 function generate25(qs,name){
   var pool=(qs||[]).slice();
   while(pool.length<25){
@@ -422,7 +511,6 @@ function generate25(qs,name){
   });
 }
 function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
-
 function startTest(key,ci){
   var ch=data[key].chapters[ci];
   currentTest={key:key,ci:ci,questions:generate25(ch.questions,ch.name),userAnswers:new Array(25).fill(null),submitted:false};
@@ -512,17 +600,16 @@ function render(){
 
   var html='<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">';
   html+='<h2 class="text-xl sm:text-2xl font-bold bg-gradient-to-r '+(section.color||"from-slate-500 to-slate-700")+' bg-clip-text text-transparent">'+(section.title||("ધોરણ "+currentStd+" "+(subInfo?subInfo.name:"")))+'</h2>';
-  html+='<div class="flex gap-2 flex-wrap">';
-  html+='<button onclick="openAddModal()" class="edit-only btn bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow">➕ પ્રશ્ન</button>';
-  html+='<button onclick="addChapter()" class="edit-only btn bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow">➕ પ્રકરણ</button>';
-  html+='</div></div>';
+  html+='<button onclick="addChapter()" class="edit-only btn bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow">➕ નવું પ્રકરણ</button>';
+  html+='</div>';
   html+='<p class="text-sm text-slate-500 mb-4">કુલ પ્રકરણો: <b>'+(section.chapters||[]).length+'</b></p>';
 
   (section.chapters||[]).forEach(function(ch,ci){
     var notes=getNotes(key,ci);
+    var qCount=(ch.questions||[]).length;
     html+='<div class="card mb-4 overflow-hidden">';
     html+='<div class="px-4 py-3.5 flex justify-between items-center cursor-pointer font-semibold text-indigo-900 bg-gradient-to-r from-indigo-50 to-purple-50" onclick="toggleChap(this)">';
-    html+='<span class="text-sm sm:text-base flex-1">'+ch.name+'</span>';
+    html+='<span class="text-sm sm:text-base flex-1">'+ch.name+' <span class="text-xs text-slate-400 font-normal">('+qCount+' પ્રશ્ન)</span></span>';
     html+='<div class="flex items-center gap-2">';
     html+='<button onclick="event.stopPropagation();openChapEdit(\''+key+'\','+ci+')" class="edit-only btn bg-amber-400 text-white text-xs">✏️ નામ</button>';
     html+='<button onclick="event.stopPropagation();delChapter(\''+key+'\','+ci+')" class="edit-only btn bg-red-500 text-white text-xs">🗑️</button>';
@@ -530,18 +617,30 @@ function render(){
     html+='</div></div>';
     html+='<div class="chapter-body hidden p-3 space-y-3 bg-white/80">';
 
-    (ch.questions||[]).forEach(function(q,qi){
-      var bc=badgeColor(q.type);
-      html+='<div class="p-3 rounded-xl border border-slate-200 bg-white">';
-      html+='<span class="badge '+bc+'">'+q.type+'</span>';
-      html+='<div class="text-sm whitespace-pre-wrap mb-1.5">'+q.text+'</div>';
-      html+='<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" class="text-xs text-emerald-700 font-semibold">🔑 જવાબ જુઓ</button>';
-      html+='<div class="answer-box hidden">'+(q.answer||"—")+'</div>';
-      html+='<div class="edit-only flex gap-2 mt-2">';
-      html+='<button onclick="editQ(\''+key+'\','+ci+','+qi+')" class="btn bg-amber-400 text-white text-xs">✏️ Edit</button>';
-      html+='<button onclick="delQ(\''+key+'\','+ci+','+qi+')" class="btn bg-red-500 text-white text-xs">🗑️</button>';
-      html+='</div></div>';
-    });
+    if(qCount===0){
+      html+='<div class="empty-chap">';
+      html+='<p class="text-2xl mb-2">📝</p>';
+      html+='<p class="mb-3">આ પ્રકરણમાં હજુ કોઈ પ્રશ્ન નથી</p>';
+      html+='<button onclick="openAddToChapter(\''+key+'\','+ci+')" class="edit-only btn bg-indigo-600 text-white px-5 py-2">➕ પ્રશ્ન ઉમેરો</button>';
+      html+='</div>';
+    } else {
+      (ch.questions||[]).forEach(function(q,qi){
+        var bc=badgeColor(q.type);
+        html+='<div class="p-3 rounded-xl border border-slate-200 bg-white">';
+        html+='<span class="badge '+bc+'">'+q.type+'</span>';
+        html+='<div class="text-sm whitespace-pre-wrap mb-1.5">'+q.text+'</div>';
+        html+='<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" class="text-xs text-emerald-700 font-semibold">🔑 જવાબ જુઓ</button>';
+        html+='<div class="answer-box hidden">'+(q.answer||"—")+'</div>';
+        html+='<div class="edit-only flex gap-2 mt-2">';
+        html+='<button onclick="editQ(\''+key+'\','+ci+','+qi+')" class="btn bg-amber-400 text-white text-xs">✏️ Edit</button>';
+        html+='<button onclick="delQ(\''+key+'\','+ci+','+qi+')" class="btn bg-red-500 text-white text-xs">🗑️</button>';
+        html+='</div></div>';
+      });
+      // Always show add button at bottom of chapter
+      html+='<div class="pt-2">';
+      html+='<button onclick="openAddToChapter(\''+key+'\','+ci+')" class="edit-only btn bg-indigo-600 text-white w-full py-2.5">➕ આ પ્રકરણમાં પ્રશ્ન ઉમેરો</button>';
+      html+='</div>';
+    }
 
     html+='<div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200">';
     html+='<h4 class="font-bold text-amber-800 text-sm mb-1">📌 Notes</h4>';
@@ -602,82 +701,19 @@ function saveNotesUI(k,ci){
   document.getElementById("ne-"+k+"-"+ci).classList.add("hidden");
   document.getElementById("ns-"+k+"-"+ci).classList.add("hidden");
 }
-function editQ(k,ci,qi){
-  if(!isUnlocked)return;
-  editingIndex={key:k,ci:ci,qi:qi};
-  var q=data[k].chapters[ci].questions[qi];
-  document.getElementById("modalTitle").textContent="✏️ પ્રશ્ન એડિટ";
-  document.getElementById("newChap").value=data[k].chapters[ci].name;
-  document.getElementById("newType").value=q.type;
-  document.getElementById("newText").value=q.text;
-  document.getElementById("newAnswer").value=q.answer||"";
-  document.getElementById("addModal").classList.remove("hidden");
-}
-function delQ(k,ci,qi){
-  if(!isUnlocked)return;
-  if(confirm("પ્રશ્ન કાઢી નાખવો?")){data[k].chapters[ci].questions.splice(qi,1);saveData();render();}
-}
-function delChapter(k,ci){
-  if(!isUnlocked)return;
-  if(confirm("આખું પ્રકરણ કાઢી નાખવું?")){data[k].chapters.splice(ci,1);saveData();render();}
-}
-function addChapter(){
-  if(!isUnlocked)return;
-  var key=currentStd+"-"+currentSub;
-  if(!data[key])data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
-  var num=data[key].chapters.length+1;
-  data[key].chapters.push({name:num+". નવું પ્રકરણ",notes:"",questions:[]});
-  saveData();render();
-}
-function openAddModal(){
-  if(!isUnlocked){alert("હેડર પર 5 વાર ટચ કરી પાસવર્ડ નાખો");return;}
-  editingIndex=null;
-  document.getElementById("modalTitle").textContent="➕ નવો પ્રશ્ન";
-  document.getElementById("newChap").value="";
-  document.getElementById("newText").value="";
-  document.getElementById("newAnswer").value="";
-  document.getElementById("addModal").classList.remove("hidden");
-}
-function saveQuestion(){
-  if(!isUnlocked)return;
-  var chap=document.getElementById("newChap").value.trim()||"નવું પ્રકરણ";
-  var type=document.getElementById("newType").value;
-  var text=document.getElementById("newText").value.trim();
-  var ans=document.getElementById("newAnswer").value.trim();
-  if(!text){alert("પ્રશ્ન લખો");return;}
-  if(editingIndex){
-    var k=editingIndex.key,ci=editingIndex.ci,qi=editingIndex.qi;
-    data[k].chapters[ci].questions[qi]={type:type,text:text,answer:ans};
-    data[k].chapters[ci].name=chap;
-  }else{
-    var key=currentStd+"-"+currentSub;
-    if(!data[key])data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
-    var ch=null;
-    for(var i=0;i<data[key].chapters.length;i++){if(data[key].chapters[i].name===chap){ch=data[key].chapters[i];break;}}
-    if(!ch){ch={name:chap,questions:[],notes:""};data[key].chapters.push(ch);}
-    ch.questions.push({type:type,text:text,answer:ans});
-  }
-  saveData();
-  closeModal("addModal");
-  editingIndex=null;
-  render();
-}
 
 document.querySelectorAll(".std-tab").forEach(function(t){
   t.onclick=function(){
     document.querySelectorAll(".std-tab").forEach(function(x){
-      x.classList.remove("active","text-white");
-      x.classList.add("text-indigo-200");
+      x.classList.remove("active","text-white");x.classList.add("text-indigo-200");
       x.style.background="linear-gradient(135deg,#312e81,#4c1d95)";
     });
-    t.classList.add("active","text-white");
-    t.classList.remove("text-indigo-200");
+    t.classList.add("active","text-white");t.classList.remove("text-indigo-200");
     t.style.background="linear-gradient(135deg,#4f46e5,#7c3aed)";
     currentStd=t.getAttribute("data-std");
     var list=subjects[currentStd]||[];
     currentSub=list.length?list[0].id:"key";
-    renderSubTabs();
-    render();
+    renderSubTabs();render();
   };
 });
 
