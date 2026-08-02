@@ -20,11 +20,15 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
 .badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:6px}
 .std-tab{flex:1;padding:14px 8px;text-align:center;font-weight:700;border:none;cursor:pointer;font-size:14px;transition:.25s}
 .sub-pill{padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;border:none;cursor:pointer;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+.chap-card{transition:transform .15s,box-shadow .15s;cursor:pointer}
+.chap-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(99,102,241,.15)}
 .empty-chap{border:2px dashed #c7d2fe;background:#f8fafc;border-radius:12px;padding:20px;text-align:center;color:#64748b}
 </style>
 </head>
 <body class="locked" id="appBody">
 
+<!-- ===== MAIN LIST VIEW ===== -->
+<div id="mainView">
 <header id="mainHeader" class="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500 text-white shadow-xl sticky top-0 z-50 select-none">
   <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
     <div class="text-center sm:text-left">
@@ -55,7 +59,7 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   <div class="card p-3.5 mb-5 flex gap-3 items-start bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
     <span class="text-xl">✨</span>
     <div id="infoBanner" class="text-sm leading-relaxed">
-      <b>સૂચના:</b> દરેક પ્રકરણમાં <b>➕ પ્રશ્ન ઉમેરો</b> બટન છે. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
+      <b>સૂચના:</b> પ્રકરણ પર ક્લિક કરો → <b>નવું ટેબ</b> ખુલશે. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
     </div>
   </div>
   <div id="dynamicArea"></div>
@@ -63,10 +67,26 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
 
 <footer class="bg-slate-900 text-slate-400 text-center py-7 mt-12">
   <p id="footerTitle" class="text-lg font-bold text-white">GSEB TOPPER</p>
-  <p id="footerSub" class="text-xs mt-1">શિક્ષણ માટે સંપૂર્ણ વેબસાઇટ • 2026</p>
+  <p id="footerSub" class="text-xs mt-1">પ્રકરણ નવા ટેબમાં ખુલે • 2026</p>
 </footer>
+</div>
 
-<!-- PASSWORD -->
+<!-- ===== CHAPTER DETAIL VIEW (same page / new tab via hash) ===== -->
+<div id="chapterView" class="hidden">
+  <header class="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500 text-white shadow-xl sticky top-0 z-50">
+    <div class="max-w-3xl mx-auto px-4 py-3 flex items-center gap-3">
+      <button onclick="goHome()" class="btn bg-white/20 text-white text-sm">← પાછા</button>
+      <div class="flex-1 min-w-0">
+        <h1 id="cvTitle" class="text-lg font-bold truncate">પ્રકરણ</h1>
+        <p id="cvSub" class="text-indigo-100 text-xs truncate"></p>
+      </div>
+      <span id="cvBadge" class="bg-white/25 px-2 py-1 rounded-full text-xs hidden">🔓</span>
+    </div>
+  </header>
+  <main class="max-w-3xl mx-auto px-3 sm:px-4 py-6" id="chapterContent"></main>
+</div>
+
+<!-- MODALS -->
 <div id="passModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
   <div class="card w-full max-w-sm p-5 space-y-3">
     <h3 class="text-lg font-bold text-indigo-700 text-center">🔐 Edit Mode</h3>
@@ -79,7 +99,6 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   </div>
 </div>
 
-<!-- NAME -->
 <div id="nameModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
   <div class="card w-full max-w-md p-5 space-y-3">
     <h3 class="text-lg font-bold text-indigo-700">✏️ વેબસાઇટ નામ</h3>
@@ -94,13 +113,12 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   </div>
 </div>
 
-<!-- ADD SUBJECT -->
 <div id="subjectModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
   <div class="card w-full max-w-md p-5 space-y-3">
     <h3 class="text-lg font-bold text-indigo-700">➕ નવો વિષય</h3>
     <p class="text-sm text-slate-500">ધોરણ <b id="subStdLabel">6</b> માટે</p>
     <input id="newSubName" class="w-full px-3 py-2.5 border rounded-xl" placeholder="વિષયનું નામ"/>
-    <input id="newSubEmoji" class="w-full px-3 py-2.5 border rounded-xl" value="📚" placeholder="ઇમોજી"/>
+    <input id="newSubEmoji" class="w-full px-3 py-2.5 border rounded-xl" value="📚"/>
     <div class="flex gap-3 justify-end">
       <button onclick="closeModal('subjectModal')" class="btn bg-slate-200">રદ</button>
       <button onclick="addSubject()" class="btn bg-indigo-600 text-white">ઉમેરો</button>
@@ -108,7 +126,6 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   </div>
 </div>
 
-<!-- CHAPTER NAME -->
 <div id="chapModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
   <div class="card w-full max-w-md p-5 space-y-3">
     <h3 class="text-lg font-bold text-indigo-700">✏️ પ્રકરણનું નામ</h3>
@@ -120,12 +137,11 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   </div>
 </div>
 
-<!-- ADD/EDIT QUESTION -->
 <div id="addModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
   <div class="card w-full max-w-lg p-5 space-y-3 max-h-[90vh] overflow-y-auto">
     <h3 id="modalTitle" class="text-lg font-bold text-indigo-700">➕ નવો પ્રશ્ન</h3>
     <label class="text-sm font-medium text-slate-600">પ્રકરણ</label>
-    <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રકરણનું નામ" readonly style="background:#f1f5f9"/>
+    <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" readonly style="background:#f1f5f9"/>
     <label class="text-sm font-medium text-slate-600">પ્રકાર</label>
     <select id="newType" class="w-full px-3 py-2.5 border rounded-xl">
       <option>MCQ</option><option>ખાલી જગ્યા</option><option>ટૂંકા જવાબ</option>
@@ -143,7 +159,6 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
   </div>
 </div>
 
-<!-- TEST -->
 <div id="testModal" class="fixed inset-0 bg-black/60 z-[100] hidden overflow-y-auto">
   <div class="min-h-screen flex items-start justify-center p-3 py-6">
     <div class="card w-full max-w-2xl p-4 sm:p-6">
@@ -165,10 +180,10 @@ body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gra
 <script>
 const PASSWORD="imvnod@210124";
 const CLICKS=5;
-const STORE="gseb_v7";
-const UNLOCK="gseb_un_v7";
-const NOTESK="gseb_nt_v7";
-const SUBS_KEY="gseb_sub_v7";
+const STORE="gseb_v8";
+const UNLOCK="gseb_un_v8";
+const NOTESK="gseb_nt_v8";
+const SUBS_KEY="gseb_sub_v8";
 
 let subjects={
   "6":[{id:"sci",name:"વિજ્ઞાન",emoji:"🔬",color:"from-emerald-400 to-teal-500"},{id:"math",name:"ગણિત",emoji:"📐",color:"from-blue-400 to-cyan-500"}],
@@ -298,7 +313,8 @@ const data={
 let currentStd="6", currentSub="sci";
 let clickCount=0, isUnlocked=localStorage.getItem(UNLOCK)==="true";
 let editingIndex=null, currentTest=null, editingChap=null;
-let targetChapterIndex=null; // for adding question to specific chapter
+let targetChapterIndex=null;
+let viewKey=null, viewCi=null; // current chapter being viewed
 
 function loadAll(){
   try{var s=localStorage.getItem(STORE);if(s)Object.assign(data,JSON.parse(s));}catch(e){}
@@ -315,6 +331,117 @@ function saveData(){try{localStorage.setItem(STORE,JSON.stringify(data));}catch(
 function saveSubjects(){try{localStorage.setItem(SUBS_KEY,JSON.stringify(subjects));}catch(e){}}
 function closeModal(id){document.getElementById(id).classList.add("hidden");}
 
+/* ===== OPEN CHAPTER IN NEW TAB ===== */
+function openChapterNewTab(key, ci){
+  var base = location.href.split("#")[0];
+  var url = base + "#chapter=" + encodeURIComponent(key) + "&ci=" + ci;
+  window.open(url, "_blank");
+}
+
+function checkHash(){
+  var h = location.hash || "";
+  if(h.indexOf("chapter=") >= 0){
+    var params = {};
+    h.replace(/^#/,"").split("&").forEach(function(p){
+      var kv=p.split("=");
+      if(kv.length===2) params[kv[0]] = decodeURIComponent(kv[1]);
+    });
+    if(params.chapter && params.ci !== undefined){
+      viewKey = params.chapter;
+      viewCi = parseInt(params.ci, 10);
+      showChapterView();
+      return true;
+    }
+  }
+  showMainView();
+  return false;
+}
+
+function showMainView(){
+  document.getElementById("mainView").classList.remove("hidden");
+  document.getElementById("chapterView").classList.add("hidden");
+  document.title = "GSEB TOPPER | ધોરણ 6-7-8";
+  renderSubTabs();
+  render();
+}
+
+function showChapterView(){
+  document.getElementById("mainView").classList.add("hidden");
+  document.getElementById("chapterView").classList.remove("hidden");
+  renderChapterPage();
+}
+
+function goHome(){
+  // If opened as new tab via hash, go to main without hash
+  location.hash = "";
+  showMainView();
+}
+
+function renderChapterPage(){
+  if(!viewKey || viewCi === null || !data[viewKey] || !data[viewKey].chapters[viewCi]){
+    document.getElementById("chapterContent").innerHTML = '<div class="card p-8 text-center"><p>પ્રકરણ મળ્યું નહીં</p><button onclick="goHome()" class="btn bg-indigo-600 text-white mt-4">પાછા</button></div>';
+    return;
+  }
+  var ch = data[viewKey].chapters[viewCi];
+  var section = data[viewKey];
+  document.getElementById("cvTitle").textContent = ch.name;
+  document.getElementById("cvSub").textContent = section.title || "";
+  document.title = ch.name + " | GSEB TOPPER";
+
+  if(isUnlocked){
+    document.getElementById("cvBadge").classList.remove("hidden");
+    document.getElementById("cvBadge").textContent = "🔓 Edit";
+  }
+
+  var notes = getNotes(viewKey, viewCi);
+  var qCount = (ch.questions || []).length;
+  var html = "";
+
+  // Questions
+  if(qCount === 0){
+    html += '<div class="empty-chap mb-4"><p class="text-2xl mb-2">📝</p><p class="mb-3">આ પ્રકરણમાં હજુ કોઈ પ્રશ્ન નથી</p>';
+    html += '<button onclick="openAddToChapter(\''+viewKey+'\','+viewCi+')" class="edit-only btn bg-indigo-600 text-white px-5 py-2">➕ પ્રશ્ન ઉમેરો</button></div>';
+  } else {
+    (ch.questions || []).forEach(function(q, qi){
+      var bc = badgeColor(q.type);
+      html += '<div class="card p-4 mb-3">';
+      html += '<span class="badge '+bc+'">'+q.type+'</span>';
+      html += '<div class="text-sm whitespace-pre-wrap mb-2">'+q.text+'</div>';
+      html += '<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" class="text-xs text-emerald-700 font-semibold">🔑 જવાબ જુઓ</button>';
+      html += '<div class="answer-box hidden">'+(q.answer||"—")+'</div>';
+      html += '<div class="edit-only flex gap-2 mt-2">';
+      html += '<button onclick="editQ(\''+viewKey+'\','+viewCi+','+qi+')" class="btn bg-amber-400 text-white text-xs">✏️ Edit</button>';
+      html += '<button onclick="delQ(\''+viewKey+'\','+viewCi+','+qi+')" class="btn bg-red-500 text-white text-xs">🗑️</button>';
+      html += '</div></div>';
+    });
+    html += '<button onclick="openAddToChapter(\''+viewKey+'\','+viewCi+')" class="edit-only btn bg-indigo-600 text-white w-full py-2.5 mb-4">➕ આ પ્રકરણમાં પ્રશ્ન ઉમેરો</button>';
+  }
+
+  // Notes
+  html += '<div class="card p-4 mb-4 bg-amber-50 border-amber-200">';
+  html += '<h4 class="font-bold text-amber-800 text-sm mb-1">📌 Notes</h4>';
+  html += '<div id="nv-'+viewKey+'-'+viewCi+'" class="text-sm">'+(notes||"નોંધ નથી")+'</div>';
+  html += '<textarea id="ne-'+viewKey+'-'+viewCi+'" class="edit-only hidden w-full border rounded-lg p-2 text-sm mt-1" rows="2">'+notes+'</textarea>';
+  html += '<button onclick="editNotes(\''+viewKey+'\','+viewCi+')" class="edit-only btn bg-amber-500 text-white text-xs mt-1.5">✏️ Notes</button>';
+  html += '<button id="ns-'+viewKey+'-'+viewCi+'" onclick="saveNotesUI(\''+viewKey+'\','+viewCi+')" class="edit-only btn bg-green-600 text-white text-xs mt-1.5 hidden">💾 સાચવો</button>';
+  html += '</div>';
+
+  // Test
+  html += '<div class="p-5 rounded-2xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center mb-6">';
+  html += '<h4 class="font-bold text-lg mb-1">📝 25 Marks Test</h4>';
+  html += '<p class="text-indigo-100 text-xs mb-3">25 પ્રશ્ન × 1 ગુણ • Confetti</p>';
+  html += '<button onclick="startTest(\''+viewKey+'\','+viewCi+')" class="btn bg-white text-indigo-700 font-bold px-6 py-2.5">Test શરૂ કરો →</button>';
+  html += '</div>';
+
+  // Edit chapter name
+  html += '<div class="edit-only flex gap-2 justify-center mb-8">';
+  html += '<button onclick="openChapEdit(\''+viewKey+'\','+viewCi+')" class="btn bg-amber-400 text-white">✏️ પ્રકરણનું નામ બદલો</button>';
+  html += '</div>';
+
+  document.getElementById("chapterContent").innerHTML = html;
+}
+
+/* UNLOCK */
 document.getElementById("mainHeader").addEventListener("click",function(){
   if(isUnlocked)return;
   clickCount++;
@@ -334,12 +461,14 @@ document.getElementById("passInput").addEventListener("keydown",function(e){if(e
 
 function applyUnlock(){
   document.getElementById("appBody").classList.remove("locked");
-  document.getElementById("statusBadge").textContent="🔓 Edit Mode";
-  document.getElementById("statusBadge").className="bg-green-500 px-3 py-1.5 rounded-full text-white text-xs";
-  document.getElementById("btnName").classList.remove("hidden");
-  document.getElementById("btnSub").classList.remove("hidden");
-  document.getElementById("infoBanner").innerHTML="<b>Edit Mode ON!</b> દરેક પ્રકરણમાં <b>➕ પ્રશ્ન ઉમેરો</b> બટનથી પ્રશ્ન ઉમેરો. નામ પણ બદલી શકો છો.";
-  renderSubTabs();render();
+  var badge=document.getElementById("statusBadge");
+  if(badge){badge.textContent="🔓 Edit Mode";badge.className="bg-green-500 px-3 py-1.5 rounded-full text-white text-xs";}
+  var bn=document.getElementById("btnName");if(bn)bn.classList.remove("hidden");
+  var bs=document.getElementById("btnSub");if(bs)bs.classList.remove("hidden");
+  var info=document.getElementById("infoBanner");
+  if(info)info.innerHTML="<b>Edit Mode ON!</b> પ્રકરણ પર ક્લિક → નવું ટેબ. દરેક પ્રકરણમાં પ્રશ્ન ઉમેરી શકો છો.";
+  if(viewKey!==null) renderChapterPage();
+  else {renderSubTabs();render();}
 }
 if(isUnlocked)applyUnlock();
 
@@ -397,7 +526,9 @@ function saveChapName(){
   var name=document.getElementById("editChapName").value.trim();
   if(!name){alert("નામ લખો");return;}
   data[editingChap.key].chapters[editingChap.ci].name=name;
-  saveData();closeModal("chapModal");editingChap=null;render();
+  saveData();closeModal("chapModal");editingChap=null;
+  if(viewKey!==null) renderChapterPage();
+  else render();
 }
 
 function getNotes(k,ci){
@@ -407,29 +538,15 @@ function saveNotes(k,ci,t){
   try{var a=JSON.parse(localStorage.getItem(NOTESK)||"{}");a[k+"-"+ci]=t;localStorage.setItem(NOTESK,JSON.stringify(a));}catch(e){}
 }
 
-/* ===== ADD QUESTION TO SPECIFIC CHAPTER ===== */
-function openAddToChapter(key, ci){
+function openAddToChapter(key,ci){
   if(!isUnlocked){alert("Edit Mode માટે હેડર પર 5 વાર ટચ કરો");return;}
   editingIndex=null;
-  targetChapterIndex={key:key, ci:ci};
+  targetChapterIndex={key:key,ci:ci};
   document.getElementById("modalTitle").textContent="➕ પ્રશ્ન ઉમેરો";
   document.getElementById("newChap").value=data[key].chapters[ci].name;
-  document.getElementById("newChap").readOnly=true;
   document.getElementById("newText").value="";
   document.getElementById("newAnswer").value="";
   document.getElementById("newType").value="MCQ";
-  document.getElementById("addModal").classList.remove("hidden");
-}
-
-function openAddModal(){
-  if(!isUnlocked){alert("હેડર પર 5 વાર ટચ કરી પાસવર્ડ નાખો");return;}
-  editingIndex=null;
-  targetChapterIndex=null;
-  document.getElementById("modalTitle").textContent="➕ નવો પ્રશ્ન";
-  document.getElementById("newChap").value="";
-  document.getElementById("newChap").readOnly=false;
-  document.getElementById("newText").value="";
-  document.getElementById("newAnswer").value="";
   document.getElementById("addModal").classList.remove("hidden");
 }
 
@@ -439,33 +556,19 @@ function saveQuestion(){
   var text=document.getElementById("newText").value.trim();
   var ans=document.getElementById("newAnswer").value.trim();
   if(!text){alert("પ્રશ્ન લખો!");return;}
-
   if(editingIndex){
-    // Edit existing
-    var k=editingIndex.key, ci=editingIndex.ci, qi=editingIndex.qi;
-    data[k].chapters[ci].questions[qi]={type:type, text:text, answer:ans};
-  } else if(targetChapterIndex){
-    // Add to specific chapter
-    var k2=targetChapterIndex.key, ci2=targetChapterIndex.ci;
-    if(!data[k2].chapters[ci2].questions) data[k2].chapters[ci2].questions=[];
-    data[k2].chapters[ci2].questions.push({type:type, text:text, answer:ans});
-  } else {
-    // Add with chapter name
-    var chap=document.getElementById("newChap").value.trim()||"નવું પ્રકરણ";
-    var key=currentStd+"-"+currentSub;
-    if(!data[key]) data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
-    var ch=null;
-    for(var i=0;i<data[key].chapters.length;i++){
-      if(data[key].chapters[i].name===chap){ch=data[key].chapters[i];break;}
-    }
-    if(!ch){ch={name:chap,questions:[],notes:""};data[key].chapters.push(ch);}
-    ch.questions.push({type:type, text:text, answer:ans});
+    var k=editingIndex.key,ci=editingIndex.ci,qi=editingIndex.qi;
+    data[k].chapters[ci].questions[qi]={type:type,text:text,answer:ans};
+  }else if(targetChapterIndex){
+    var k2=targetChapterIndex.key,ci2=targetChapterIndex.ci;
+    if(!data[k2].chapters[ci2].questions)data[k2].chapters[ci2].questions=[];
+    data[k2].chapters[ci2].questions.push({type:type,text:text,answer:ans});
   }
   saveData();
   closeModal("addModal");
-  editingIndex=null;
-  targetChapterIndex=null;
-  render();
+  editingIndex=null;targetChapterIndex=null;
+  if(viewKey!==null) renderChapterPage();
+  else render();
 }
 
 function editQ(k,ci,qi){
@@ -475,7 +578,6 @@ function editQ(k,ci,qi){
   var q=data[k].chapters[ci].questions[qi];
   document.getElementById("modalTitle").textContent="✏️ પ્રશ્ન એડિટ";
   document.getElementById("newChap").value=data[k].chapters[ci].name;
-  document.getElementById("newChap").readOnly=true;
   document.getElementById("newType").value=q.type;
   document.getElementById("newText").value=q.text;
   document.getElementById("newAnswer").value=q.answer||"";
@@ -483,11 +585,17 @@ function editQ(k,ci,qi){
 }
 function delQ(k,ci,qi){
   if(!isUnlocked)return;
-  if(confirm("પ્રશ્ન કાઢી નાખવો?")){data[k].chapters[ci].questions.splice(qi,1);saveData();render();}
+  if(confirm("પ્રશ્ન કાઢી નાખવો?")){
+    data[k].chapters[ci].questions.splice(qi,1);saveData();
+    if(viewKey!==null) renderChapterPage(); else render();
+  }
 }
 function delChapter(k,ci){
   if(!isUnlocked)return;
-  if(confirm("આખું પ્રકરણ કાઢી નાખવું?")){data[k].chapters.splice(ci,1);saveData();render();}
+  if(confirm("આખું પ્રકરણ કાઢી નાખવું?")){
+    data[k].chapters.splice(ci,1);saveData();
+    if(viewKey!==null) goHome(); else render();
+  }
 }
 function addChapter(){
   if(!isUnlocked)return;
@@ -583,7 +691,8 @@ function renderSubTabs(){
   });
   var keyActive=currentSub==="key";
   html+='<button class="sub-pill '+(keyActive?"bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-md":"bg-slate-100 text-slate-600")+'" onclick="switchSub(\'key\')">🔑 Answer Key</button>';
-  document.getElementById("subTabs").innerHTML=html;
+  var el=document.getElementById("subTabs");
+  if(el)el.innerHTML=html;
 }
 function switchSub(id){currentSub=id;renderSubTabs();render();}
 
@@ -592,6 +701,7 @@ function badgeColor(type){
   return map[type]||"bg-slate-100 text-slate-700";
 }
 
+/* MAIN LIST – chapters open in NEW TAB */
 function render(){
   if(currentSub==="key"){renderKey();return;}
   var key=currentStd+"-"+currentSub;
@@ -602,66 +712,29 @@ function render(){
   html+='<h2 class="text-xl sm:text-2xl font-bold bg-gradient-to-r '+(section.color||"from-slate-500 to-slate-700")+' bg-clip-text text-transparent">'+(section.title||("ધોરણ "+currentStd+" "+(subInfo?subInfo.name:"")))+'</h2>';
   html+='<button onclick="addChapter()" class="edit-only btn bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow">➕ નવું પ્રકરણ</button>';
   html+='</div>';
-  html+='<p class="text-sm text-slate-500 mb-4">કુલ પ્રકરણો: <b>'+(section.chapters||[]).length+'</b></p>';
+  html+='<p class="text-sm text-slate-500 mb-4">કુલ પ્રકરણો: <b>'+(section.chapters||[]).length+'</b> • પ્રકરણ પર ક્લિક → <b>નવું ટેબ</b></p>';
 
   (section.chapters||[]).forEach(function(ch,ci){
-    var notes=getNotes(key,ci);
     var qCount=(ch.questions||[]).length;
-    html+='<div class="card mb-4 overflow-hidden">';
-    html+='<div class="px-4 py-3.5 flex justify-between items-center cursor-pointer font-semibold text-indigo-900 bg-gradient-to-r from-indigo-50 to-purple-50" onclick="toggleChap(this)">';
-    html+='<span class="text-sm sm:text-base flex-1">'+ch.name+' <span class="text-xs text-slate-400 font-normal">('+qCount+' પ્રશ્ન)</span></span>';
-    html+='<div class="flex items-center gap-2">';
-    html+='<button onclick="event.stopPropagation();openChapEdit(\''+key+'\','+ci+')" class="edit-only btn bg-amber-400 text-white text-xs">✏️ નામ</button>';
-    html+='<button onclick="event.stopPropagation();delChapter(\''+key+'\','+ci+')" class="edit-only btn bg-red-500 text-white text-xs">🗑️</button>';
-    html+='<span class="text-indigo-500 text-lg arrow">▼</span>';
-    html+='</div></div>';
-    html+='<div class="chapter-body hidden p-3 space-y-3 bg-white/80">';
-
-    if(qCount===0){
-      html+='<div class="empty-chap">';
-      html+='<p class="text-2xl mb-2">📝</p>';
-      html+='<p class="mb-3">આ પ્રકરણમાં હજુ કોઈ પ્રશ્ન નથી</p>';
-      html+='<button onclick="openAddToChapter(\''+key+'\','+ci+')" class="edit-only btn bg-indigo-600 text-white px-5 py-2">➕ પ્રશ્ન ઉમેરો</button>';
-      html+='</div>';
-    } else {
-      (ch.questions||[]).forEach(function(q,qi){
-        var bc=badgeColor(q.type);
-        html+='<div class="p-3 rounded-xl border border-slate-200 bg-white">';
-        html+='<span class="badge '+bc+'">'+q.type+'</span>';
-        html+='<div class="text-sm whitespace-pre-wrap mb-1.5">'+q.text+'</div>';
-        html+='<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" class="text-xs text-emerald-700 font-semibold">🔑 જવાબ જુઓ</button>';
-        html+='<div class="answer-box hidden">'+(q.answer||"—")+'</div>';
-        html+='<div class="edit-only flex gap-2 mt-2">';
-        html+='<button onclick="editQ(\''+key+'\','+ci+','+qi+')" class="btn bg-amber-400 text-white text-xs">✏️ Edit</button>';
-        html+='<button onclick="delQ(\''+key+'\','+ci+','+qi+')" class="btn bg-red-500 text-white text-xs">🗑️</button>';
-        html+='</div></div>';
-      });
-      // Always show add button at bottom of chapter
-      html+='<div class="pt-2">';
-      html+='<button onclick="openAddToChapter(\''+key+'\','+ci+')" class="edit-only btn bg-indigo-600 text-white w-full py-2.5">➕ આ પ્રકરણમાં પ્રશ્ન ઉમેરો</button>';
-      html+='</div>';
-    }
-
-    html+='<div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200">';
-    html+='<h4 class="font-bold text-amber-800 text-sm mb-1">📌 Notes</h4>';
-    html+='<div id="nv-'+key+'-'+ci+'" class="text-sm">'+(notes||"નોંધ નથી")+'</div>';
-    html+='<textarea id="ne-'+key+'-'+ci+'" class="edit-only hidden w-full border rounded-lg p-2 text-sm mt-1" rows="2">'+notes+'</textarea>';
-    html+='<button onclick="editNotes(\''+key+'\','+ci+')" class="edit-only btn bg-amber-500 text-white text-xs mt-1.5">✏️ Notes</button>';
-    html+='<button id="ns-'+key+'-'+ci+'" onclick="saveNotesUI(\''+key+'\','+ci+')" class="edit-only btn bg-green-600 text-white text-xs mt-1.5 hidden">💾 સાચવો</button>';
+    html+='<div class="card chap-card mb-3 p-4 flex items-center gap-3" onclick="openChapterNewTab(\''+key+'\','+ci+')">';
+    html+='<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center font-bold text-sm flex-shrink-0">'+(ci+1)+'</div>';
+    html+='<div class="flex-1 min-w-0">';
+    html+='<div class="font-semibold text-indigo-900 text-sm sm:text-base truncate">'+ch.name+'</div>';
+    html+='<div class="text-xs text-slate-500 mt-0.5">'+qCount+' પ્રશ્નો • 25 Marks Test</div>';
     html+='</div>';
-
-    html+='<div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center">';
-    html+='<h4 class="font-bold mb-1">📝 25 Marks Test</h4>';
-    html+='<p class="text-indigo-100 text-xs mb-2.5">25 પ્રશ્ન × 1 ગુણ • Confetti</p>';
-    html+='<button onclick="startTest(\''+key+'\','+ci+')" class="btn bg-white text-indigo-700 font-bold px-6 py-2.5">Test શરૂ કરો →</button>';
-    html+='</div></div></div>';
+    html+='<div class="flex items-center gap-2 flex-shrink-0">';
+    html+='<button onclick="event.stopPropagation();openChapEdit(\''+key+'\','+ci+')" class="edit-only btn bg-amber-400 text-white text-xs">✏️</button>';
+    html+='<button onclick="event.stopPropagation();delChapter(\''+key+'\','+ci+')" class="edit-only btn bg-red-500 text-white text-xs">🗑️</button>';
+    html+='<span class="text-indigo-500 text-xl">↗</span>';
+    html+='</div></div>';
   });
 
   if((section.chapters||[]).length===0){
     html+='<div class="card p-8 text-center text-slate-500"><p class="text-4xl mb-3">📭</p><p>આ વિષયમાં હજુ કોઈ પ્રકરણ નથી.</p>';
     html+='<button onclick="addChapter()" class="edit-only btn bg-indigo-600 text-white mt-4">➕ પહેલું પ્રકરણ ઉમેરો</button></div>';
   }
-  document.getElementById("dynamicArea").innerHTML=html;
+  var area=document.getElementById("dynamicArea");
+  if(area)area.innerHTML=html;
 }
 
 function renderKey(){
@@ -679,15 +752,10 @@ function renderKey(){
       html+='</ol></div>';
     });
   });
-  document.getElementById("dynamicArea").innerHTML=html;
+  var area=document.getElementById("dynamicArea");
+  if(area)area.innerHTML=html;
 }
 
-function toggleChap(el){
-  var body=el.nextElementSibling;
-  body.classList.toggle("hidden");
-  var arrow=el.querySelector(".arrow");
-  if(arrow)arrow.textContent=body.classList.contains("hidden")?"▼":"▲";
-}
 function editNotes(k,ci){
   document.getElementById("nv-"+k+"-"+ci).classList.add("hidden");
   document.getElementById("ne-"+k+"-"+ci).classList.remove("hidden");
@@ -717,9 +785,13 @@ document.querySelectorAll(".std-tab").forEach(function(t){
   };
 });
 
+window.addEventListener("hashchange", checkHash);
+
 loadAll();
-renderSubTabs();
-render();
+if(!checkHash()){
+  renderSubTabs();
+  render();
+}
 </script>
 </body>
 </html>
