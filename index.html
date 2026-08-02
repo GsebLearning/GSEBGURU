@@ -1,510 +1,432 @@
 <!DOCTYPE html>
 <html lang="gu">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GSEB TOPPER | ધોરણ 6-7-8</title>
-  <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
-  <script>
-    window.__unocss = {
-      shortcuts: {
-        'btn': 'px-4 py-2 rounded-xl font-medium transition-all duration-200 active:scale-95 cursor-pointer',
-        'card': 'bg-white rounded-2xl shadow-lg border border-slate-200'
-      }
-    }
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&display=swap');
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Noto Sans Gujarati', system-ui, sans-serif;
-      background: linear-gradient(160deg, #eef2ff 0%, #fdf2f8 35%, #ecfeff 70%, #f0fdf4 100%);
-      min-height: 100vh; margin: 0; color: #1e293b;
-    }
-    .hidden { display: none !important; }
-    .locked .edit-only { display: none !important; }
-    .answer-box {
-      background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-      border-left: 4px solid #10b981; padding: 10px 12px;
-      border-radius: 8px; margin-top: 8px; font-size: 13px; color: #065f46;
-    }
-    .test-option {
-      border: 1px solid #cbd5e1; border-radius: 10px; padding: 11px 14px;
-      margin-bottom: 8px; cursor: pointer; transition: 0.15s; background: #fff;
-    }
-    .test-option:hover { background: #e0e7ff; }
-    .test-option.selected { background: #c7d2fe; border-color: #4f46e5; }
-    .chapter-head:hover { filter: brightness(1.04); }
-    textarea { resize: vertical; min-height: 55px; }
-    .subtab-pill {
-      padding: 9px 18px; border-radius: 999px; font-weight: 600; font-size: 13px;
-      border: none; cursor: pointer; transition: all 0.2s; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .std-tab {
-      flex: 1; padding: 13px 8px; text-align: center; font-weight: 700;
-      border: none; cursor: pointer; transition: all 0.25s; font-size: 14px;
-      position: relative; overflow: hidden;
-    }
-    .std-tab::after {
-      content: ''; position: absolute; bottom: 0; left: 50%; width: 0; height: 3px;
-      background: white; transition: all 0.3s; transform: translateX(-50%); border-radius: 3px 3px 0 0;
-    }
-    .std-tab.active::after { width: 60%; }
-  </style>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GSEB TOPPER | ધોરણ 6-7-8</title>
+<script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
+<script>window.__unocss={shortcuts:{'btn':'px-3 py-1.5 rounded-lg font-medium transition active:scale-95 cursor-pointer text-sm','card':'bg-white rounded-2xl shadow-md border border-slate-200'}}</script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Noto Sans Gujarati',system-ui,sans-serif;background:linear-gradient(160deg,#eef2ff 0%,#fdf2f8 40%,#ecfeff 100%);min-height:100vh;color:#1e293b}
+.hidden{display:none!important}
+.locked .edit-only{display:none!important}
+.answer-box{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-left:4px solid #10b981;padding:10px 12px;border-radius:8px;margin-top:8px;font-size:13px;color:#065f46}
+.test-option{border:1px solid #cbd5e1;border-radius:10px;padding:11px 14px;margin-bottom:8px;cursor:pointer;background:#fff;transition:.15s}
+.test-option:hover{background:#e0e7ff}
+.test-option.selected{background:#c7d2fe;border-color:#4f46e5}
+.badge{display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;margin-bottom:6px}
+.std-tab{flex:1;padding:14px 8px;text-align:center;font-weight:700;border:none;cursor:pointer;font-size:14px;transition:.25s}
+.sub-pill{padding:9px 16px;border-radius:999px;font-weight:600;font-size:13px;border:none;cursor:pointer;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+</style>
 </head>
 <body class="locked" id="appBody">
 
-  <!-- HEADER -->
-  <header id="mainHeader" class="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500 text-white shadow-xl sticky top-0 z-50 select-none">
-    <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-      <div class="text-center sm:text-left">
-        <h1 id="siteTitle" class="text-2xl sm:text-3xl font-bold tracking-tight">GSEB TOPPER</h1>
-        <p id="siteSubtitle" class="text-indigo-100 text-sm mt-0.5">ધોરણ 6 • 7 • 8 | બધા વિષયો | 25 Marks Test</p>
-      </div>
-      <div class="flex gap-2 items-center text-xs flex-wrap justify-center">
-        <span id="statusBadge" class="bg-white/25 px-3 py-1.5 rounded-full backdrop-blur">🔒 View Only</span>
-        <button id="editNameBtn" class="edit-only btn bg-white/20 hover:bg-white/30 text-white text-xs py-1.5 px-3 hidden" onclick="openNameModal()">✏️ નામ</button>
-        <button id="addSubBtn" class="edit-only btn bg-white/20 hover:bg-white/30 text-white text-xs py-1.5 px-3 hidden" onclick="openAddSubject()">➕ વિષય</button>
-      </div>
+<header id="mainHeader" class="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500 text-white shadow-xl sticky top-0 z-50 select-none">
+  <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+    <div class="text-center sm:text-left">
+      <h1 id="siteTitle" class="text-2xl sm:text-3xl font-bold">GSEB TOPPER</h1>
+      <p id="siteSubtitle" class="text-indigo-100 text-sm mt-0.5">ધોરણ 6 • 7 • 8 | બધા વિષયો | 25 Marks Test</p>
     </div>
-  </header>
-
-  <!-- COLORFUL STD TABS -->
-  <div class="sticky top-[72px] z-40 shadow-lg">
-    <div class="max-w-5xl mx-auto flex" id="stdTabs">
-      <button class="std-tab active text-white" data-std="6" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">ધોરણ 6</button>
-      <button class="std-tab text-indigo-200" data-std="7" style="background:linear-gradient(135deg,#312e81,#4c1d95)">ધોરણ 7</button>
-      <button class="std-tab text-indigo-200" data-std="8" style="background:linear-gradient(135deg,#312e81,#4c1d95)">ધોરણ 8</button>
+    <div class="flex gap-2 items-center flex-wrap justify-center">
+      <span id="statusBadge" class="bg-white/25 px-3 py-1.5 rounded-full text-xs">🔒 View Only</span>
+      <button id="btnName" class="edit-only btn bg-white/20 text-white hidden" onclick="openNameModal()">✏️ નામ</button>
+      <button id="btnSub" class="edit-only btn bg-white/20 text-white hidden" onclick="openAddSubject()">➕ વિષય</button>
     </div>
   </div>
+</header>
 
-  <!-- COLORFUL SUBJECT TABS -->
-  <div class="bg-white/95 backdrop-blur border-b border-indigo-100 sticky top-[124px] z-30 shadow-sm">
-    <div class="max-w-5xl mx-auto px-3 py-2.5 flex gap-2 justify-center flex-wrap" id="subTabs">
-      <!-- filled by JS -->
+<div class="sticky top-[72px] z-40 shadow-md">
+  <div class="max-w-5xl mx-auto flex" id="stdTabs">
+    <button class="std-tab text-white active" data-std="6" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">ધોરણ 6</button>
+    <button class="std-tab text-indigo-200" data-std="7" style="background:linear-gradient(135deg,#312e81,#4c1d95)">ધોરણ 7</button>
+    <button class="std-tab text-indigo-200" data-std="8" style="background:linear-gradient(135deg,#312e81,#4c1d95)">ધોરણ 8</button>
+  </div>
+</div>
+
+<div class="bg-white/95 backdrop-blur border-b border-indigo-100 sticky top-[124px] z-30 shadow-sm">
+  <div class="max-w-5xl mx-auto px-3 py-2.5 flex gap-2 justify-center flex-wrap" id="subTabs"></div>
+</div>
+
+<main class="max-w-5xl mx-auto px-3 sm:px-4 py-6">
+  <div class="card p-3.5 mb-5 flex gap-3 items-start bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
+    <span class="text-xl">✨</span>
+    <div id="infoBanner" class="text-sm leading-relaxed">
+      <b>સૂચના:</b> પ્રકરણનું નામ બદલી શકાય • નવો વિષય ઉમેરી શકાય • 25 Marks Test. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
     </div>
   </div>
+  <div id="dynamicArea"></div>
+</main>
 
-  <main class="max-w-5xl mx-auto px-3 sm:px-4 py-6">
-    <div class="card p-3.5 mb-5 flex gap-3 items-start bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
-      <span class="text-xl">✨</span>
-      <div id="infoBanner" class="text-sm leading-relaxed">
-        <b>સૂચના:</b> પ્રકરણનું નામ એડિટ થાય • નવો વિષય ઉમેરી શકાય • 25 Marks Test. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
-      </div>
-    </div>
-    <div id="dynamicArea"></div>
-  </main>
+<footer class="bg-slate-900 text-slate-400 text-center py-7 mt-12">
+  <p id="footerTitle" class="text-lg font-bold text-white">GSEB TOPPER</p>
+  <p id="footerSub" class="text-xs mt-1">શિક્ષણ માટે સંપૂર્ણ વેબસાઇટ • 2026</p>
+</footer>
 
-  <footer class="bg-slate-900 text-slate-400 text-center py-7 mt-12">
-    <p id="footerTitle" class="text-lg font-bold text-white">GSEB TOPPER</p>
-    <p id="footerSub" class="text-xs mt-1">પ્રકરણ એડિટ + નવો વિષય + 25 Marks Test • 2026</p>
-  </footer>
-
-  <!-- PASSWORD MODAL -->
-  <div id="passModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-sm p-5 space-y-3 shadow-2xl">
-      <h3 class="text-lg font-bold text-indigo-700 text-center">🔐 Edit Mode Unlock</h3>
-      <input type="password" id="passInput" class="w-full px-4 py-3 border border-slate-300 rounded-xl text-center text-lg tracking-widest outline-none focus:ring-2 focus:ring-indigo-400" placeholder="••••••••" />
-      <p id="passError" class="text-red-500 text-sm text-center hidden">ખોટો પાસવર્ડ!</p>
-      <div class="flex gap-3">
-        <button onclick="closePassModal()" class="btn flex-1 bg-slate-200">રદ</button>
-        <button onclick="checkPassword()" class="btn flex-1 bg-indigo-600 text-white">Unlock</button>
-      </div>
+<!-- PASSWORD -->
+<div id="passModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
+  <div class="card w-full max-w-sm p-5 space-y-3">
+    <h3 class="text-lg font-bold text-indigo-700 text-center">🔐 Edit Mode</h3>
+    <input type="password" id="passInput" class="w-full px-4 py-3 border rounded-xl text-center text-lg tracking-widest" placeholder="પાસવર્ડ"/>
+    <p id="passError" class="text-red-500 text-sm text-center hidden">ખોટો પાસવર્ડ!</p>
+    <div class="flex gap-3">
+      <button onclick="closeModal('passModal')" class="btn flex-1 bg-slate-200">રદ</button>
+      <button onclick="checkPassword()" class="btn flex-1 bg-indigo-600 text-white">Unlock</button>
     </div>
   </div>
+</div>
 
-  <!-- NAME MODAL -->
-  <div id="nameModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-md p-5 space-y-3 shadow-2xl">
-      <h3 class="text-lg font-bold text-indigo-700">✏️ વેબસાઇટ નામ બદલો</h3>
-      <input id="editTitle" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ટાઇટલ" />
-      <input id="editSubtitle" class="w-full px-3 py-2.5 border rounded-xl" placeholder="સબટાઇટલ" />
-      <input id="editFooter" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ફુટર" />
-      <input id="editFooterSub" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ફુટર સબ" />
-      <div class="flex gap-3 justify-end">
-        <button onclick="closeNameModal()" class="btn bg-slate-200">રદ</button>
-        <button onclick="saveNames()" class="btn bg-indigo-600 text-white">સાચવો</button>
-      </div>
+<!-- NAME -->
+<div id="nameModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
+  <div class="card w-full max-w-md p-5 space-y-3">
+    <h3 class="text-lg font-bold text-indigo-700">✏️ વેબસાઇટ નામ</h3>
+    <input id="editTitle" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ટાઇટલ"/>
+    <input id="editSubtitle" class="w-full px-3 py-2.5 border rounded-xl" placeholder="સબટાઇટલ"/>
+    <input id="editFooter" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ફુટર"/>
+    <input id="editFooterSub" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ફુટર સબ"/>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('nameModal')" class="btn bg-slate-200">રદ</button>
+      <button onclick="saveNames()" class="btn bg-indigo-600 text-white">સાચવો</button>
     </div>
   </div>
+</div>
 
-  <!-- ADD SUBJECT MODAL -->
-  <div id="subjectModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-md p-5 space-y-3 shadow-2xl">
-      <h3 class="text-lg font-bold text-indigo-700">➕ નવો વિષય ઉમેરો</h3>
-      <p class="text-sm text-slate-500">ધોરણ <b id="subStdLabel">6</b> માટે નવો વિષય</p>
-      <input id="newSubName" class="w-full px-3 py-2.5 border rounded-xl" placeholder="વિષયનું નામ (જેમ કે: સામાજિક વિજ્ઞાન)" />
-      <input id="newSubEmoji" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ઇમોજી (જેમ કે: 🌍)" value="📚" />
-      <div class="flex gap-3 justify-end">
-        <button onclick="closeSubjectModal()" class="btn bg-slate-200">રદ</button>
-        <button onclick="addSubject()" class="btn bg-indigo-600 text-white">ઉમેરો</button>
-      </div>
+<!-- ADD SUBJECT -->
+<div id="subjectModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
+  <div class="card w-full max-w-md p-5 space-y-3">
+    <h3 class="text-lg font-bold text-indigo-700">➕ નવો વિષય</h3>
+    <p class="text-sm text-slate-500">ધોરણ <b id="subStdLabel">6</b> માટે</p>
+    <input id="newSubName" class="w-full px-3 py-2.5 border rounded-xl" placeholder="વિષયનું નામ"/>
+    <input id="newSubEmoji" class="w-full px-3 py-2.5 border rounded-xl" value="📚" placeholder="ઇમોજી"/>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('subjectModal')" class="btn bg-slate-200">રદ</button>
+      <button onclick="addSubject()" class="btn bg-indigo-600 text-white">ઉમેરો</button>
     </div>
   </div>
+</div>
 
-  <!-- ADD / EDIT QUESTION + CHAPTER NAME -->
-  <div id="addModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-lg p-5 space-y-3 shadow-2xl max-h-[90vh] overflow-y-auto">
-      <h3 id="modalTitle" class="text-lg font-bold text-indigo-700">➕ નવો પ્રશ્ન</h3>
-      <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રકરણનું નામ" />
-      <select id="newType" class="w-full px-3 py-2.5 border rounded-xl">
-        <option>MCQ</option><option>ખાલી જગ્યા</option><option>ટૂંકા જવાબ</option>
-        <option>તફાવત</option><option>વૈજ્ઞાનિક કારણ</option><option>HOTS</option>
-        <option>પ્રવૃત્તિ</option><option>મને ઓળખો</option><option>સાચું-ખોટું</option>
-      </select>
-      <textarea id="newText" rows="3" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રશ્ન"></textarea>
-      <textarea id="newAnswer" rows="2" class="w-full px-3 py-2.5 border border-green-300 rounded-xl" placeholder="જવાબ"></textarea>
-      <div class="flex gap-3 justify-end">
-        <button onclick="closeAddModal()" class="btn bg-slate-200">રદ</button>
-        <button onclick="saveQuestion()" class="btn bg-indigo-600 text-white">સાચવો</button>
-      </div>
+<!-- CHAPTER NAME -->
+<div id="chapModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
+  <div class="card w-full max-w-md p-5 space-y-3">
+    <h3 class="text-lg font-bold text-indigo-700">✏️ પ્રકરણનું નામ</h3>
+    <input id="editChapName" class="w-full px-3 py-2.5 border rounded-xl" placeholder="નવું નામ"/>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('chapModal')" class="btn bg-slate-200">રદ</button>
+      <button onclick="saveChapName()" class="btn bg-indigo-600 text-white">સાચવો</button>
     </div>
   </div>
+</div>
 
-  <!-- EDIT CHAPTER NAME MODAL -->
-  <div id="chapModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-md p-5 space-y-3 shadow-2xl">
-      <h3 class="text-lg font-bold text-indigo-700">✏️ પ્રકરણનું નામ બદલો</h3>
-      <input id="editChapName" class="w-full px-3 py-2.5 border rounded-xl" placeholder="નવું નામ" />
-      <div class="flex gap-3 justify-end">
-        <button onclick="closeChapModal()" class="btn bg-slate-200">રદ</button>
-        <button onclick="saveChapName()" class="btn bg-indigo-600 text-white">સાચવો</button>
-      </div>
+<!-- ADD/EDIT QUESTION -->
+<div id="addModal" class="fixed inset-0 bg-black/60 z-[100] hidden flex items-center justify-center p-4">
+  <div class="card w-full max-w-lg p-5 space-y-3 max-h-[90vh] overflow-y-auto">
+    <h3 id="modalTitle" class="text-lg font-bold text-indigo-700">➕ નવો પ્રશ્ન</h3>
+    <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રકરણનું નામ"/>
+    <select id="newType" class="w-full px-3 py-2.5 border rounded-xl">
+      <option>MCQ</option><option>ખાલી જગ્યા</option><option>ટૂંકા જવાબ</option>
+      <option>તફાવત</option><option>વૈજ્ઞાનિક કારણ</option><option>HOTS</option>
+      <option>પ્રવૃત્તિ</option><option>મને ઓળખો</option><option>સાચું-ખોટું</option>
+    </select>
+    <textarea id="newText" rows="3" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રશ્ન"></textarea>
+    <textarea id="newAnswer" rows="2" class="w-full px-3 py-2.5 border border-green-300 rounded-xl" placeholder="જવાબ"></textarea>
+    <div class="flex gap-3 justify-end">
+      <button onclick="closeModal('addModal')" class="btn bg-slate-200">રદ</button>
+      <button onclick="saveQuestion()" class="btn bg-indigo-600 text-white">સાચવો</button>
     </div>
   </div>
+</div>
 
-  <!-- 25 MARKS TEST -->
-  <div id="testModal" class="fixed inset-0 bg-black/60 z-[100] hidden overflow-y-auto">
-    <div class="min-h-screen flex items-start justify-center p-3 py-6">
-      <div class="card w-full max-w-2xl p-4 sm:p-6 shadow-2xl">
-        <div class="flex justify-between items-center mb-3">
-          <h2 id="testTitle" class="text-lg font-bold text-indigo-700">📝 25 Marks Test</h2>
-          <button onclick="closeTest()" class="text-2xl text-slate-500 hover:text-red-500 leading-none">×</button>
-        </div>
-        <div id="testProgress" class="text-xs text-slate-500 mb-3"></div>
-        <div id="testBody"></div>
-        <div id="testResult" class="hidden text-center py-8"></div>
-        <div id="testActions" class="flex gap-3 mt-5 justify-end">
-          <button onclick="closeTest()" class="btn bg-slate-200">બંધ</button>
-          <button id="submitBtn" onclick="submitTest()" class="btn bg-green-600 text-white">સબમિટ (25 Marks)</button>
-        </div>
+<!-- TEST -->
+<div id="testModal" class="fixed inset-0 bg-black/60 z-[100] hidden overflow-y-auto">
+  <div class="min-h-screen flex items-start justify-center p-3 py-6">
+    <div class="card w-full max-w-2xl p-4 sm:p-6">
+      <div class="flex justify-between items-center mb-3">
+        <h2 id="testTitle" class="text-lg font-bold text-indigo-700">📝 25 Marks Test</h2>
+        <button onclick="closeTest()" class="text-2xl text-slate-500">×</button>
+      </div>
+      <div id="testProgress" class="text-xs text-slate-500 mb-3"></div>
+      <div id="testBody"></div>
+      <div id="testResult" class="hidden text-center py-8"></div>
+      <div id="testActions" class="flex gap-3 mt-5 justify-end">
+        <button onclick="closeTest()" class="btn bg-slate-200">બંધ</button>
+        <button id="submitBtn" onclick="submitTest()" class="btn bg-green-600 text-white">સબમિટ (25 Marks)</button>
       </div>
     </div>
   </div>
+</div>
 
 <script>
-const PASSWORD = "imvnod@210124";
-const CLICKS = 5;
-const STORE = "gseb_full_v5";
-const UNLOCK = "gseb_unlock_v5";
-const NOTESK = "gseb_notes_v5";
-const SUBS_KEY = "gseb_subjects_v5";
+const PASSWORD="imvnod@210124";
+const CLICKS=5;
+const STORE="gseb_v6";
+const UNLOCK="gseb_un_v6";
+const NOTESK="gseb_nt_v6";
+const SUBS_KEY="gseb_sub_v6";
 
-/* Default subjects per standard */
-let subjects = {
-  "6": [
-    { id: "sci", name: "વિજ્ઞાન", emoji: "🔬", color: "from-emerald-400 to-teal-500" },
-    { id: "math", name: "ગણિત", emoji: "📐", color: "from-blue-400 to-cyan-500" }
-  ],
-  "7": [
-    { id: "sci", name: "વિજ્ઞાન", emoji: "🔬", color: "from-violet-400 to-purple-500" },
-    { id: "math", name: "ગણિત", emoji: "📐", color: "from-rose-400 to-pink-500" }
-  ],
-  "8": [
-    { id: "sci", name: "વિજ્ઞાન", emoji: "🔬", color: "from-orange-400 to-red-500" },
-    { id: "math", name: "ગણિત", emoji: "📐", color: "from-fuchsia-400 to-purple-500" }
-  ]
+let subjects={
+  "6":[{id:"sci",name:"વિજ્ઞાન",emoji:"🔬",color:"from-emerald-400 to-teal-500"},{id:"math",name:"ગણિત",emoji:"📐",color:"from-blue-400 to-cyan-500"}],
+  "7":[{id:"sci",name:"વિજ્ઞાન",emoji:"🔬",color:"from-violet-400 to-purple-500"},{id:"math",name:"ગણિત",emoji:"📐",color:"from-rose-400 to-pink-500"}],
+  "8":[{id:"sci",name:"વિજ્ઞાન",emoji:"🔬",color:"from-orange-400 to-red-500"},{id:"math",name:"ગણિત",emoji:"📐",color:"from-fuchsia-400 to-purple-500"}]
 };
 
-const data = {
+const data={
 "6-sci":{title:"ધોરણ 6 વિજ્ઞાન",color:"from-emerald-500 to-teal-600",chapters:[
 {name:"1. વિજ્ઞાનની અદ્ભુત દુનિયા",notes:"વિજ્ઞાન = અવલોકન + પ્રયોગ + તારણ",questions:[
-{type:"ટૂંકા જવાબ",text:"પાણી ક્યારે ઉકળવા લાગે છે?",answer:"100°C"},
+{type:"ટૂંકા જવાબ",text:"પાણી ક્યારે ઉકળવા લાગે છે?",answer:"100°C તાપમાને"},
 {type:"MCQ",text:"સૂર્ય આપે છે?\n(A) પ્રકાશ (B) ગરમી (C) બંને (D) કંઈ નહીં",answer:"(C) બંને"},
-{type:"HOTS",text:"બીજમાંથી છોડ કેવી રીતે ઉગાડશો?",answer:"પલાળી, વાવી, પાણી+સૂર્યપ્રકાશ"}
+{type:"HOTS",text:"બીજમાંથી છોડ કેવી રીતે ઉગાડશો?",answer:"પલાળી, વાવી, પાણી અને સૂર્યપ્રકાશ આપી"}
 ]},
-{name:"2. સજીવ સૃષ્ટિમાં વિવિધતા",notes:"સજીવોમાં વિવિધતા",questions:[
+{name:"2. સજીવ સૃષ્ટિમાં વિવિધતા",notes:"સજીવોમાં વિવિધતા જોવા મળે છે",questions:[
 {type:"MCQ",text:"સજીવ કયું?\n(A) પથ્થર (B) છોડ (C) પાણી",answer:"(B) છોડ"},
-{type:"ખાલી જગ્યા",text:"વનસ્પતિના મુખ્ય ભાગો ____, ____, ____",answer:"મૂળ, થડ, પાંદડા"}
+{type:"ખાલી જગ્યા",text:"વનસ્પતિના મુખ્ય ભાગો ____, ____ અને ____",answer:"મૂળ, થડ, પાંદડા"}
 ]},
-{name:"3. ઉચિત આહાર",notes:"સંતુલિત આહાર",questions:[
-{type:"MCQ",text:"ઊર્જા આપનાર તત્ત્વ?",answer:"કાર્બોહાઇડ્રેટ"},
-{type:"ખાલી જગ્યા",text:"વિટામિન C ની ઉણપથી ____",answer:"સ્કર્વી"}
+{name:"3. ઉચિત આહાર",notes:"સંતુલિત આહાર જરૂરી છે",questions:[
+{type:"MCQ",text:"ઊર્જા આપનાર મુખ્ય તત્ત્વ?",answer:"કાર્બોહાઇડ્રેટ"},
+{type:"ખાલી જગ્યા",text:"વિટામિન C ની ઉણપથી ____ રોગ થાય છે",answer:"સ્કર્વી"}
 ]},
-{name:"4. ચુંબકને જાણીએ",notes:"ઉત્તર-દક્ષિણ ધ્રુવ",questions:[
-{type:"MCQ",text:"ચુંબકના ધ્રુવો?",answer:"ઉત્તર અને દક્ષિણ"},
-{type:"ખાલી જગ્યા",text:"સમાન ધ્રુવો ____",answer:"ધકેલે"}
+{name:"4. ચુંબકને જાણીએ",notes:"ઉત્તર અને દક્ષિણ ધ્રુવ",questions:[
+{type:"MCQ",text:"ચુંબકના ધ્રુવો કયા?",answer:"ઉત્તર અને દક્ષિણ"},
+{type:"ખાલી જગ્યા",text:"સમાન ધ્રુવો એકબીજાને ____",answer:"ધકેલે"}
 ]},
-{name:"5. લંબાઈનું માપન અને ગતિ",notes:"SI: મીટર",questions:[
+{name:"5. લંબાઈનું માપન અને ગતિ",notes:"SI એકમ: મીટર",questions:[
 {type:"MCQ",text:"લંબાઈનો SI એકમ?",answer:"મીટર (m)"},
-{type:"HOTS",text:"120 કિમી 2 કલાકમાં ઝડપ?",answer:"60 કિમી/કલાક"}
+{type:"HOTS",text:"120 કિમી 2 કલાકમાં → ઝડપ?",answer:"60 કિમી/કલાક"}
 ]},
-{name:"6. આપણી આસપાસની સામગ્રી",notes:"ઘન, પ્રવાહી, વાયુ",questions:[{type:"MCQ",text:"પારદર્શક પદાર્થ?",answer:"કાચ / પાણી"}]},
-{name:"7. તાપમાન અને તેનું માપન",notes:"થર્મોમીટર, 37°C",questions:[
+{name:"6. આપણી આસપાસની સામગ્રી",notes:"ઘન, પ્રવાહી, વાયુ",questions:[{type:"MCQ",text:"પારદર્શક પદાર્થ કયો?",answer:"કાચ / પાણી"}]},
+{name:"7. તાપમાન અને તેનું માપન",notes:"થર્મોમીટર, માનવ શરીર 37°C",questions:[
 {type:"MCQ",text:"તાપમાન માપવાનું સાધન?",answer:"થર્મોમીટર"},
-{type:"ખાલી જગ્યા",text:"માનવ શરીર ____ °C",answer:"37"}
+{type:"ખાલી જગ્યા",text:"માનવ શરીરનું તાપમાન ____ °C",answer:"37"}
 ]},
-{name:"8. પાણીની વિવિધ અવસ્થાઓ",notes:"ઘન-પ્રવાહી-વાયુ",questions:[{type:"MCQ",text:"પાણીની ત્રણ અવસ્થાઓ?",answer:"ઘન, પ્રવાહી, વાયુ"}]},
-{name:"9. અલગીકરણની પદ્ધતિઓ",notes:"ગાળણ, બાષ્પીભવન",questions:[{type:"MCQ",text:"મીઠું+રેતી અલગ કરવાની પદ્ધતિ?",answer:"ઓગાળી ગાળણ + બાષ્પીભવન"}]},
+{name:"8. પાણીની વિવિધ અવસ્થાઓ",notes:"ઘન, પ્રવાહી, વાયુ",questions:[{type:"MCQ",text:"પાણીની ત્રણ અવસ્થાઓ?",answer:"ઘન, પ્રવાહી, વાયુ"}]},
+{name:"9. અલગીકરણની પદ્ધતિઓ",notes:"ગાળણ, બાષ્પીભવન",questions:[{type:"MCQ",text:"મીઠું અને રેતી અલગ કરવાની પદ્ધતિ?",answer:"ઓગાળીને ગાળણ અને બાષ્પીભવન"}]},
 {name:"10. સજીવોની લાક્ષણિકતાઓ",notes:"વૃદ્ધિ, પ્રજનન, શ્વસન",questions:[{type:"ટૂંકા જવાબ",text:"સજીવોની મુખ્ય લાક્ષણિકતાઓ?",answer:"વૃદ્ધિ, પ્રજનન, શ્વસન, ચયાપચય"}]},
-{name:"11. કુદરતનો અમૂલ્ય ખજાનો",notes:"પુનઃપ્રાપ્ય / અપ્રાપ્ય",questions:[{type:"ટૂંકા જવાબ",text:"કુદરતી સંસાધનો?",answer:"પાણી, હવા, જંગલ, કોલસો"}]},
+{name:"11. કુદરતનો અમૂલ્ય ખજાનો",notes:"પુનઃપ્રાપ્ય અને પુનઃઅપ્રાપ્ય",questions:[{type:"ટૂંકા જવાબ",text:"કુદરતી સંસાધનોના ઉદાહરણ?",answer:"પાણી, હવા, જંગલ, કોલસો"}]},
 {name:"12. પૃથ્વીને પાર",notes:"પોપડો, પ્રવર, કેન્દ્ર",questions:[{type:"ટૂંકા જવાબ",text:"પૃથ્વીના મુખ્ય સ્તરો?",answer:"પોપડો, પ્રવર, કેન્દ્ર"}]}
 ]},
 "6-math":{title:"ધોરણ 6 ગણિત",color:"from-blue-500 to-cyan-600",chapters:[
-{name:"1. પેટર્ન્સ",notes:"પેટર્ન = પુનરાવર્તિત ક્રમ",questions:[{type:"HOTS",text:"પેટર્ન બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"2. સંખ્યાઓ સાથે રમત",notes:"સૌથી નાની 3 અંકની = 100",questions:[{type:"ટૂંકા જવાબ",text:"સૌથી નાની 3 અંકની સંખ્યા?",answer:"100"}]},
-{name:"3. મૂળભૂત ક્રિયાઓ",notes:"સરવાળો-બાદબાકી",questions:[{type:"MCQ",text:"456+789=?",answer:"1245"}]},
-{name:"4. પૂર્ણાંકો",notes:"ધન-ઋણ",questions:[{type:"MCQ",text:"−5 અને 3 માં મોટું?",answer:"3"}]},
-{name:"5. અપૂર્ણાંકો",notes:"1/2+1/3=5/6",questions:[{type:"MCQ",text:"1/2+1/3=?",answer:"5/6"}]},
-{name:"6. દશાંશ",notes:"0.5=1/2",questions:[{type:"MCQ",text:"0.5 ને અપૂર્ણાંકમાં?",answer:"1/2"}]},
-{name:"7. બીજગણિત",notes:"x+5=12 → x=7",questions:[{type:"MCQ",text:"x+5=12 → x=?",answer:"7"}]},
-{name:"8. ગુણોત્તર",notes:"સમપ્રમાણ",questions:[{type:"MCQ",text:"2:3 અને 4:6 સમપ્રમાણ?",answer:"હા"}]},
-{name:"9. માહિતી નિરૂપણ",notes:"બાર ગ્રાફ",questions:[{type:"પ્રવૃત્તિ",text:"આલેખ બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"10. માપન",notes:"1m=100cm",questions:[{type:"MCQ",text:"1 મીટર = ? સે.મી.",answer:"100"}]},
-{name:"11. પરિમિતિ ક્ષેત્રફળ",notes:"ચોરસ = બાજુ²",questions:[{type:"HOTS",text:"5 સે.મી. ચોરસ ક્ષેત્રફળ?",answer:"25 સે.મી.²"}]},
-{name:"12. વ્યવહારિક ભૂમિતિ",notes:"કોણ માપો",questions:[{type:"પ્રવૃત્તિ",text:"કોણ માપો",answer:"વિદ્યાર્થી"}]}
+{name:"1. પેટર્ન્સ",notes:"પેટર્ન = પુનરાવર્તિત ક્રમ",questions:[{type:"HOTS",text:"પેટર્ન બનાવો અને નિયમ લખો",answer:"વિદ્યાર્થી પોતે"}]},
+{name:"2. સંખ્યાઓ સાથે રમત",notes:"સૌથી નાની 3 અંકની સંખ્યા = 100",questions:[{type:"ટૂંકા જવાબ",text:"સૌથી નાની 3 અંકની સંખ્યા?",answer:"100"}]},
+{name:"3. મૂળભૂત ક્રિયાઓ",notes:"સરવાળો, બાદબાકી, ગુણાકાર, ભાગાકાર",questions:[{type:"MCQ",text:"456 + 789 = ?",answer:"1245"}]},
+{name:"4. પૂર્ણાંકો",notes:"ધન, ઋણ, શૂન્ય",questions:[{type:"MCQ",text:"−5 અને 3 માંથી મોટું?",answer:"3"}]},
+{name:"5. અપૂર્ણાંકો",notes:"1/2 + 1/3 = 5/6",questions:[{type:"MCQ",text:"1/2 + 1/3 = ?",answer:"5/6"}]},
+{name:"6. દશાંશ",notes:"0.5 = 1/2",questions:[{type:"MCQ",text:"0.5 ને અપૂર્ણાંકમાં?",answer:"1/2"}]},
+{name:"7. બીજગણિત",notes:"x + 5 = 12 → x = 7",questions:[{type:"MCQ",text:"x + 5 = 12 તો x = ?",answer:"7"}]},
+{name:"8. ગુણોત્તર",notes:"સમપ્રમાણ",questions:[{type:"MCQ",text:"2:3 અને 4:6 સમપ્રમાણ છે?",answer:"હા"}]},
+{name:"9. માહિતી નિરૂપણ",notes:"બાર ગ્રાફ",questions:[{type:"પ્રવૃત્તિ",text:"આલેખ બનાવો",answer:"વિદ્યાર્થી પોતે"}]},
+{name:"10. માપન",notes:"1 m = 100 cm",questions:[{type:"MCQ",text:"1 મીટર = કેટલા સે.મી.?",answer:"100"}]},
+{name:"11. પરિમિતિ અને ક્ષેત્રફળ",notes:"ચોરસ = બાજુ × બાજુ",questions:[{type:"HOTS",text:"5 સે.મી. બાજુના ચોરસનું ક્ષેત્રફળ?",answer:"25 સે.મી.²"}]},
+{name:"12. વ્યવહારિક ભૂમિતિ",notes:"કોણમાપકથી કોણ માપો",questions:[{type:"પ્રવૃત્તિ",text:"કોણ માપો",answer:"વિદ્યાર્થી પોતે"}]}
 ]},
 "7-sci":{title:"ધોરણ 7 વિજ્ઞાન",color:"from-violet-500 to-purple-700",chapters:[
 {name:"1. વનસ્પતિમાં પોષણ",notes:"પ્રકાશસંશ્લેષણ, રાઇઝોબિયમ",questions:[
 {type:"MCQ",text:"ઊર્જાનો મુખ્ય સ્ત્રોત?\n(A) સૂર્ય (B) ચંદ્ર (C) પવન",answer:"(A) સૂર્ય"},
-{type:"ખાલી જગ્યા",text:"નાઇટ્રોજન સ્થાપન ____ બેક્ટેરિયા",answer:"રાઇઝોબિયમ"},
-{type:"HOTS",text:"પ્રકાશસંશ્લેષણ સમીકરણ",answer:"6CO₂+6H₂O→C₆H₁₂O₆+6O₂"}
+{type:"ખાલી જગ્યા",text:"નાઇટ્રોજન સ્થાપનમાં ____ બેક્ટેરિયા",answer:"રાઇઝોબિયમ"},
+{type:"HOTS",text:"પ્રકાશસંશ્લેષણનું સમીકરણ લખો",answer:"6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂"}
 ]},
-{name:"2. પ્રાણીઓમાં પોષણ",notes:"પાચનતંત્ર",questions:[{type:"MCQ",text:"શોષણ સપાટી વધારો ક્યાં?",answer:"નાના આંતરડામાં"}]},
-{name:"3. ઉષ્મા",notes:"વહન, સંવહન, વિકિરણ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ઉનાળામાં હલકા રંગના કપડાં?",answer:"ઓછી ઉષ્મા શોષે"}]},
-{name:"4. એસિડ બેઈઝ ક્ષાર",notes:"તટસ્થીકરણ",questions:[{type:"MCQ",text:"લાલ લિટમસ વાદળી કોણ કરે?",answer:"બેઈઝ"}]},
-{name:"5. ભૌતિક રાસાયણિક ફેરફારો",notes:"નવો પદાર્થ",questions:[{type:"તફાવત",text:"ભૌતિક vs રાસાયણિક",answer:"નવો પદાર્થ ન બને vs બને"}]},
-{name:"6. શ્વસન",notes:"જારક / અજારક",questions:[{type:"તફાવત",text:"જારક vs અજારક",answer:"O₂ સાથે vs વગર"}]},
-{name:"7. વહન",notes:"હૃદય, ઝાયલેમ",questions:[{type:"MCQ",text:"રૂધિર ફેરવનાર?",answer:"હૃદય"}]},
-{name:"8. વનસ્પતિમાં પ્રજનન",notes:"પુષ્પ",questions:[{type:"MCQ",text:"મુખ્ય પ્રજનન અંગ?",answer:"પુષ્પ"}]},
-{name:"9. ગતિ અને સમય",notes:"ઝડપ=અંતર/સમય",questions:[{type:"HOTS",text:"100m 20s ઝડપ?",answer:"5 m/s = 18 km/h"}]},
-{name:"10. વિદ્યુતપ્રવાહ",notes:"તંતુ",questions:[{type:"ખાલી જગ્યા",text:"બલ્બનો પાતળો તાર ____",answer:"તંતુ"}]},
-{name:"11. પ્રકાશ",notes:"સમતલ અરીસો",questions:[{type:"MCQ",text:"સમતલ અરીસાના પ્રતિબિંબની લાક્ષણિકતા?",answer:"સમાન કદ, આભાસી"}]},
-{name:"12. જંગલો",notes:"ધોવાણ અટકાવે",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"જંગલો ધોવાણ અટકાવે?",answer:"મૂળ જમીન પકડે"}]},
-{name:"13. દૂષિત પાણી",notes:"તેલ ગટરમાં ન નાખો",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"તેલ ગટરમાં ન નાખો?",answer:"ગટર બંધ થાય"}]}
+{name:"2. પ્રાણીઓમાં પોષણ",notes:"પાચનતંત્ર",questions:[{type:"MCQ",text:"શોષણ સપાટી વધારો ક્યાં થાય?",answer:"નાના આંતરડામાં (વિલાઈ)"}]},
+{name:"3. ઉષ્મા",notes:"વહન, સંવહન, વિકિરણ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ઉનાળામાં હલકા રંગના કપડાં કેમ પહેરીએ?",answer:"ઓછી ઉષ્મા શોષે છે"}]},
+{name:"4. એસિડ, બેઈઝ અને ક્ષાર",notes:"તટસ્થીકરણ",questions:[{type:"MCQ",text:"લાલ લિટમસને વાદળી કોણ કરે?",answer:"બેઈઝ"}]},
+{name:"5. ભૌતિક અને રાસાયણિક ફેરફારો",notes:"નવો પદાર્થ બને/ન બને",questions:[{type:"તફાવત",text:"ભૌતિક vs રાસાયણિક ફેરફાર",answer:"નવો પદાર્થ ન બને vs બને"}]},
+{name:"6. સજીવોમાં શ્વસન",notes:"જારક અને અજારક",questions:[{type:"તફાવત",text:"જારક vs અજારક શ્વસન",answer:"O₂ સાથે વધુ ઊર્જા vs O₂ વગર ઓછી ઊર્જા"}]},
+{name:"7. વહન",notes:"હૃદય, ઝાયલેમ-ફ્લોએમ",questions:[{type:"MCQ",text:"રૂધિર ફેરવનાર અંગ?",answer:"હૃદય"}]},
+{name:"8. વનસ્પતિમાં પ્રજનન",notes:"પુષ્પ મુખ્ય અંગ",questions:[{type:"MCQ",text:"વનસ્પતિનું મુખ્ય પ્રજનન અંગ?",answer:"પુષ્પ"}]},
+{name:"9. ગતિ અને સમય",notes:"ઝડપ = અંતર / સમય",questions:[{type:"HOTS",text:"100 m 20 s માં → ઝડપ?",answer:"5 m/s = 18 km/h"}]},
+{name:"10. વિદ્યુતપ્રવાહ",notes:"તંતુ (ફિલામેન્ટ)",questions:[{type:"ખાલી જગ્યા",text:"બલ્બનો પાતળો તાર ____ કહેવાય",answer:"તંતુ / ફિલામેન્ટ"}]},
+{name:"11. પ્રકાશ",notes:"સમતલ અરીસો",questions:[{type:"MCQ",text:"સમતલ અરીસાના પ્રતિબિંબની લાક્ષણિકતા?",answer:"સમાન કદ, આભાસી, પાર્શ્વ પરિવર્તિત"}]},
+{name:"12. જંગલો",notes:"ધોવાણ અટકાવે",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"જંગલો ધોવાણ કેમ અટકાવે?",answer:"મૂળ જમીન પકડે, પાંદડા વરસાદ ધીમો કરે"}]},
+{name:"13. દૂષિત પાણી",notes:"તેલ ગટરમાં ન નાખો",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"તેલ ગટરમાં કેમ ન નાખવું?",answer:"ગટર બંધ થાય, શુદ્ધિકરણ મુશ્કેલ"}]}
 ]},
 "7-math":{title:"ધોરણ 7 ગણિત",color:"from-rose-500 to-pink-600",chapters:[
-{name:"1. પૂર્ણાંકો",notes:"",questions:[{type:"MCQ",text:"−7+5=?",answer:"−2"}]},
-{name:"2. અપૂર્ણાંક દશાંશ",notes:"",questions:[{type:"MCQ",text:"2/5 દશાંશ?",answer:"0.4"}]},
-{name:"3. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"ગ્રાફ બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"4. સરળ સમીકરણો",notes:"",questions:[{type:"HOTS",text:"3x+5=20",answer:"x=5"}]},
-{name:"5. રેખાઓ કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સમાંતર કોણો",answer:"અનુરૂપ=સમાન"}]},
-{name:"6. ત્રિકોણ",notes:"",questions:[{type:"MCQ",text:"ત્રિકોણ કોણ સરવાળો?",answer:"180°"}]},
-{name:"7. સર્વસમતા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સર્વસમતા નિયમો",answer:"SSS SAS ASA RHS"}]},
-{name:"8. તુલનાત્મક",notes:"",questions:[{type:"MCQ",text:"20% of 150",answer:"30"}]},
-{name:"9. પરિમેય ક્ષેત્રફળ",notes:"",questions:[{type:"HOTS",text:"12×8 ક્ષેત્રફળ",answer:"96"}]},
-{name:"10. બીજગણિતીય રાશિઓ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"બીજગણિતીય રાશિ?",answer:"સંખ્યા+ચલ"}]},
-{name:"11. ઘાત",notes:"",questions:[{type:"MCQ",text:"2³×2²",answer:"32"}]},
-{name:"12. સમમિતિ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"સમમિત આકાર",answer:"વિદ્યાર્થી"}]},
-{name:"13. વિઝ્યુઅલાઈઝેશન",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ડબલ બાર ગ્રાફ",answer:"બે ડેટા તુલના"}]}
+{name:"1. પૂર્ણાંકો",notes:"",questions:[{type:"MCQ",text:"−7 + 5 = ?",answer:"−2"}]},
+{name:"2. અપૂર્ણાંક અને દશાંશ",notes:"",questions:[{type:"MCQ",text:"2/5 ને દશાંશમાં?",answer:"0.4"}]},
+{name:"3. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"બાર ગ્રાફ બનાવો",answer:"વિદ્યાર્થી"}]},
+{name:"4. સરળ સમીકરણો",notes:"",questions:[{type:"HOTS",text:"3x + 5 = 20 ઉકેલો",answer:"x = 5"}]},
+{name:"5. રેખાઓ અને કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સમાંતર રેખાઓના કોણો",answer:"અનુરૂપ કોણ સમાન, વૈકલ્પિક કોણ સમાન"}]},
+{name:"6. ત્રિકોણ",notes:"",questions:[{type:"MCQ",text:"ત્રિકોણના કોણનો સરવાળો?",answer:"180°"}]},
+{name:"7. સર્વસમતા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સર્વસમતાના નિયમો",answer:"SSS, SAS, ASA, RHS"}]},
+{name:"8. તુલનાત્મક અંકગણિત",notes:"",questions:[{type:"MCQ",text:"20% of 150 = ?",answer:"30"}]},
+{name:"9. પરિમેય અને ક્ષેત્રફળ",notes:"",questions:[{type:"HOTS",text:"12 × 8 નું ક્ષેત્રફળ",answer:"96 સે.મી.²"}]},
+{name:"10. બીજગણિતીય રાશિઓ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"બીજગણિતીય રાશિ એટલે શું?",answer:"સંખ્યા અને ચલથી બનેલી રાશિ"}]},
+{name:"11. ઘાત",notes:"",questions:[{type:"MCQ",text:"2³ × 2² = ?",answer:"32"}]},
+{name:"12. સમમિતિ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"સમમિત આકાર દોરો",answer:"વિદ્યાર્થી"}]},
+{name:"13. વિઝ્યુઅલાઈઝેશન",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ડબલ બાર ગ્રાફ શું છે?",answer:"બે ડેટા સેટની તુલના માટે"}]}
 ]},
 "8-sci":{title:"ધોરણ 8 વિજ્ઞાન",color:"from-orange-500 to-red-600",chapters:[
-{name:"1. પાક ઉત્પાદન",notes:"રવિ-ખરીફ",questions:[
-{type:"MCQ",text:"ખેતીની ક્રમ?",answer:"જમીન→વાવણી→સિંચાઈ→લણણી"},
-{type:"મને ઓળખો",text:"નાઇટ્રોજન સ્થાપન બેક્ટેરિયા",answer:"રાઇઝોબિયમ"}
+{name:"1. પાક ઉત્પાદન",notes:"રવિ અને ખરીફ પાક",questions:[
+{type:"MCQ",text:"ખેતીની સાચી ક્રમ?",answer:"જમીન તૈયાર → વાવણી → સિંચાઈ → લણણી"},
+{type:"મને ઓળખો",text:"નાઇટ્રોજન સ્થાપન કરનાર બેક્ટેરિયા",answer:"રાઇઝોબિયમ"}
 ]},
-{name:"2. સૂક્ષ્મજીવો",notes:"મિત્ર-શત્રુ",questions:[{type:"MCQ",text:"મેલેરિયા કારક?",answer:"પ્લાઝમોડિયમ"}]},
-{name:"3. કોલસો પેટ્રોલિયમ",notes:"કાળું સોનું",questions:[{type:"તફાવત",text:"પુનઃપ્રાપ્ય vs અપ્રાપ્ય",answer:"સૂર્ય vs કોલસો"}]},
-{name:"4. દહન જ્યોત",notes:"LPG સ્વચ્છ",questions:[{type:"MCQ",text:"દહનશીલ?",answer:"કાગળ/લાકડું"}]},
-{name:"5. સંરક્ષણ",notes:"અભયારણ્ય",questions:[{type:"તફાવત",text:"અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન",answer:"મર્યાદિત vs સંપૂર્ણ"}]},
-{name:"6. પ્રાણીઓમાં પ્રજનન",notes:"લિંગી/અલિંગી",questions:[{type:"MCQ",text:"નર અંગ નથી?",answer:"અંડપિંડ"}]},
-{name:"7. કિશોરાવસ્થા",notes:"આયોડિન, પિટ્યુટરી",questions:[{type:"MCQ",text:"થાઇરોઇડ માટે?",answer:"આયોડિન"}]},
-{name:"8. બળ દબાણ",notes:"સંપર્ક/બિનસંપર્ક",questions:[{type:"તફાવત",text:"સંપર્ક vs બિનસંપર્ક",answer:"સ્પર્શથી vs વગર"}]},
-{name:"9. ઘર્ષણ",notes:"લોટણ < સરકતું",questions:[{type:"તફાવત",text:"લોટણ vs સરકતું",answer:"ઓછું vs વધુ"}]},
-{name:"10. ધ્વનિ",notes:"માધ્યમ જોઈએ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ચંદ્ર પર ધ્વનિ નથી?",answer:"વાતાવરણ નથી"}]},
-{name:"11. વિદ્યુત રાસાયણિક",notes:"ઇલેક્ટ્રોપ્લેટિંગ",questions:[{type:"ટૂંકા જવાબ",text:"ઇલેક્ટ્રોપ્લેટિંગ?",answer:"વીજથી ધાતુનું પડ"}]},
-{name:"12. કુદરતી ઘટનાઓ",notes:"વીજળી વાલક",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"વીજળી વાલક?",answer:"વીજળી જમીનમાં લઈ જાય"}]},
-{name:"13. પ્રકાશ",notes:"પરાવર્તન",questions:[{type:"MCQ",text:"સમતલ અરીસો મૂકતાં?",answer:"નિયમિત પરાવર્તન"}]}
+{name:"2. સૂક્ષ્મજીવો",notes:"મિત્ર અને શત્રુ",questions:[{type:"MCQ",text:"મેલેરિયાનો કારક?",answer:"પ્લાઝમોડિયમ"}]},
+{name:"3. કોલસો અને પેટ્રોલિયમ",notes:"કાળું સોનું",questions:[{type:"તફાવત",text:"પુનઃપ્રાપ્ય vs પુનઃઅપ્રાપ્ય",answer:"સૂર્ય, પવન vs કોલસો, પેટ્રોલિયમ"}]},
+{name:"4. દહન અને જ્યોત",notes:"LPG સ્વચ્છ ઇંધણ",questions:[{type:"MCQ",text:"દહનશીલ પદાર્થ?",answer:"કાગળ / લાકડું"}]},
+{name:"5. સંરક્ષણ",notes:"અભયારણ્ય અને રાષ્ટ્રીય ઉદ્યાન",questions:[{type:"તફાવત",text:"અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન",answer:"મર્યાદિત પ્રવૃત્તિ vs સંપૂર્ણ સુરક્ષિત"}]},
+{name:"6. પ્રાણીઓમાં પ્રજનન",notes:"લિંગી અને અલિંગી",questions:[{type:"MCQ",text:"નર પ્રજનન અંગ નથી?",answer:"અંડપિંડ"}]},
+{name:"7. કિશોરાવસ્થા",notes:"આયોડિન, પિટ્યુટરી",questions:[{type:"MCQ",text:"થાઇરોઇડ માટે જરૂરી તત્ત્વ?",answer:"આયોડિન"}]},
+{name:"8. બળ અને દબાણ",notes:"સંપર્ક અને બિનસંપર્ક",questions:[{type:"તફાવત",text:"સંપર્ક vs બિનસંપર્ક બળ",answer:"સ્પર્શથી vs સ્પર્શ વગર"}]},
+{name:"9. ઘર્ષણ",notes:"લોટણ < સરકતું",questions:[{type:"તફાવત",text:"લોટણ vs સરકતું ઘર્ષણ",answer:"ઓછું vs વધુ"}]},
+{name:"10. ધ્વનિ",notes:"માધ્યમ જોઈએ",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"ચંદ્ર પર ધ્વનિ કેમ ન સંભળાય?",answer:"વાતાવરણ નથી"}]},
+{name:"11. વિદ્યુતની રાસાયણિક અસરો",notes:"ઇલેક્ટ્રોપ્લેટિંગ",questions:[{type:"ટૂંકા જવાબ",text:"ઇલેક્ટ્રોપ્લેટિંગ એટલે શું?",answer:"વીજપ્રવાહથી ધાતુનું પડ ચઢાવવું"}]},
+{name:"12. કુદરતી ઘટનાઓ",notes:"વીજળી વાલક",questions:[{type:"વૈજ્ઞાનિક કારણ",text:"વીજળી વાલક કેમ રાખીએ?",answer:"વીજળીને જમીનમાં સુરક્ષિત લઈ જાય"}]},
+{name:"13. પ્રકાશ",notes:"પરાવર્તન",questions:[{type:"MCQ",text:"સમતલ અરીસો મૂકતાં શું થાય?",answer:"નિયમિત પરાવર્તન"}]}
 ]},
 "8-math":{title:"ધોરણ 8 ગણિત",color:"from-fuchsia-500 to-purple-700",chapters:[
-{name:"1. પરિમેયિક સંખ્યાઓ",notes:"",questions:[{type:"MCQ",text:"√16=?",answer:"4"}]},
-{name:"2. રેખીય સમીકરણો",notes:"",questions:[{type:"HOTS",text:"2x+5=15",answer:"x=5"}]},
-{name:"3. ચતુષ્કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ચતુષ્કોણ પ્રકારો",answer:"ચોરસ, લંબચોરસ, વજ્ર"}]},
+{name:"1. પરિમેયિક સંખ્યાઓ",notes:"",questions:[{type:"MCQ",text:"√16 = ?",answer:"4"}]},
+{name:"2. રેખીય સમીકરણો",notes:"",questions:[{type:"HOTS",text:"2x + 5 = 15 ઉકેલો",answer:"x = 5"}]},
+{name:"3. ચતુષ્કોણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"ચતુષ્કોણના પ્રકારો",answer:"ચોરસ, લંબચોરસ, સમાંતરબાજુ, વજ્ર"}]},
 {name:"4. પ્રાયોગિક ભૂમિતિ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"ચોરસ બનાવો",answer:"વિદ્યાર્થી"}]},
-{name:"5. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"હિસ્ટોગ્રામ",answer:"વિદ્યાર્થી"}]},
-{name:"6. વર્ગ વર્ગમૂળ",notes:"",questions:[{type:"MCQ",text:"√25",answer:"5"}]},
-{name:"7. ઘન ઘનમૂળ",notes:"",questions:[{type:"MCQ",text:"∛27",answer:"3"}]},
-{name:"8. તુલનાત્મક",notes:"",questions:[{type:"HOTS",text:"15% of 200",answer:"30"}]},
-{name:"9. બીજગણિત ઓળખ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"(a+b)²",answer:"a²+2ab+b²"}]},
-{name:"10. માપન",notes:"",questions:[{type:"MCQ",text:"નળાકાર સૂત્ર",answer:"2πr(h+r)"}]},
-{name:"11. ઘાતાંક",notes:"",questions:[{type:"MCQ",text:"2⁴×2³",answer:"128"}]},
-{name:"12. પ્રમાણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સીધો vs વ્યસ્ત",answer:"વધે-વધે vs વધે-ઘટે"}]},
-{name:"13. કારક",notes:"",questions:[{type:"HOTS",text:"x²-5x+6",answer:"(x-2)(x-3)"}]},
+{name:"5. માહિતી નિરૂપણ",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"હિસ્ટોગ્રામ બનાવો",answer:"વિદ્યાર્થી"}]},
+{name:"6. વર્ગ અને વર્ગમૂળ",notes:"",questions:[{type:"MCQ",text:"√25 = ?",answer:"5"}]},
+{name:"7. ઘન અને ઘનમૂળ",notes:"",questions:[{type:"MCQ",text:"∛27 = ?",answer:"3"}]},
+{name:"8. તુલનાત્મક અંકગણિત",notes:"",questions:[{type:"HOTS",text:"15% of 200 = ?",answer:"30"}]},
+{name:"9. બીજગણિત ઓળખ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"(a+b)² = ?",answer:"a² + 2ab + b²"}]},
+{name:"10. માપન",notes:"",questions:[{type:"MCQ",text:"નળાકારનું ક્ષેત્રફળ સૂત્ર?",answer:"2πr(h+r)"}]},
+{name:"11. ઘાતાંક",notes:"",questions:[{type:"MCQ",text:"2⁴ × 2³ = ?",answer:"128"}]},
+{name:"12. પ્રમાણ",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"સીધો vs વ્યસ્ત પ્રમાણ",answer:"વધે-વધે vs વધે-ઘટે"}]},
+{name:"13. કારક",notes:"",questions:[{type:"HOTS",text:"x² − 5x + 6 ના કારક",answer:"(x−2)(x−3)"}]},
 {name:"14. આલેખન",notes:"",questions:[{type:"પ્રવૃત્તિ",text:"આલેખ દોરો",answer:"વિદ્યાર્થી"}]},
-{name:"15. માહિતી વ્યવસ્થા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"મધ્યક મધ્યસ્થ બહુલક",answer:"સરેરાશ, મધ્ય, સૌથી વધુ"}]}
+{name:"15. માહિતી વ્યવસ્થા",notes:"",questions:[{type:"ટૂંકા જવાબ",text:"મધ્યક, મધ્યસ્થ, બહુલક",answer:"સરેરાશ, મધ્ય કિંમત, સૌથી વધુ વાર"}]}
 ]}
 };
 
-let currentStd = "6", currentSub = "sci";
-let clickCount = 0;
-let isUnlocked = localStorage.getItem(UNLOCK) === "true";
-let editingIndex = null, currentTest = null, editingChap = null;
+let currentStd="6", currentSub="sci";
+let clickCount=0, isUnlocked=localStorage.getItem(UNLOCK)==="true";
+let editingIndex=null, currentTest=null, editingChap=null;
 
-function loadAll() {
-  try {
-    const s = localStorage.getItem(STORE);
-    if (s) Object.assign(data, JSON.parse(s));
-  } catch(e) {}
-  try {
-    const sub = localStorage.getItem(SUBS_KEY);
-    if (sub) subjects = JSON.parse(sub);
-  } catch(e) {}
-  try {
-    const n = JSON.parse(localStorage.getItem("gseb_names") || "{}");
-    if (n.title) document.getElementById("siteTitle").textContent = n.title;
-    if (n.subtitle) document.getElementById("siteSubtitle").textContent = n.subtitle;
-    if (n.footer) document.getElementById("footerTitle").textContent = n.footer;
-    if (n.footerSub) document.getElementById("footerSub").textContent = n.footerSub;
-  } catch(e) {}
+function loadAll(){
+  try{const s=localStorage.getItem(STORE);if(s)Object.assign(data,JSON.parse(s));}catch(e){}
+  try{const sub=localStorage.getItem(SUBS_KEY);if(sub)subjects=JSON.parse(sub);}catch(e){}
+  try{
+    const n=JSON.parse(localStorage.getItem("gseb_names")||"{}");
+    if(n.title)document.getElementById("siteTitle").textContent=n.title;
+    if(n.subtitle)document.getElementById("siteSubtitle").textContent=n.subtitle;
+    if(n.footer)document.getElementById("footerTitle").textContent=n.footer;
+    if(n.footerSub)document.getElementById("footerSub").textContent=n.footerSub;
+  }catch(e){}
 }
-function saveData() { try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {} }
-function saveSubjects() { try { localStorage.setItem(SUBS_KEY, JSON.stringify(subjects)); } catch(e) {} }
+function saveData(){try{localStorage.setItem(STORE,JSON.stringify(data));}catch(e){}}
+function saveSubjects(){try{localStorage.setItem(SUBS_KEY,JSON.stringify(subjects));}catch(e){}}
 
-/* ===== UNLOCK ===== */
-document.getElementById("mainHeader").addEventListener("click", () => {
-  if (isUnlocked) return;
+function closeModal(id){document.getElementById(id).classList.add("hidden");}
+
+document.getElementById("mainHeader").addEventListener("click",function(){
+  if(isUnlocked)return;
   clickCount++;
-  if (clickCount >= CLICKS) {
-    clickCount = 0;
+  if(clickCount>=CLICKS){
+    clickCount=0;
     document.getElementById("passModal").classList.remove("hidden");
-    document.getElementById("passInput").value = "";
+    document.getElementById("passInput").value="";
     document.getElementById("passError").classList.add("hidden");
   }
 });
-function closePassModal() { document.getElementById("passModal").classList.add("hidden"); }
-function checkPassword() {
-  if (document.getElementById("passInput").value === PASSWORD) {
-    isUnlocked = true;
-    localStorage.setItem(UNLOCK, "true");
+function checkPassword(){
+  if(document.getElementById("passInput").value===PASSWORD){
+    isUnlocked=true;
+    localStorage.setItem(UNLOCK,"true");
     applyUnlock();
-    closePassModal();
-  } else document.getElementById("passError").classList.remove("hidden");
+    closeModal("passModal");
+  }else document.getElementById("passError").classList.remove("hidden");
 }
-document.getElementById("passInput").addEventListener("keydown", e => { if (e.key === "Enter") checkPassword(); });
-function applyUnlock() {
+document.getElementById("passInput").addEventListener("keydown",function(e){if(e.key==="Enter")checkPassword();});
+
+function applyUnlock(){
   document.getElementById("appBody").classList.remove("locked");
-  document.getElementById("statusBadge").textContent = "🔓 Edit Mode";
-  document.getElementById("statusBadge").className = "bg-green-500 px-3 py-1.5 rounded-full text-white text-xs";
-  document.getElementById("editNameBtn").classList.remove("hidden");
-  document.getElementById("addSubBtn").classList.remove("hidden");
-  document.getElementById("infoBanner").innerHTML = "<b>Edit Mode!</b> પ્રકરણનું નામ બદલો • નવો વિષય ઉમેરો • પ્રશ્નો એડિટ કરો.";
+  document.getElementById("statusBadge").textContent="🔓 Edit Mode";
+  document.getElementById("statusBadge").className="bg-green-500 px-3 py-1.5 rounded-full text-white text-xs";
+  document.getElementById("btnName").classList.remove("hidden");
+  document.getElementById("btnSub").classList.remove("hidden");
+  document.getElementById("infoBanner").innerHTML="<b>Edit Mode!</b> પ્રકરણનું નામ બદલો • નવો વિષય ઉમેરો • પ્રશ્નો એડિટ કરો.";
   renderSubTabs();
   render();
 }
-if (isUnlocked) applyUnlock();
+if(isUnlocked)applyUnlock();
 
-/* ===== NAME ===== */
-function openNameModal() {
-  if (!isUnlocked) return;
-  document.getElementById("editTitle").value = document.getElementById("siteTitle").textContent;
-  document.getElementById("editSubtitle").value = document.getElementById("siteSubtitle").textContent;
-  document.getElementById("editFooter").value = document.getElementById("footerTitle").textContent;
-  document.getElementById("editFooterSub").value = document.getElementById("footerSub").textContent;
+function openNameModal(){
+  if(!isUnlocked)return;
+  document.getElementById("editTitle").value=document.getElementById("siteTitle").textContent;
+  document.getElementById("editSubtitle").value=document.getElementById("siteSubtitle").textContent;
+  document.getElementById("editFooter").value=document.getElementById("footerTitle").textContent;
+  document.getElementById("editFooterSub").value=document.getElementById("footerSub").textContent;
   document.getElementById("nameModal").classList.remove("hidden");
 }
-function closeNameModal() { document.getElementById("nameModal").classList.add("hidden"); }
-function saveNames() {
-  const t = document.getElementById("editTitle").value.trim() || "GSEB TOPPER";
-  const s = document.getElementById("editSubtitle").value.trim();
-  const f = document.getElementById("editFooter").value.trim() || "GSEB TOPPER";
-  const fs = document.getElementById("editFooterSub").value.trim();
-  document.getElementById("siteTitle").textContent = t;
-  document.getElementById("siteSubtitle").textContent = s;
-  document.getElementById("footerTitle").textContent = f;
-  document.getElementById("footerSub").textContent = fs;
-  localStorage.setItem("gseb_names", JSON.stringify({ title: t, subtitle: s, footer: f, footerSub: fs }));
-  closeNameModal();
+function saveNames(){
+  var t=document.getElementById("editTitle").value.trim()||"GSEB TOPPER";
+  var s=document.getElementById("editSubtitle").value.trim();
+  var f=document.getElementById("editFooter").value.trim()||"GSEB TOPPER";
+  var fs=document.getElementById("editFooterSub").value.trim();
+  document.getElementById("siteTitle").textContent=t;
+  document.getElementById("siteSubtitle").textContent=s;
+  document.getElementById("footerTitle").textContent=f;
+  document.getElementById("footerSub").textContent=fs;
+  localStorage.setItem("gseb_names",JSON.stringify({title:t,subtitle:s,footer:f,footerSub:fs}));
+  closeModal("nameModal");
 }
 
-/* ===== ADD SUBJECT ===== */
-function openAddSubject() {
-  if (!isUnlocked) return;
-  document.getElementById("subStdLabel").textContent = currentStd;
-  document.getElementById("newSubName").value = "";
-  document.getElementById("newSubEmoji").value = "📚";
+function openAddSubject(){
+  if(!isUnlocked)return;
+  document.getElementById("subStdLabel").textContent=currentStd;
+  document.getElementById("newSubName").value="";
+  document.getElementById("newSubEmoji").value="📚";
   document.getElementById("subjectModal").classList.remove("hidden");
 }
-function closeSubjectModal() { document.getElementById("subjectModal").classList.add("hidden"); }
-function addSubject() {
-  const name = document.getElementById("newSubName").value.trim();
-  const emoji = document.getElementById("newSubEmoji").value.trim() || "📚";
-  if (!name) return alert("વિષયનું નામ લખો");
-  const id = "custom_" + Date.now();
-  const colors = ["from-sky-400 to-blue-500","from-lime-400 to-green-500","from-amber-400 to-orange-500","from-pink-400 to-rose-500","from-cyan-400 to-teal-500"];
-  const color = colors[Math.floor(Math.random() * colors.length)];
-  if (!subjects[currentStd]) subjects[currentStd] = [];
-  subjects[currentStd].push({ id, name, emoji, color });
-  const key = currentStd + "-" + id;
-  data[key] = { title: "ધોરણ " + currentStd + " " + name, color, chapters: [] };
-  saveSubjects();
-  saveData();
-  closeSubjectModal();
-  currentSub = id;
-  renderSubTabs();
-  render();
+function addSubject(){
+  var name=document.getElementById("newSubName").value.trim();
+  var emoji=document.getElementById("newSubEmoji").value.trim()||"📚";
+  if(!name){alert("વિષયનું નામ લખો");return;}
+  var id="c"+Date.now();
+  var colors=["from-sky-400 to-blue-500","from-lime-400 to-green-500","from-amber-400 to-orange-500","from-pink-400 to-rose-500"];
+  var color=colors[Math.floor(Math.random()*colors.length)];
+  if(!subjects[currentStd])subjects[currentStd]=[];
+  subjects[currentStd].push({id:id,name:name,emoji:emoji,color:color});
+  data[currentStd+"-"+id]={title:"ધોરણ "+currentStd+" "+name,color:color,chapters:[]};
+  saveSubjects();saveData();
+  closeModal("subjectModal");
+  currentSub=id;
+  renderSubTabs();render();
 }
 
-/* ===== CHAPTER NAME EDIT ===== */
-function openChapEdit(key, ci) {
-  if (!isUnlocked) return;
-  editingChap = { key, ci };
-  document.getElementById("editChapName").value = data[key].chapters[ci].name;
+function openChapEdit(key,ci){
+  if(!isUnlocked)return;
+  editingChap={key:key,ci:ci};
+  document.getElementById("editChapName").value=data[key].chapters[ci].name;
   document.getElementById("chapModal").classList.remove("hidden");
 }
-function closeChapModal() { document.getElementById("chapModal").classList.add("hidden"); editingChap = null; }
-function saveChapName() {
-  if (!editingChap) return;
-  const name = document.getElementById("editChapName").value.trim();
-  if (!name) return alert("નામ લખો");
-  data[editingChap.key].chapters[editingChap.ci].name = name;
+function saveChapName(){
+  if(!editingChap)return;
+  var name=document.getElementById("editChapName").value.trim();
+  if(!name){alert("નામ લખો");return;}
+  data[editingChap.key].chapters[editingChap.ci].name=name;
   saveData();
-  closeChapModal();
+  closeModal("chapModal");
+  editingChap=null;
   render();
 }
 
-/* ===== NOTES ===== */
-function getNotes(k, ci) {
-  try {
-    const a = JSON.parse(localStorage.getItem(NOTESK) || "{}");
-    return a[k + "-" + ci] || (data[k]?.chapters[ci]?.notes || "");
-  } catch(e) { return ""; }
+function getNotes(k,ci){
+  try{var a=JSON.parse(localStorage.getItem(NOTESK)||"{}");return a[k+"-"+ci]||(data[k]&&data[k].chapters[ci]&&data[k].chapters[ci].notes)||"";}catch(e){return"";}
 }
-function saveNotes(k, ci, t) {
-  try {
-    const a = JSON.parse(localStorage.getItem(NOTESK) || "{}");
-    a[k + "-" + ci] = t;
-    localStorage.setItem(NOTESK, JSON.stringify(a));
-  } catch(e) {}
+function saveNotes(k,ci,t){
+  try{var a=JSON.parse(localStorage.getItem(NOTESK)||"{}");a[k+"-"+ci]=t;localStorage.setItem(NOTESK,JSON.stringify(a));}catch(e){}
 }
 
-/* ===== TEST ===== */
-function generate25(qs, name) {
-  const pool = (qs || []).slice();
-  while (pool.length < 25) {
-    const b = (qs && qs[pool.length % Math.max(qs.length, 1)]) || { type: "MCQ", text: name + " સંબંધિત પ્રશ્ન", answer: "પાઠ્યપુસ્તક" };
-    pool.push({ type: b.type || "MCQ", text: b.text + " (Q" + (pool.length + 1) + ")", answer: b.answer || "—" });
+function generate25(qs,name){
+  var pool=(qs||[]).slice();
+  while(pool.length<25){
+    var b=(qs&&qs[pool.length%Math.max(qs.length,1)])||{type:"MCQ",text:name+" સંબંધિત પ્રશ્ન",answer:"પાઠ્યપુસ્તક"};
+    pool.push({type:b.type||"MCQ",text:b.text+" (Q"+(pool.length+1)+")",answer:b.answer||"—"});
   }
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [pool[i], pool[j]] = [pool[j], pool[i]];
-  }
-  return pool.slice(0, 25).map(q => ({
-    type: q.type, text: q.text, answer: q.answer,
-    options: q.type === "MCQ" ? shuffle([q.answer || "સાચો", "વિકલ્પ A", "વિકલ્પ B", "વિકલ્પ C"]) : null
-  }));
+  for(var i=pool.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=pool[i];pool[i]=pool[j];pool[j]=t;}
+  return pool.slice(0,25).map(function(q){
+    return {type:q.type,text:q.text,answer:q.answer,options:q.type==="MCQ"?shuffle([q.answer||"સાચો","વિકલ્પ A","વિકલ્પ B","વિકલ્પ C"]):null};
+  });
 }
-function shuffle(a) {
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-function startTest(key, ci) {
-  const ch = data[key].chapters[ci];
-  currentTest = { key, ci, questions: generate25(ch.questions, ch.name), userAnswers: new Array(25).fill(null), submitted: false };
-  document.getElementById("testTitle").textContent = "📝 25 Marks – " + ch.name;
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function startTest(key,ci){
+  var ch=data[key].chapters[ci];
+  currentTest={key:key,ci:ci,questions:generate25(ch.questions,ch.name),userAnswers:new Array(25).fill(null),submitted:false};
+  document.getElementById("testTitle").textContent="📝 25 Marks – "+ch.name;
   document.getElementById("testResult").classList.add("hidden");
   document.getElementById("testBody").classList.remove("hidden");
   document.getElementById("testActions").classList.remove("hidden");
@@ -512,286 +434,248 @@ function startTest(key, ci) {
   renderTest();
   document.getElementById("testModal").classList.remove("hidden");
 }
-function renderTest() {
-  let html = "";
-  currentTest.questions.forEach((q, i) => {
-    html += `<div class="mb-4 p-3 border border-slate-200 rounded-xl bg-slate-50">
-      <div class="mb-2"><b class="text-indigo-600">Q\( {i + 1}.</b> <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full"> \){q.type} • 1 ગુણ</span></div>
-      <p class="mb-2 whitespace-pre-wrap text-sm">${q.text}</p>`;
-    if (q.options) {
-      q.options.forEach(opt => {
-        const sel = currentTest.userAnswers[i] === opt ? "selected" : "";
-        html += `<div class="test-option \( {sel}" onclick="selectOpt( \){i},this)">${opt}</div>`;
+function renderTest(){
+  var html="";
+  currentTest.questions.forEach(function(q,i){
+    html+='<div class="mb-4 p-3 border border-slate-200 rounded-xl bg-slate-50">';
+    html+='<div class="mb-2"><b class="text-indigo-600">Q'+(i+1)+'.</b> <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">'+q.type+' • 1 ગુણ</span></div>';
+    html+='<p class="mb-2 whitespace-pre-wrap text-sm">'+q.text+'</p>';
+    if(q.options){
+      q.options.forEach(function(opt){
+        var sel=currentTest.userAnswers[i]===opt?"selected":"";
+        html+='<div class="test-option '+sel+'" onclick="selectOpt('+i+',this)">'+opt+'</div>';
       });
-    } else {
-      html += `<textarea rows="2" class="w-full border rounded-lg p-2 text-sm" placeholder="જવાબ લખો..." onchange="currentTest.userAnswers[\( {i}]=this.value"> \){currentTest.userAnswers[i] || ""}</textarea>`;
+    }else{
+      html+='<textarea rows="2" class="w-full border rounded-lg p-2 text-sm" placeholder="જવાબ લખો..." onchange="currentTest.userAnswers['+i+']=this.value">'+(currentTest.userAnswers[i]||"")+'</textarea>';
     }
-    html += `</div>`;
+    html+='</div>';
   });
-  document.getElementById("testBody").innerHTML = html;
-  document.getElementById("testProgress").textContent = "કુલ 25 પ્રશ્નો • દરેક 1 ગુણ";
+  document.getElementById("testBody").innerHTML=html;
+  document.getElementById("testProgress").textContent="કુલ 25 પ્રશ્નો • દરેક 1 ગુણ";
 }
-function selectOpt(i, el) {
-  if (currentTest.submitted) return;
-  currentTest.userAnswers[i] = el.textContent;
-  renderTest();
-}
-function submitTest() {
-  if (!currentTest || currentTest.submitted) return;
-  currentTest.submitted = true;
-  let score = 0;
-  currentTest.questions.forEach((q, i) => {
-    const ua = (currentTest.userAnswers[i] || "").toString().trim().toLowerCase();
-    const ca = (q.answer || "").toString().trim().toLowerCase();
-    if (ua && (ua === ca || ca.includes(ua) || ua.includes(ca.split(" ")[0]))) score++;
+function selectOpt(i,el){if(currentTest.submitted)return;currentTest.userAnswers[i]=el.textContent;renderTest();}
+function submitTest(){
+  if(!currentTest||currentTest.submitted)return;
+  currentTest.submitted=true;
+  var score=0;
+  currentTest.questions.forEach(function(q,i){
+    var ua=(currentTest.userAnswers[i]||"").toString().trim().toLowerCase();
+    var ca=(q.answer||"").toString().trim().toLowerCase();
+    if(ua&&(ua===ca||ca.indexOf(ua)>=0||ua.indexOf(ca.split(" ")[0])>=0))score++;
   });
   document.getElementById("testBody").classList.add("hidden");
   document.getElementById("submitBtn").classList.add("hidden");
-  const res = document.getElementById("testResult");
+  var res=document.getElementById("testResult");
   res.classList.remove("hidden");
-  let msg = "", col = "";
-  if (score >= 22) { msg = "ઉત્તમ! 🌟"; col = "text-green-600"; fireConfetti(true); }
-  else if (score >= 18) { msg = "ખૂબ સારું! 👍"; col = "text-emerald-600"; fireConfetti(false); }
-  else if (score >= 12) { msg = "સારું!"; col = "text-amber-600"; }
-  else { msg = "ફરી અભ્યાસ કરો"; col = "text-red-600"; }
-  res.innerHTML = `<div class="text-5xl mb-3">${score >= 18 ? "🎉" : "📚"}</div>
-    <h3 class="text-3xl font-bold \( {col}"> \){score} / 25</h3>
-    <p class="text-lg mt-2 mb-4">${msg}</p>
-    <button onclick="startTest(currentTest.key,currentTest.ci)" class="btn bg-indigo-600 text-white">ફરી Test</button>`;
+  var msg="",col="";
+  if(score>=22){msg="ઉત્તમ! 🌟";col="text-green-600";fireConfetti(true);}
+  else if(score>=18){msg="ખૂબ સારું! 👍";col="text-emerald-600";fireConfetti(false);}
+  else if(score>=12){msg="સારું!";col="text-amber-600";}
+  else{msg="ફરી અભ્યાસ કરો";col="text-red-600";}
+  res.innerHTML='<div class="text-5xl mb-3">'+(score>=18?"🎉":"📚")+'</div><h3 class="text-3xl font-bold '+col+'">'+score+' / 25</h3><p class="text-lg mt-2 mb-4">'+msg+'</p><button onclick="startTest(currentTest.key,currentTest.ci)" class="btn bg-indigo-600 text-white">ફરી Test</button>';
 }
-function fireConfetti(big) {
-  if (typeof confetti !== "function") return;
-  const end = Date.now() + (big ? 3500 : 2000);
-  (function frame() {
-    confetti({ particleCount: big ? 6 : 3, angle: 60, spread: 90, origin: { x: 0 }, colors: ["#6366f1", "#8b5cf6", "#ec4899", "#10b981"] });
-    confetti({ particleCount: big ? 6 : 3, angle: 120, spread: 90, origin: { x: 1 }, colors: ["#6366f1", "#8b5cf6", "#ec4899", "#10b981"] });
-    if (Date.now() < end) requestAnimationFrame(frame);
+function fireConfetti(big){
+  if(typeof confetti!=="function")return;
+  var end=Date.now()+(big?3500:2000);
+  (function frame(){
+    confetti({particleCount:big?6:3,angle:60,spread:90,origin:{x:0},colors:["#6366f1","#8b5cf6","#ec4899","#10b981"]});
+    confetti({particleCount:big?6:3,angle:120,spread:90,origin:{x:1},colors:["#6366f1","#8b5cf6","#ec4899","#10b981"]});
+    if(Date.now()<end)requestAnimationFrame(frame);
   })();
 }
-function closeTest() {
-  document.getElementById("testModal").classList.add("hidden");
-  currentTest = null;
-}
+function closeTest(){document.getElementById("testModal").classList.add("hidden");currentTest=null;}
 
-/* ===== RENDER SUB TABS ===== */
-function renderSubTabs() {
-  const list = subjects[currentStd] || [];
-  let html = "";
-  list.forEach((s, i) => {
-    const active = s.id === currentSub;
-    const bg = active ? `bg-gradient-to-r ${s.color} text-white shadow-md` : "bg-slate-100 text-slate-600";
-    html += `<button class="subtab-pill \( {bg}" data-sub=" \){s.id}" onclick="switchSub('\( {s.id}')"> \){s.emoji} ${s.name}</button>`;
+function renderSubTabs(){
+  var list=subjects[currentStd]||[];
+  var html="";
+  list.forEach(function(s){
+    var active=s.id===currentSub;
+    var cls=active?"bg-gradient-to-r "+s.color+" text-white shadow-md":"bg-slate-100 text-slate-600";
+    html+='<button class="sub-pill '+cls+'" onclick="switchSub(\''+s.id+'\')">'+s.emoji+' '+s.name+'</button>';
   });
-  html += `<button class="subtab-pill ${currentSub === 'key' ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-md' : 'bg-slate-100 text-slate-600'}" data-sub="key" onclick="switchSub('key')">🔑 Answer Key</button>`;
-  document.getElementById("subTabs").innerHTML = html;
+  var keyActive=currentSub==="key";
+  html+='<button class="sub-pill '+(keyActive?"bg-gradient-to-r from-green-400 to-emerald-500 text-white shadow-md":"bg-slate-100 text-slate-600")+'" onclick="switchSub(\'key\')">🔑 Answer Key</button>';
+  document.getElementById("subTabs").innerHTML=html;
+}
+function switchSub(id){currentSub=id;renderSubTabs();render();}
+
+function badgeColor(type){
+  var map={"MCQ":"bg-blue-100 text-blue-800","ખાલી જગ્યા":"bg-emerald-100 text-emerald-800","ટૂંકા જવાબ":"bg-violet-100 text-violet-800","તફાવત":"bg-amber-100 text-amber-800","વૈજ્ઞાનિક કારણ":"bg-rose-100 text-rose-800","HOTS":"bg-fuchsia-100 text-fuchsia-800","પ્રવૃત્તિ":"bg-cyan-100 text-cyan-800","મને ઓળખો":"bg-lime-100 text-lime-800","સાચું-ખોટું":"bg-teal-100 text-teal-800"};
+  return map[type]||"bg-slate-100 text-slate-700";
 }
 
-function switchSub(id) {
-  currentSub = id;
-  renderSubTabs();
-  render();
-}
+function render(){
+  if(currentSub==="key"){renderKey();return;}
+  var key=currentStd+"-"+currentSub;
+  var section=data[key]||{title:"નવો વિષય",chapters:[],color:"from-slate-500 to-slate-700"};
+  var subInfo=(subjects[currentStd]||[]).find(function(s){return s.id===currentSub;});
 
-/* ===== MAIN RENDER ===== */
-function render() {
-  if (currentSub === "key") { renderKey(); return; }
-  const key = currentStd + "-" + currentSub;
-  const section = data[key] || { title: "નવો વિષય", chapters: [], color: "from-slate-500 to-slate-700" };
-  const subInfo = (subjects[currentStd] || []).find(s => s.id === currentSub);
+  var html='<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">';
+  html+='<h2 class="text-xl sm:text-2xl font-bold bg-gradient-to-r '+(section.color||"from-slate-500 to-slate-700")+' bg-clip-text text-transparent">'+(section.title||("ધોરણ "+currentStd+" "+(subInfo?subInfo.name:"")))+'</h2>';
+  html+='<div class="flex gap-2 flex-wrap">';
+  html+='<button onclick="openAddModal()" class="edit-only btn bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow">➕ પ્રશ્ન</button>';
+  html+='<button onclick="addChapter()" class="edit-only btn bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow">➕ પ્રકરણ</button>';
+  html+='</div></div>';
+  html+='<p class="text-sm text-slate-500 mb-4">કુલ પ્રકરણો: <b>'+(section.chapters||[]).length+'</b></p>';
 
-  let html = `<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
-    <h2 class="text-xl sm:text-2xl font-bold bg-gradient-to-r \( {section.color || (subInfo ? subInfo.color : 'from-slate-500 to-slate-700')} bg-clip-text text-transparent"> \){section.title || ("ધોરણ " + currentStd + " " + (subInfo ? subInfo.name : ""))}</h2>
-    <div class="flex gap-2 flex-wrap">
-      <button onclick="openAddModal()" class="edit-only btn bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow text-sm">➕ પ્રશ્ન</button>
-      <button onclick="addChapter()" class="edit-only btn bg-gradient-to-r from-teal-500 to-emerald-600 text-white shadow text-sm">➕ પ્રકરણ</button>
-    </div>
-  </div>
-  <p class="text-sm text-slate-500 mb-4">કુલ પ્રકરણો: <b>${(section.chapters || []).length}</b></p>`;
+  (section.chapters||[]).forEach(function(ch,ci){
+    var notes=getNotes(key,ci);
+    html+='<div class="card mb-4 overflow-hidden">';
+    html+='<div class="px-4 py-3.5 flex justify-between items-center cursor-pointer font-semibold text-indigo-900 bg-gradient-to-r from-indigo-50 to-purple-50" onclick="toggleChap(this)">';
+    html+='<span class="text-sm sm:text-base flex-1">'+ch.name+'</span>';
+    html+='<div class="flex items-center gap-2">';
+    html+='<button onclick="event.stopPropagation();openChapEdit(\''+key+'\','+ci+')" class="edit-only btn bg-amber-400 text-white text-xs">✏️ નામ</button>';
+    html+='<button onclick="event.stopPropagation();delChapter(\''+key+'\','+ci+')" class="edit-only btn bg-red-500 text-white text-xs">🗑️</button>';
+    html+='<span class="text-indigo-500 text-lg arrow">▼</span>';
+    html+='</div></div>';
+    html+='<div class="chapter-body hidden p-3 space-y-3 bg-white/80">';
 
-  (section.chapters || []).forEach((ch, ci) => {
-    const notes = getNotes(key, ci);
-    html += `<div class="card mb-4 overflow-hidden">
-      <div class="chapter-head px-4 py-3.5 flex justify-between items-center cursor-pointer font-semibold text-indigo-900 bg-gradient-to-r from-indigo-50 to-purple-50" onclick="toggleChap(this)">
-        <span class="text-sm sm:text-base flex-1">${ch.name}</span>
-        <div class="flex items-center gap-2">
-          <button onclick="event.stopPropagation();openChapEdit('\( {key}', \){ci})" class="edit-only btn bg-amber-400 text-white text-xs py-1 px-2.5">✏️ નામ</button>
-          <button onclick="event.stopPropagation();delChapter('\( {key}', \){ci})" class="edit-only btn bg-red-500 text-white text-xs py-1 px-2.5">🗑️</button>
-          <span class="text-indigo-500 text-lg">▼</span>
-        </div>
-      </div>
-      <div class="chapter-body hidden p-3 space-y-3 bg-white/80">`;
-
-    (ch.questions || []).forEach((q, qi) => {
-      const colors = {
-        "MCQ": "bg-blue-100 text-blue-800", "ખાલી જગ્યા": "bg-emerald-100 text-emerald-800",
-        "ટૂંકા જવાબ": "bg-violet-100 text-violet-800", "તફાવત": "bg-amber-100 text-amber-800",
-        "વૈજ્ઞાનિક કારણ": "bg-rose-100 text-rose-800", "HOTS": "bg-fuchsia-100 text-fuchsia-800",
-        "પ્રવૃત્તિ": "bg-cyan-100 text-cyan-800", "મને ઓળખો": "bg-lime-100 text-lime-800"
-      };
-      const badge = colors[q.type] || "bg-slate-100 text-slate-700";
-      html += `<div class="p-3 rounded-xl border border-slate-200 bg-white">
-        <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full \( {badge} mb-1.5"> \){q.type}</span>
-        <div class="text-sm whitespace-pre-wrap mb-1.5">${q.text}</div>
-        <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-xs text-emerald-700 font-semibold">🔑 જવાબ જુઓ</button>
-        <div class="answer-box hidden">${q.answer || "—"}</div>
-        <div class="edit-only flex gap-2 mt-2">
-          <button onclick="editQ('\( {key}', \){ci},${qi})" class="btn bg-amber-400 text-white text-xs py-1 px-3">✏️ Edit</button>
-          <button onclick="delQ('\( {key}', \){ci},${qi})" class="btn bg-red-500 text-white text-xs py-1 px-3">🗑️</button>
-        </div>
-      </div>`;
+    (ch.questions||[]).forEach(function(q,qi){
+      var bc=badgeColor(q.type);
+      html+='<div class="p-3 rounded-xl border border-slate-200 bg-white">';
+      html+='<span class="badge '+bc+'">'+q.type+'</span>';
+      html+='<div class="text-sm whitespace-pre-wrap mb-1.5">'+q.text+'</div>';
+      html+='<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" class="text-xs text-emerald-700 font-semibold">🔑 જવાબ જુઓ</button>';
+      html+='<div class="answer-box hidden">'+(q.answer||"—")+'</div>';
+      html+='<div class="edit-only flex gap-2 mt-2">';
+      html+='<button onclick="editQ(\''+key+'\','+ci+','+qi+')" class="btn bg-amber-400 text-white text-xs">✏️ Edit</button>';
+      html+='<button onclick="delQ(\''+key+'\','+ci+','+qi+')" class="btn bg-red-500 text-white text-xs">🗑️</button>';
+      html+='</div></div>';
     });
 
-    html += `<div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200">
-      <h4 class="font-bold text-amber-800 text-sm mb-1">📌 Notes</h4>
-      <div id="nv-\( {key}- \){ci}" class="text-sm">${notes || "નોંધ નથી"}</div>
-      <textarea id="ne-\( {key}- \){ci}" class="edit-only hidden w-full border rounded-lg p-2 text-sm mt-1" rows="2">${notes}</textarea>
-      <button onclick="editNotes('\( {key}', \){ci})" class="edit-only btn bg-amber-500 text-white text-xs mt-1.5 py-1 px-3">✏️ Notes</button>
-      <button id="ns-\( {key}- \){ci}" onclick="saveNotesUI('\( {key}', \){ci})" class="edit-only btn bg-green-600 text-white text-xs mt-1.5 py-1 px-3 hidden">💾 સાચવો</button>
-    </div>
-    <div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center">
-      <h4 class="font-bold mb-1">📝 25 Marks Test</h4>
-      <p class="text-indigo-100 text-xs mb-2.5">25 પ્રશ્ન × 1 ગુણ • Confetti</p>
-      <button onclick="startTest('\( {key}', \){ci})" class="btn bg-white text-indigo-700 font-bold px-6 py-2.5">Test શરૂ કરો →</button>
-    </div></div></div>`;
+    html+='<div class="mt-4 p-3 rounded-xl bg-amber-50 border border-amber-200">';
+    html+='<h4 class="font-bold text-amber-800 text-sm mb-1">📌 Notes</h4>';
+    html+='<div id="nv-'+key+'-'+ci+'" class="text-sm">'+(notes||"નોંધ નથી")+'</div>';
+    html+='<textarea id="ne-'+key+'-'+ci+'" class="edit-only hidden w-full border rounded-lg p-2 text-sm mt-1" rows="2">'+notes+'</textarea>';
+    html+='<button onclick="editNotes(\''+key+'\','+ci+')" class="edit-only btn bg-amber-500 text-white text-xs mt-1.5">✏️ Notes</button>';
+    html+='<button id="ns-'+key+'-'+ci+'" onclick="saveNotesUI(\''+key+'\','+ci+')" class="edit-only btn bg-green-600 text-white text-xs mt-1.5 hidden">💾 સાચવો</button>';
+    html+='</div>';
+
+    html+='<div class="mt-4 p-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center">';
+    html+='<h4 class="font-bold mb-1">📝 25 Marks Test</h4>';
+    html+='<p class="text-indigo-100 text-xs mb-2.5">25 પ્રશ્ન × 1 ગુણ • Confetti</p>';
+    html+='<button onclick="startTest(\''+key+'\','+ci+')" class="btn bg-white text-indigo-700 font-bold px-6 py-2.5">Test શરૂ કરો →</button>';
+    html+='</div></div></div>';
   });
 
-  if ((section.chapters || []).length === 0) {
-    html += `<div class="card p-8 text-center text-slate-500">
-      <p class="text-4xl mb-3">📭</p>
-      <p>આ વિષયમાં હજુ કોઈ પ્રકરણ નથી.</p>
-      <button onclick="addChapter()" class="edit-only btn bg-indigo-600 text-white mt-4">➕ પહેલું પ્રકરણ ઉમેરો</button>
-    </div>`;
+  if((section.chapters||[]).length===0){
+    html+='<div class="card p-8 text-center text-slate-500"><p class="text-4xl mb-3">📭</p><p>આ વિષયમાં હજુ કોઈ પ્રકરણ નથી.</p>';
+    html+='<button onclick="addChapter()" class="edit-only btn bg-indigo-600 text-white mt-4">➕ પહેલું પ્રકરણ ઉમેરો</button></div>';
   }
-  document.getElementById("dynamicArea").innerHTML = html;
+  document.getElementById("dynamicArea").innerHTML=html;
 }
 
-function renderKey() {
-  let html = `<h2 class="text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent mb-5">🔑 Answer Key – ધોરણ ${currentStd}</h2>`;
-  (subjects[currentStd] || []).forEach(sub => {
-    const k = currentStd + "-" + sub.id;
-    const sec = data[k];
-    if (!sec) return;
-    html += `<h3 class="text-lg font-bold text-indigo-700 mt-5 mb-2">${sub.emoji} ${sec.title || sub.name}</h3>`;
-    (sec.chapters || []).forEach(ch => {
-      html += `<div class="card p-3 mb-3"><b class="text-sm">${ch.name}</b><ol class="list-decimal list-inside mt-2 space-y-2 text-sm">`;
-      (ch.questions || []).forEach(q => {
-        html += `<li><span class="text-slate-600">\( {q.text.substring(0, 55)} \){q.text.length > 55 ? "..." : ""}</span><div class="answer-box">${q.answer || "—"}</div></li>`;
+function renderKey(){
+  var html='<h2 class="text-xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent mb-5">🔑 Answer Key – ધોરણ '+currentStd+'</h2>';
+  (subjects[currentStd]||[]).forEach(function(sub){
+    var k=currentStd+"-"+sub.id;
+    var sec=data[k];
+    if(!sec)return;
+    html+='<h3 class="text-lg font-bold text-indigo-700 mt-5 mb-2">'+sub.emoji+' '+(sec.title||sub.name)+'</h3>';
+    (sec.chapters||[]).forEach(function(ch){
+      html+='<div class="card p-3 mb-3"><b class="text-sm">'+ch.name+'</b><ol class="list-decimal list-inside mt-2 space-y-2 text-sm">';
+      (ch.questions||[]).forEach(function(q){
+        html+='<li><span class="text-slate-600">'+q.text.substring(0,60)+(q.text.length>60?"...":"")+'</span><div class="answer-box">'+(q.answer||"—")+'</div></li>';
       });
-      html += `</ol></div>`;
+      html+='</ol></div>';
     });
   });
-  document.getElementById("dynamicArea").innerHTML = html;
+  document.getElementById("dynamicArea").innerHTML=html;
 }
 
-function toggleChap(el) {
-  const body = el.nextElementSibling;
+function toggleChap(el){
+  var body=el.nextElementSibling;
   body.classList.toggle("hidden");
-  const arrow = el.querySelector("span:last-child");
-  if (arrow) arrow.textContent = body.classList.contains("hidden") ? "▼" : "▲";
+  var arrow=el.querySelector(".arrow");
+  if(arrow)arrow.textContent=body.classList.contains("hidden")?"▼":"▲";
 }
-function editNotes(k, ci) {
-  document.getElementById("nv-" + k + "-" + ci).classList.add("hidden");
-  document.getElementById("ne-" + k + "-" + ci).classList.remove("hidden");
-  document.getElementById("ns-" + k + "-" + ci).classList.remove("hidden");
+function editNotes(k,ci){
+  document.getElementById("nv-"+k+"-"+ci).classList.add("hidden");
+  document.getElementById("ne-"+k+"-"+ci).classList.remove("hidden");
+  document.getElementById("ns-"+k+"-"+ci).classList.remove("hidden");
 }
-function saveNotesUI(k, ci) {
-  const t = document.getElementById("ne-" + k + "-" + ci).value;
-  saveNotes(k, ci, t);
-  document.getElementById("nv-" + k + "-" + ci).textContent = t || "નોંધ નથી";
-  document.getElementById("nv-" + k + "-" + ci).classList.remove("hidden");
-  document.getElementById("ne-" + k + "-" + ci).classList.add("hidden");
-  document.getElementById("ns-" + k + "-" + ci).classList.add("hidden");
+function saveNotesUI(k,ci){
+  var t=document.getElementById("ne-"+k+"-"+ci).value;
+  saveNotes(k,ci,t);
+  document.getElementById("nv-"+k+"-"+ci).textContent=t||"નોંધ નથી";
+  document.getElementById("nv-"+k+"-"+ci).classList.remove("hidden");
+  document.getElementById("ne-"+k+"-"+ci).classList.add("hidden");
+  document.getElementById("ns-"+k+"-"+ci).classList.add("hidden");
 }
-function editQ(k, ci, qi) {
-  if (!isUnlocked) return;
-  editingIndex = { key: k, ci, qi };
-  const q = data[k].chapters[ci].questions[qi];
-  document.getElementById("modalTitle").textContent = "✏️ પ્રશ્ન એડિટ";
-  document.getElementById("newChap").value = data[k].chapters[ci].name;
-  document.getElementById("newType").value = q.type;
-  document.getElementById("newText").value = q.text;
-  document.getElementById("newAnswer").value = q.answer || "";
+function editQ(k,ci,qi){
+  if(!isUnlocked)return;
+  editingIndex={key:k,ci:ci,qi:qi};
+  var q=data[k].chapters[ci].questions[qi];
+  document.getElementById("modalTitle").textContent="✏️ પ્રશ્ન એડિટ";
+  document.getElementById("newChap").value=data[k].chapters[ci].name;
+  document.getElementById("newType").value=q.type;
+  document.getElementById("newText").value=q.text;
+  document.getElementById("newAnswer").value=q.answer||"";
   document.getElementById("addModal").classList.remove("hidden");
 }
-function delQ(k, ci, qi) {
-  if (!isUnlocked) return;
-  if (confirm("પ્રશ્ન કાઢી નાખવો?")) {
-    data[k].chapters[ci].questions.splice(qi, 1);
-    saveData();
-    render();
-  }
+function delQ(k,ci,qi){
+  if(!isUnlocked)return;
+  if(confirm("પ્રશ્ન કાઢી નાખવો?")){data[k].chapters[ci].questions.splice(qi,1);saveData();render();}
 }
-function delChapter(k, ci) {
-  if (!isUnlocked) return;
-  if (confirm("આખું પ્રકરણ કાઢી નાખવું?")) {
-    data[k].chapters.splice(ci, 1);
-    saveData();
-    render();
-  }
+function delChapter(k,ci){
+  if(!isUnlocked)return;
+  if(confirm("આખું પ્રકરણ કાઢી નાખવું?")){data[k].chapters.splice(ci,1);saveData();render();}
 }
-function addChapter() {
-  if (!isUnlocked) return;
-  const key = currentStd + "-" + currentSub;
-  if (!data[key]) data[key] = { title: "નવું", chapters: [], color: "from-slate-500 to-slate-700" };
-  const num = data[key].chapters.length + 1;
-  data[key].chapters.push({ name: num + ". નવું પ્રકરણ", notes: "", questions: [] });
-  saveData();
-  render();
+function addChapter(){
+  if(!isUnlocked)return;
+  var key=currentStd+"-"+currentSub;
+  if(!data[key])data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
+  var num=data[key].chapters.length+1;
+  data[key].chapters.push({name:num+". નવું પ્રકરણ",notes:"",questions:[]});
+  saveData();render();
 }
-function openAddModal() {
-  if (!isUnlocked) { alert("હેડર પર 5 વાર ટચ કરી પાસવર્ડ નાખો"); return; }
-  editingIndex = null;
-  document.getElementById("modalTitle").textContent = "➕ નવો પ્રશ્ન";
-  document.getElementById("newChap").value = "";
-  document.getElementById("newText").value = "";
-  document.getElementById("newAnswer").value = "";
+function openAddModal(){
+  if(!isUnlocked){alert("હેડર પર 5 વાર ટચ કરી પાસવર્ડ નાખો");return;}
+  editingIndex=null;
+  document.getElementById("modalTitle").textContent="➕ નવો પ્રશ્ન";
+  document.getElementById("newChap").value="";
+  document.getElementById("newText").value="";
+  document.getElementById("newAnswer").value="";
   document.getElementById("addModal").classList.remove("hidden");
 }
-function closeAddModal() {
-  document.getElementById("addModal").classList.add("hidden");
-  editingIndex = null;
-}
-function saveQuestion() {
-  if (!isUnlocked) return;
-  const chap = document.getElementById("newChap").value.trim() || "નવું પ્રકરણ";
-  const type = document.getElementById("newType").value;
-  const text = document.getElementById("newText").value.trim();
-  const ans = document.getElementById("newAnswer").value.trim();
-  if (!text) return alert("પ્રશ્ન લખો");
-  if (editingIndex) {
-    const { key, ci, qi } = editingIndex;
-    data[key].chapters[ci].questions[qi] = { type, text, answer: ans };
-    data[key].chapters[ci].name = chap;
-  } else {
-    const key = currentStd + "-" + currentSub;
-    if (!data[key]) data[key] = { title: "નવું", chapters: [], color: "from-slate-500 to-slate-700" };
-    let ch = data[key].chapters.find(c => c.name === chap);
-    if (!ch) {
-      ch = { name: chap, questions: [], notes: "" };
-      data[key].chapters.push(ch);
-    }
-    ch.questions.push({ type, text, answer: ans });
+function saveQuestion(){
+  if(!isUnlocked)return;
+  var chap=document.getElementById("newChap").value.trim()||"નવું પ્રકરણ";
+  var type=document.getElementById("newType").value;
+  var text=document.getElementById("newText").value.trim();
+  var ans=document.getElementById("newAnswer").value.trim();
+  if(!text){alert("પ્રશ્ન લખો");return;}
+  if(editingIndex){
+    var k=editingIndex.key,ci=editingIndex.ci,qi=editingIndex.qi;
+    data[k].chapters[ci].questions[qi]={type:type,text:text,answer:ans};
+    data[k].chapters[ci].name=chap;
+  }else{
+    var key=currentStd+"-"+currentSub;
+    if(!data[key])data[key]={title:"નવું",chapters:[],color:"from-slate-500 to-slate-700"};
+    var ch=null;
+    for(var i=0;i<data[key].chapters.length;i++){if(data[key].chapters[i].name===chap){ch=data[key].chapters[i];break;}}
+    if(!ch){ch={name:chap,questions:[],notes:""};data[key].chapters.push(ch);}
+    ch.questions.push({type:type,text:text,answer:ans});
   }
   saveData();
-  closeAddModal();
+  closeModal("addModal");
+  editingIndex=null;
   render();
 }
 
-/* STD TABS */
-document.querySelectorAll(".std-tab").forEach(t => {
-  t.onclick = () => {
-    document.querySelectorAll(".std-tab").forEach(x => {
-      x.classList.remove("active");
-      x.style.background = "linear-gradient(135deg,#312e81,#4c1d95)";
+document.querySelectorAll(".std-tab").forEach(function(t){
+  t.onclick=function(){
+    document.querySelectorAll(".std-tab").forEach(function(x){
+      x.classList.remove("active","text-white");
       x.classList.add("text-indigo-200");
-      x.classList.remove("text-white");
+      x.style.background="linear-gradient(135deg,#312e81,#4c1d95)";
     });
-    t.classList.add("active", "text-white");
+    t.classList.add("active","text-white");
     t.classList.remove("text-indigo-200");
-    t.style.background = "linear-gradient(135deg,#4f46e5,#7c3aed)";
-    currentStd = t.dataset.std;
-    const list = subjects[currentStd] || [];
-    currentSub = list.length ? list[0].id : "key";
+    t.style.background="linear-gradient(135deg,#4f46e5,#7c3aed)";
+    currentStd=t.getAttribute("data-std");
+    var list=subjects[currentStd]||[];
+    currentSub=list.length?list[0].id:"key";
     renderSubTabs();
     render();
   };
