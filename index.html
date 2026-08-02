@@ -2,459 +2,520 @@
 <html lang="gu">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GSEB TOPPER | ધોરણ 6-7-8 + 25 Marks Test</title>
-
-  <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>GSEB TOPPER | ધોરણ 6-7-8</title>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-  <script>
-    window.__unocss = {
-      shortcuts: {
-        'btn': 'px-4 py-2 rounded-xl font-medium transition-all duration-200 active:scale-95 cursor-pointer',
-        'card': 'bg-white/95 backdrop-blur rounded-2xl shadow-lg border border-white/60',
-      }
-    }
-  </script>
-
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Gujarati:wght@400;500;600;700&display=swap');
-    body { font-family: 'Noto Sans Gujarati', system-ui, sans-serif; }
-    .q-card:hover { transform: translateY(-2px); }
-    .chapter-header:hover { filter: brightness(1.04); }
-    textarea { resize: vertical; min-height: 70px; }
-    .locked .edit-controls { display: none !important; }
-    .locked .add-btn { display: none !important; }
-    .locked .name-edit { display: none !important; }
-    .answer-box { background: linear-gradient(135deg, #ecfdf5, #d1fae5); border-left: 4px solid #10b981; }
-    .test-option { transition: all 0.15s; }
-    .test-option:hover { background: #e0e7ff; }
-    .test-option.selected { background: #c7d2fe; border-color: #6366f1; }
-    .correct { background: #d1fae5 !important; border-color: #10b981 !important; }
-    .wrong { background: #fee2e2 !important; border-color: #ef4444 !important; }
-    ::-webkit-scrollbar { width: 8px; }
-    ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 4px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans Gujarati', system-ui, sans-serif;
+      background: linear-gradient(135deg, #e0e7ff 0%, #fce7f3 50%, #dbeafe 100%);
+      min-height: 100vh;
+      color: #1e293b;
+    }
+    .hidden { display: none !important; }
+    .btn {
+      padding: 10px 18px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+    .btn:active { transform: scale(0.96); }
+    .card {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      border: 1px solid #e2e8f0;
+    }
+    .header {
+      background: linear-gradient(90deg, #4338ca, #7c3aed, #db2777);
+      color: white;
+      padding: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .tabs {
+      background: #1e1b4b;
+      display: flex;
+      position: sticky;
+      top: 70px;
+      z-index: 40;
+    }
+    .tab {
+      flex: 1;
+      padding: 14px;
+      text-align: center;
+      color: #c7d2fe;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .tab.active { background: #4338ca; color: white; }
+    .subtabs {
+      background: white;
+      padding: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 118px;
+      z-index: 30;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .subtab {
+      padding: 10px 20px;
+      border-radius: 999px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 14px;
+    }
+    .subtab.active { background: #4f46e5; color: white; }
+    .chapter {
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .chapter-head {
+      padding: 14px 16px;
+      background: linear-gradient(90deg, #eef2ff, #faf5ff);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      color: #312e81;
+    }
+    .q-card {
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+    .badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .answer-box {
+      background: #ecfdf5;
+      border-left: 4px solid #10b981;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 8px;
+      font-size: 13px;
+      color: #065f46;
+    }
+    .modal-bg {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+      max-width: 420px;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      font-size: 15px;
+      margin-bottom: 12px;
+      font-family: inherit;
+    }
+    .locked .edit-only { display: none !important; }
+    .test-option {
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+    .test-option.selected {
+      background: #c7d2fe;
+      border-color: #4f46e5;
+    }
   </style>
 </head>
-
-<body class="bg-gradient-to-br from-slate-100 via-indigo-50 to-purple-100 min-h-screen text-slate-800 locked" id="appBody">
+<body class="locked" id="appBody">
 
   <!-- HEADER -->
-  <header class="bg-gradient-to-r from-indigo-700 via-purple-600 to-pink-500 text-white shadow-2xl sticky top-0 z-50 select-none" id="mainHeader">
-    <div class="max-w-7xl mx-auto px-4 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
-      <div class="text-center md:text-left">
-        <h1 class="text-3xl md:text-4xl font-bold tracking-tight" id="siteTitle">GSEB TOPPER</h1>
-        <p class="text-indigo-100 text-sm md:text-base mt-1" id="siteSubtitle">ધોરણ 6 • 7 • 8 | 25 Marks Test + Answer Key + Notes</p>
+  <div class="header" id="mainHeader">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+      <div>
+        <h1 style="font-size:22px;font-weight:700;" id="siteTitle">GSEB TOPPER</h1>
+        <p style="font-size:13px;opacity:0.9;" id="siteSubtitle">ધોરણ 6 • 7 • 8 | ગણિત & વિજ્ઞાન</p>
       </div>
-      <div class="flex gap-2 text-xs items-center">
-        <span class="bg-white/25 px-3 py-1.5 rounded-full backdrop-blur" id="statusBadge">🔒 View Only</span>
-        <button id="editNameBtn" class="name-edit btn bg-white/20 hover:bg-white/30 text-white text-xs py-1.5 px-3 hidden">✏️ નામ બદલો</button>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span id="statusBadge" style="background:rgba(255,255,255,0.25);padding:6px 12px;border-radius:999px;font-size:12px;">🔒 View Only</span>
+        <button id="editNameBtn" class="edit-only btn" style="background:rgba(255,255,255,0.2);color:white;display:none;" onclick="openNameModal()">✏️ નામ</button>
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- MAIN TABS -->
-  <div class="bg-indigo-950 text-white sticky top-[76px] z-40 shadow-lg">
-    <div class="max-w-7xl mx-auto flex">
-      <button class="tab active flex-1 py-3.5 font-semibold text-center hover:bg-indigo-800 transition" data-std="6">ધોરણ 6</button>
-      <button class="tab flex-1 py-3.5 font-semibold text-center hover:bg-indigo-800 transition" data-std="7">ધોરણ 7</button>
-      <button class="tab flex-1 py-3.5 font-semibold text-center hover:bg-indigo-800 transition" data-std="8">ધોરણ 8</button>
-    </div>
+  <!-- STD TABS -->
+  <div class="tabs">
+    <button class="tab active" data-std="6">ધોરણ 6</button>
+    <button class="tab" data-std="7">ધોરણ 7</button>
+    <button class="tab" data-std="8">ધોરણ 8</button>
   </div>
 
   <!-- SUB TABS -->
-  <div class="bg-white/90 backdrop-blur border-b border-indigo-100 sticky top-[128px] z-30 shadow-sm">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex gap-3 justify-center flex-wrap">
-      <button class="subtab active px-7 py-2.5 rounded-full font-medium shadow transition" data-sub="sci">🔬 વિજ્ઞાન</button>
-      <button class="subtab px-7 py-2.5 rounded-full font-medium bg-slate-100 text-slate-600 shadow transition" data-sub="math">📐 ગણિત</button>
-      <button class="subtab px-7 py-2.5 rounded-full font-medium bg-slate-100 text-slate-600 shadow transition" data-sub="key">🔑 Answer Key</button>
-    </div>
+  <div class="subtabs">
+    <button class="subtab active" data-sub="sci">🔬 વિજ્ઞાન</button>
+    <button class="subtab" data-sub="math">📐 ગણિત</button>
+    <button class="subtab" data-sub="key">🔑 Answer Key</button>
   </div>
 
-  <main class="max-w-7xl mx-auto px-4 py-8">
-    <div class="card p-4 mb-6 flex gap-3 items-start bg-gradient-to-r from-amber-50 to-orange-50 border-amber-200">
-      <span class="text-2xl">✨</span>
-      <div class="text-sm leading-relaxed" id="infoBanner">
-        <strong>સૂચના:</strong> દરેક પ્રકરણના અંતે <b>25 Marks Test</b> છે (1 ગુણ × 25 પ્રશ્નો). Notes પણ છે. Edit માટે હેડર પર 5 વાર ક્લિક + પાસવર્ડ.
+  <main style="max-width:900px;margin:0 auto;padding:16px;">
+    <div class="card" style="padding:14px;margin-bottom:16px;background:#fffbeb;border-color:#fcd34d;">
+      <div id="infoBanner" style="font-size:13px;">
+        <b>સૂચના:</b> દરેક પ્રકરણના અંતે <b>25 Marks Test</b> છે. Edit માટે હેડર પર <b>5 વાર ટચ</b> કરો.
       </div>
     </div>
     <div id="dynamicArea"></div>
   </main>
 
-  <footer class="bg-slate-900 text-slate-300 text-center py-8 mt-16">
-    <p class="text-xl font-bold text-white" id="footerTitle">GSEB TOPPER</p>
-    <p class="text-sm mt-2" id="footerSub">25 Marks Test + Notes + Confetti • 2026</p>
+  <footer style="background:#0f172a;color:#94a3b8;text-align:center;padding:24px;margin-top:40px;">
+    <p style="color:white;font-weight:700;font-size:18px;" id="footerTitle">GSEB TOPPER</p>
+    <p style="font-size:12px;margin-top:6px;" id="footerSub">25 Marks Test + Notes • 2026</p>
   </footer>
 
   <!-- PASSWORD MODAL -->
-  <div id="passModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-sm p-6 space-y-4 shadow-2xl">
-      <h3 class="text-xl font-bold text-indigo-700 text-center">🔐 Edit Mode Unlock</h3>
-      <input type="password" id="passInput" class="w-full px-4 py-3 border rounded-xl text-center text-lg tracking-widest outline-none focus:ring-2 focus:ring-indigo-400" placeholder="••••••••" />
-      <p id="passError" class="text-red-500 text-sm text-center hidden">ખોટો પાસવર્ડ!</p>
-      <div class="flex gap-3">
-        <button onclick="closePassModal()" class="btn flex-1 bg-slate-200">રદ</button>
-        <button onclick="checkPassword()" class="btn flex-1 bg-indigo-600 text-white">Unlock</button>
+  <div id="passModal" class="modal-bg hidden">
+    <div class="modal">
+      <h3 style="text-align:center;color:#4338ca;margin-bottom:12px;">🔐 Edit Mode</h3>
+      <input type="password" id="passInput" placeholder="પાસવર્ડ દાખલ કરો" style="text-align:center;font-size:18px;letter-spacing:3px;" />
+      <p id="passError" class="hidden" style="color:#ef4444;text-align:center;font-size:13px;margin-bottom:10px;">ખોટો પાસવર્ડ!</p>
+      <div style="display:flex;gap:10px;">
+        <button class="btn" style="flex:1;background:#e2e8f0;" onclick="closePassModal()">રદ</button>
+        <button class="btn" style="flex:1;background:#4f46e5;color:white;" onclick="checkPassword()">Unlock</button>
       </div>
     </div>
   </div>
 
-  <!-- NAME EDIT MODAL -->
-  <div id="nameModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[60] hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-md p-6 space-y-4">
-      <h3 class="text-xl font-bold text-indigo-700">✏️ નામ બદલો</h3>
-      <input id="editTitle" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ટાઇટલ" />
-      <input id="editSubtitle" class="w-full px-3 py-2.5 border rounded-xl" placeholder="સબટાઇટલ" />
-      <input id="editFooter" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ફુટર" />
-      <input id="editFooterSub" class="w-full px-3 py-2.5 border rounded-xl" placeholder="ફુટર સબ" />
-      <div class="flex gap-3 justify-end">
-        <button onclick="closeNameModal()" class="btn bg-slate-200">રદ</button>
-        <button onclick="saveNames()" class="btn bg-indigo-600 text-white">સાચવો</button>
+  <!-- NAME MODAL -->
+  <div id="nameModal" class="modal-bg hidden">
+    <div class="modal">
+      <h3 style="color:#4338ca;margin-bottom:12px;">✏️ નામ બદલો</h3>
+      <input id="editTitle" placeholder="ટાઇટલ" />
+      <input id="editSubtitle" placeholder="સબટાઇટલ" />
+      <input id="editFooter" placeholder="ફુટર" />
+      <input id="editFooterSub" placeholder="ફુટર સબ" />
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button class="btn" style="background:#e2e8f0;" onclick="closeNameModal()">રદ</button>
+        <button class="btn" style="background:#4f46e5;color:white;" onclick="saveNames()">સાચવો</button>
       </div>
     </div>
   </div>
 
   <!-- ADD QUESTION MODAL -->
-  <div id="addModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="card w-full max-w-lg p-6 space-y-4 max-h-[90vh] overflow-y-auto">
-      <h3 class="text-xl font-bold text-indigo-700" id="modalTitle">➕ નવો પ્રશ્ન</h3>
-      <input id="newChap" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રકરણનું નામ" />
-      <select id="newType" class="w-full px-3 py-2.5 border rounded-xl">
-        <option>MCQ</option><option>ખાલી જગ્યા</option><option>ટૂંકા જવાબ</option><option>તફાવત</option>
-        <option>વૈજ્ઞાનિક કારણ</option><option>HOTS</option><option>પ્રવૃત્તિ</option><option>મને ઓળખો</option>
+  <div id="addModal" class="modal-bg hidden">
+    <div class="modal">
+      <h3 style="color:#4338ca;margin-bottom:12px;" id="modalTitle">➕ નવો પ્રશ્ન</h3>
+      <input id="newChap" placeholder="પ્રકરણનું નામ" />
+      <select id="newType">
+        <option>MCQ</option><option>ખાલી જગ્યા</option><option>ટૂંકા જવાબ</option>
+        <option>તફાવત</option><option>વૈજ્ઞાનિક કારણ</option><option>HOTS</option>
+        <option>પ્રવૃત્તિ</option><option>મને ઓળખો</option>
       </select>
-      <textarea id="newText" rows="3" class="w-full px-3 py-2.5 border rounded-xl" placeholder="પ્રશ્ન"></textarea>
-      <textarea id="newAnswer" rows="2" class="w-full px-3 py-2.5 border border-green-300 rounded-xl" placeholder="જવાબ (Answer Key)"></textarea>
-      <div class="flex gap-3 justify-end">
-        <button onclick="closeAddModal()" class="btn bg-slate-200">રદ</button>
-        <button onclick="saveQuestion()" class="btn bg-indigo-600 text-white">સાચવો</button>
+      <textarea id="newText" rows="3" placeholder="પ્રશ્ન"></textarea>
+      <textarea id="newAnswer" rows="2" placeholder="જવાબ" style="border-color:#86efac;"></textarea>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button class="btn" style="background:#e2e8f0;" onclick="closeAddModal()">રદ</button>
+        <button class="btn" style="background:#4f46e5;color:white;" onclick="saveQuestion()">સાચવો</button>
       </div>
     </div>
   </div>
 
-  <!-- ========== 25 MARKS TEST MODAL ========== -->
-  <div id="testModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-[70] hidden overflow-y-auto">
-    <div class="min-h-screen flex items-start justify-center p-4 py-8">
-      <div class="card w-full max-w-3xl p-6 shadow-2xl">
-        <div class="flex justify-between items-center mb-4">
-          <h2 class="text-xl font-bold text-indigo-700" id="testTitle">📝 25 Marks Test</h2>
-          <button onclick="closeTest()" class="text-slate-500 hover:text-red-500 text-2xl">×</button>
-        </div>
-        <div id="testProgress" class="text-sm text-slate-500 mb-4"></div>
-        <div id="testBody"></div>
-        <div id="testResult" class="hidden text-center py-8"></div>
-        <div class="flex gap-3 mt-6 justify-end" id="testActions">
-          <button onclick="closeTest()" class="btn bg-slate-200">બંધ કરો</button>
-          <button onclick="submitTest()" class="btn bg-green-600 hover:bg-green-700 text-white" id="submitBtn">સબમિટ કરો (25 Marks)</button>
-        </div>
+  <!-- TEST MODAL -->
+  <div id="testModal" class="modal-bg hidden" style="align-items:flex-start;overflow-y:auto;padding-top:30px;">
+    <div class="modal" style="max-width:600px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+        <h2 style="color:#4338ca;font-size:18px;" id="testTitle">📝 25 Marks Test</h2>
+        <button onclick="closeTest()" style="font-size:24px;background:none;border:none;cursor:pointer;">×</button>
+      </div>
+      <div id="testProgress" style="font-size:13px;color:#64748b;margin-bottom:12px;"></div>
+      <div id="testBody"></div>
+      <div id="testResult" class="hidden" style="text-align:center;padding:30px 0;"></div>
+      <div id="testActions" style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">
+        <button class="btn" style="background:#e2e8f0;" onclick="closeTest()">બંધ</button>
+        <button class="btn" style="background:#16a34a;color:white;" id="submitBtn" onclick="submitTest()">સબમિટ (25 Marks)</button>
       </div>
     </div>
   </div>
 
 <script>
-const CORRECT_PASSWORD = "imvnod@210124";
-const CLICKS_NEEDED = 5;
-const storeKey = "gseb_topper_v3";
-const unlockKey = "gseb_edit_v3";
-const notesKey = "gseb_notes_v3";
+const PASSWORD = "imvnod@210124";
+const CLICKS = 5;
+const STORE = "gseb_v4";
+const UNLOCK = "gseb_unlock_v4";
+const NOTES = "gseb_notes_v4";
 
-/* ===================== DATA (with answers) - abbreviated for size, full structure kept ===================== */
 const data = {
-  "6-sci": {
-    title: "ધોરણ 6 વિજ્ઞાન",
-    color: "from-emerald-500 to-teal-600",
-    chapters: [
-      { name: "1. વિજ્ઞાનની અદ્ભુત દુનિયા", notes: "વિજ્ઞાન એ અવલોકન, પ્રયોગ અને તારણની પ્રક્રિયા છે.", questions: [
-        { type: "ટૂંકા જવાબ", text: "પાણી ક્યારે ઉકળવા લાગે છે?", answer: "100°C" },
-        { type: "ટૂંકા જવાબ", text: "વનસ્પતિના પાંદડા કઈ ઋતુમાં ખરે છે?", answer: "પાનખર/શિયાળુ" },
-        { type: "HOTS", text: "બીજમાંથી છોડ કેવી રીતે ઉગાડશો?", answer: "પલાળી, વાવી, પાણી+સૂર્યપ્રકાશ આપી" },
-        { type: "વિચારપ્રેરક", text: "સાઇકલ પેડલ બંધ કર્યા પછી કેમ અટકે?", answer: "ઘર્ષણને કારણે" },
-        { type: "MCQ", text: "સૂર્ય આપે છે?\n(A) પ્રકાશ (B) ગરમી (C) બંને (D) કંઈ નહીં", answer: "(C) બંને" }
-      ]},
-      { name: "2. સજીવ સૃષ્ટિમાં વિવિધતા", notes: "સજીવોમાં આકાર, રહેઠાણ, ખોરાકની વિવિધતા જોવા મળે છે.", questions: [
-        { type: "MCQ", text: "સજીવ કયું?\n(A) પથ્થર (B) છોડ (C) પાણી (D) હવા", answer: "(B) છોડ" },
-        { type: "ખાલી જગ્યા", text: "વનસ્પતિના મુખ્ય ભાગો ____, ____, ____", answer: "મૂળ, થડ, પાંદડા" },
-        { type: "તફાવત", text: "વનસ્પતિ vs પ્રાણી", answer: "સ્વાવલંબી vs પરાવલંબી" }
-      ]},
-      { name: "3. ઉચિત આહાર", notes: "સંતુલિત આહારમાં કાર્બો, પ્રોટીન, ચરબી, વિટામિન, ખનિજ હોવા જોઈએ.", questions: [
-        { type: "MCQ", text: "ઊર્જા આપનાર તત્ત્વ?", answer: "કાર્બોહાઇડ્રેટ" },
-        { type: "ખાલી જગ્યા", text: "વિટામિન C ની ઉણપથી ____ રોગ", answer: "સ્કર્વી" }
-      ]},
-      { name: "4. ચુંબકને જાણીએ", notes: "ચુંબકના બે ધ્રુવ – ઉત્તર અને દક્ષિણ. સમાન ધ્રુવ અપાકર્ષે, વિષમ આકર્ષે.", questions: [
-        { type: "MCQ", text: "ચુંબકના ધ્રુવો?", answer: "ઉત્તર-દક્ષિણ" },
-        { type: "ખાલી જગ્યા", text: "સમાન ધ્રુવો એકબીજાને ____", answer: "ધકેલે" }
-      ]},
-      { name: "5. લંબાઈનું માપન અને ગતિ", notes: "SI એકમ: મીટર. ઝડપ = અંતર/સમય.", questions: [
-        { type: "MCQ", text: "લંબાઈનો SI એકમ?", answer: "મીટર (m)" },
-        { type: "HOTS", text: "120 કિમી 2 કલાકમાં → ઝડપ?", answer: "60 કિમી/કલાક" }
-      ]},
-      { name: "6. આપણી આસપાસની સામગ્રી", notes: "પદાર્થો ઘન, પ્રવાહી, વાયુ સ્વરૂપે હોય. પારદર્શક/અપારદર્શક.", questions: [
-        { type: "MCQ", text: "પારદર્શક પદાર્થ?", answer: "કાચ / પાણી" }
-      ]},
-      { name: "7. તાપમાન અને તેનું માપન", notes: "થર્મોમીટરથી તાપમાન માપાય. માનવ શરીર 37°C.", questions: [
-        { type: "MCQ", text: "તાપમાન માપવાનું સાધન?", answer: "થર્મોમીટર" },
-        { type: "ખાલી જગ્યા", text: "માનવ શરીરનું તાપમાન ____ °C", answer: "37" }
-      ]},
-      { name: "8. પાણીની વિવિધ અવસ્થાઓ", notes: "ઘન-બરફ, પ્રવાહી-પાણી, વાયુ-વરાળ. બાષ્પીભવન અને સંઘનન.", questions: [
-        { type: "MCQ", text: "પાણીની ત્રણ અવસ્થાઓ?", answer: "ઘન, પ્રવાહી, વાયુ" }
-      ]},
-      { name: "9. અલગીકરણની પદ્ધતિઓ", notes: "ગાળણ, બાષ્પીભવન, નિસ્યંદન, છાણણ વગેરે.", questions: [
-        { type: "MCQ", text: "મીઠું+રેતી અલગ કરવાની પદ્ધતિ?", answer: "ઓગાળી ગાળણ + બાષ્પીભવન" }
-      ]},
-      { name: "10. સજીવોની લાક્ષણિકતાઓ", notes: "વૃદ્ધિ, પ્રજનન, શ્વસન, ઉત્તેજના, ચયાપચય.", questions: [
-        { type: "ટૂંકા જવાબ", text: "સજીવોની મુખ્ય લાક્ષણિકતાઓ?", answer: "વૃદ્ધિ, પ્રજનન, શ્વસન, ચયાપચય" }
-      ]},
-      { name: "11. કુદરતનો અમૂલ્ય ખજાનો", notes: "પુનઃપ્રાપ્ય અને પુનઃઅપ્રાપ્ય સંસાધનો.", questions: [
-        { type: "ટૂંકા જવાબ", text: "કુદરતી સંસાધનોના ઉદાહરણ?", answer: "પાણી, હવા, જંગલ, કોલસો" }
-      ]},
-      { name: "12. પૃથ્વીને પાર", notes: "પોપડો, પ્રવર, કેન્દ્ર – પૃથ્વીના સ્તરો.", questions: [
-        { type: "ટૂંકા જવાબ", text: "પૃથ્વીના મુખ્ય સ્તરો?", answer: "પોપડો, પ્રવર, કેન્દ્ર" }
-      ]}
-    ]
-  },
-  "6-math": {
-    title: "ધોરણ 6 ગણિત",
-    color: "from-blue-500 to-cyan-600",
-    chapters: [
-      { name: "1. પેટર્ન્સ", notes: "પેટર્ન એ પુનરાવર્તિત ક્રમ છે.", questions: [
-        { type: "HOTS", text: "પેટર્ન બનાવો અને નિયમ લખો.", answer: "વિદ્યાર્થી પોતે" }
-      ]},
-      { name: "2. સંખ્યાઓ સાથે રમત", notes: "સૌથી નાની 3 અંકની સંખ્યા 100.", questions: [
-        { type: "ટૂંકા જવાબ", text: "સૌથી નાની 3 અંકની સંખ્યા?", answer: "100" }
-      ]},
-      { name: "3. મૂળભૂત ક્રિયાઓ", notes: "સરવાળો, બાદબાકી, ગુણાકાર, ભાગાકાર.", questions: [
-        { type: "MCQ", text: "456+789=?", answer: "1245" }
-      ]},
-      { name: "4. પૂર્ણાંકો", notes: "ધન, ઋણ અને શૂન્ય.", questions: [
-        { type: "MCQ", text: "−5 અને 3 માં મોટું?", answer: "3" }
-      ]},
-      { name: "5. અપૂર્ણાંકો", notes: "અપૂર્ણાંક = ભાગ/પૂર્ણ.", questions: [
-        { type: "MCQ", text: "1/2 + 1/3 =?", answer: "5/6" }
-      ]},
-      { name: "6. દશાંશ", notes: "0.5 = 1/2", questions: [
-        { type: "MCQ", text: "0.5 ને અપૂર્ણાંકમાં?", answer: "1/2" }
-      ]},
-      { name: "7. બીજગણિત", notes: "ચલ અને અચલ.", questions: [
-        { type: "MCQ", text: "x+5=12 → x=?", answer: "7" }
-      ]},
-      { name: "8. ગુણોત્તર", notes: "ગુણોત્તર એ તુલના છે.", questions: [
-        { type: "MCQ", text: "2:3 અને 4:6 સમપ્રમાણ?", answer: "હા" }
-      ]},
-      { name: "9. માહિતી નિરૂપણ", notes: "પિક્ટોગ્રાફ, બાર ગ્રાફ.", questions: [
-        { type: "પ્રવૃત્તિ", text: "આલેખ બનાવો.", answer: "વિદ્યાર્થી પોતે" }
-      ]},
-      { name: "10. માપન", notes: "1 m = 100 cm", questions: [
-        { type: "MCQ", text: "1 મીટર = ? સે.મી.", answer: "100" }
-      ]},
-      { name: "11. પરિમિતિ અને ક્ષેત્રફળ", notes: "ચોરસ ક્ષેત્રફળ = બાજુ²", questions: [
-        { type: "HOTS", text: "5 સે.મી. બાજુના ચોરસનું ક્ષેત્રફળ?", answer: "25 સે.મી.²" }
-      ]},
-      { name: "12. વ્યવહારિક ભૂમિતિ", notes: "કોણમાપકથી કોણ માપો.", questions: [
-        { type: "પ્રવૃત્તિ", text: "કોણ માપો.", answer: "વિદ્યાર્થી પોતે" }
-      ]}
-    ]
-  },
-  "7-sci": {
-    title: "ધોરણ 7 વિજ્ઞાન",
-    color: "from-violet-500 to-purple-700",
-    chapters: [
-      { name: "1. વનસ્પતિમાં પોષણ", notes: "પ્રકાશસંશ્લેષણ: 6CO₂+6H₂O → C₆H₁₂O₆+6O₂. રાઇઝોબિયમ નાઇટ્રોજન સ્થાપન કરે.", questions: [
-        { type: "MCQ", text: "ઊર્જાનો મુખ્ય સ્ત્રોત?\n(A) સૂર્ય (B) ચંદ્ર (C) પવન (D) પાણી", answer: "(A) સૂર્ય" },
-        { type: "ખાલી જગ્યા", text: "નાઇટ્રોજન સ્થાપનમાં ____ બેક્ટેરિયા", answer: "રાઇઝોબિયમ" },
-        { type: "તફાવત", text: "સ્વાવલંબી vs પરાવલંબી", answer: "પોતે બનાવે vs બીજા પર નિર્ભર" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "6 મહિના સૂર્યપ્રકાશ ન મળે તો?", answer: "પ્રકાશસંશ્લેષણ બંધ, ખોરાક-ઓક્સિજન અભાવ" },
-        { type: "HOTS", text: "પ્રકાશસંશ્લેષણ સમીકરણ", answer: "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂" }
-      ]},
-      { name: "2. પ્રાણીઓમાં પોષણ", notes: "પાચનતંત્ર: મોં→અન્નનળી→જઠર→નાનું/મોટું આંતરડું.", questions: [
-        { type: "MCQ", text: "શોષણ સપાટી વધારો ક્યાં?", answer: "નાના આંતરડામાં (વિલાઈ)" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "વાગોળનાર સેલ્યુલોઝ પાચન કરી શકે?", answer: "જઠરમાં સેલ્યુલેઝ બેક્ટેરિયા" }
-      ]},
-      { name: "3. ઉષ્મા", notes: "વહન, સંવહન, વિકિરણ. સુવાહક/અવાહક.", questions: [
-        { type: "મને ઓળખો", text: "પ્રવાહી તાપમાન માપું છું", answer: "લેબ થર્મોમીટર" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "ઉનાળામાં હલકા રંગના કપડાં?", answer: "ઓછી ઉષ્મા શોષે" }
-      ]},
-      { name: "4. એસિડ, બેઈઝ અને ક્ષાર", notes: "એસિડ+બેઈઝ → ક્ષાર+પાણી (તટસ્થીકરણ).", questions: [
-        { type: "MCQ", text: "લાલ લિટમસ વાદળી કોણ કરે?", answer: "બેઈઝ" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "કીડી કરડે ત્યારે કેટેમાઈન?", answer: "એસિડ તટસ્થ કરવા" }
-      ]},
-      { name: "5. ભૌતિક અને રાસાયણિક ફેરફારો", notes: "ભૌતિક: નવો પદાર્થ નહીં. રાસાયણિક: નવો પદાર્થ.", questions: [
-        { type: "તફાવત", text: "ભૌતિક vs રાસાયણિક", answer: "નવો પદાર્થ ન બને vs બને" }
-      ]},
-      { name: "6. સજીવોમાં શ્વસન", notes: "જારક (O₂ સાથે) અને અજારક શ્વસન.", questions: [
-        { type: "તફાવત", text: "જારક vs અજારક", answer: "O₂ સાથે વધુ ઊર્જા vs વગર ઓછી ઊર્જા" }
-      ]},
-      { name: "7. વહન", notes: "હૃદય રૂધિર પંપ કરે. વનસ્પતિમાં ઝાયલેમ-ફ્લોએમ.", questions: [
-        { type: "MCQ", text: "રૂધિર ફેરવનાર?", answer: "હૃદય" }
-      ]},
-      { name: "8. વનસ્પતિમાં પ્રજનન", notes: "પુષ્પ મુખ્ય પ્રજનન અંગ. પરાગનયન અને ફલન.", questions: [
-        { type: "MCQ", text: "મુખ્ય પ્રજનન અંગ?", answer: "પુષ્પ" }
-      ]},
-      { name: "9. ગતિ અને સમય", notes: "ઝડપ = અંતર/સમય. SI: m/s.", questions: [
-        { type: "MCQ", text: "મીટરની સંજ્ઞા?", answer: "m" },
-        { type: "HOTS", text: "100m 20s → ઝડપ?", answer: "5 m/s = 18 km/h" }
-      ]},
-      { name: "10. વિદ્યુતપ્રવાહ", notes: "તંતુ (ફિલામેન્ટ). ઉષ્મીય અને ચુંબકીય અસર.", questions: [
-        { type: "ખાલી જગ્યા", text: "બલ્બનો પાતળો તાર ____", answer: "તંતુ/ફિલામેન્ટ" }
-      ]},
-      { name: "11. પ્રકાશ", notes: "સમતલ અરીસો: આભાસી, સમાન કદ, પાર્શ્વ પરિવર્તિત.", questions: [
-        { type: "MCQ", text: "સમતલ અરીસાના પ્રતિબિંબની લાક્ષણિકતા?", answer: "સમાન કદ, આભાસી, પાર્શ્વ પરિવર્તિત" }
-      ]},
-      { name: "12. જંગલો", notes: "જંગલો ઓક્સિજન, જમીન સંરક્ષણ, જળચક્રમાં મદદ કરે.", questions: [
-        { type: "વૈજ્ઞાનિક કારણ", text: "જંગલો ધોવાણ અટકાવે?", answer: "મૂળ જમીન પકડે, પાંદડા વરસાદ ધીમો કરે" }
-      ]},
-      { name: "13. દૂષિત પાણી", notes: "કોલેરા, ટાઇફોઇડ દૂષિત પાણીથી. તેલ-ચરબી ગટરમાં ન નાખો.", questions: [
-        { type: "વૈજ્ઞાનિક કારણ", text: "તેલ ગટરમાં ન નાખો?", answer: "ગટર બંધ થાય, શુદ્ધિકરણ મુશ્કેલ" }
-      ]}
-    ]
-  },
-  "7-math": {
-    title: "ધોરણ 7 ગણિત",
-    color: "from-rose-500 to-pink-600",
-    chapters: [
-      { name: "1. પૂર્ણાંકો", notes: "પૂર્ણાંકો પર સરવાળો-બાદબાકી.", questions: [{ type: "MCQ", text: "−7+5=?", answer: "−2" }] },
-      { name: "2. અપૂર્ણાંક અને દશાંશ", notes: "2/5 = 0.4", questions: [{ type: "MCQ", text: "2/5 દશાંશમાં?", answer: "0.4" }] },
-      { name: "3. માહિતી નિરૂપણ", notes: "બાર ગ્રાફ, પાઈ ચાર્ટ.", questions: [{ type: "પ્રવૃત્તિ", text: "ગ્રાફ બનાવો", answer: "વિદ્યાર્થી" }] },
-      { name: "4. સરળ સમીકરણો", notes: "સમીકરણ ઉકેલવા ટ્રાન્સપોઝ.", questions: [{ type: "HOTS", text: "3x+5=20", answer: "x=5" }] },
-      { name: "5. રેખાઓ અને કોણ", notes: "અનુરૂપ, વૈકલ્પિક કોણ સમાન.", questions: [{ type: "ટૂંકા જવાબ", text: "સમાંતર+ત્રાંસી કોણો", answer: "અનુરૂપ=સમાન, વૈકલ્પિક=સમાન" }] },
-      { name: "6. ત્રિકોણ", notes: "કોણ સરવાળો 180°.", questions: [{ type: "MCQ", text: "ત્રિકોણ કોણ સરવાળો?", answer: "180°" }] },
-      { name: "7. સર્વસમતા", notes: "SSS, SAS, ASA, RHS", questions: [{ type: "ટૂંકા જવાબ", text: "સર્વસમતા નિયમો", answer: "SSS SAS ASA RHS" }] },
-      { name: "8. તુલનાત્મક અંકગણિત", notes: "% = (ભાગ/પૂર્ણ)×100", questions: [{ type: "MCQ", text: "20% of 150", answer: "30" }] },
-      { name: "9. પરિમેય ક્ષેત્રફળ", notes: "લંબચોરસ = l×b", questions: [{ type: "HOTS", text: "12×8 ક્ષેત્રફળ", answer: "96 સે.મી.²" }] },
-      { name: "10. બીજગણિતીય રાશિઓ", notes: "ચલ + અચલ", questions: [{ type: "ટૂંકા જવાબ", text: "બીજગણિતીય રાશિ?", answer: "સંખ્યા+ચલથી બનેલી" }] },
-      { name: "11. ઘાત", notes: "aᵐ × aⁿ = aᵐ⁺ⁿ", questions: [{ type: "MCQ", text: "2³×2²", answer: "32" }] },
-      { name: "12. સમમિતિ", notes: "અરીસા રેખા.", questions: [{ type: "પ્રવૃત્તિ", text: "સમમિત આકાર", answer: "વિદ્યાર્થી" }] },
-      { name: "13. વિઝ્યુઅલાઈઝેશન", notes: "ડબલ બાર ગ્રાફ.", questions: [{ type: "ટૂંકા જવાબ", text: "ડબલ બાર ગ્રાફ", answer: "બે ડેટા સેટની તુલના" }] }
-    ]
-  },
-  "8-sci": {
-    title: "ધોરણ 8 વિજ્ઞાન",
-    color: "from-orange-500 to-red-600",
-    chapters: [
-      { name: "1. પાક ઉત્પાદન", notes: "રવિ-ખરીફ પાક. NPK ખાતર. ફેરબદલી.", questions: [
-        { type: "MCQ", text: "ખેતીની સાચી ક્રમ?", answer: "જમીન→વાવણી→સિંચાઈ→લણણી" },
-        { type: "મને ઓળખો", text: "નાઇટ્રોજન સ્થાપન બેક્ટેરિયા", answer: "રાઇઝોબિયમ" },
-        { type: "તફાવત", text: "રવિ vs ખરીફ", answer: "શિયાળુ vs ચોમાસુ" }
-      ]},
-      { name: "2. સૂક્ષ્મજીવો", notes: "મિત્ર (દહીં, એન્ટિબાયોટિક) અને શત્રુ (રોગ).", questions: [
-        { type: "MCQ", text: "મેલેરિયા કારક?", answer: "પ્લાઝમોડિયમ" },
-        { type: "તફાવત", text: "બેક્ટેરિયા vs વાઇરસ", answer: "જીવંત કોષ vs નિર્જીવ/સજીવ" }
-      ]},
-      { name: "3. કોલસો પેટ્રોલિયમ", notes: "પુનઃઅપ્રાપ્ય. કાળું સોનું.", questions: [
-        { type: "તફાવત", text: "પુનઃપ્રાપ્ય vs અપ્રાપ્ય", answer: "સૂર્ય-પવન vs કોલસો-પેટ્રોલ" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "કાળું સોનું?", answer: "મૂલ્યવાન + અનેક ઉપયોગ" }
-      ]},
-      { name: "4. દહન જ્યોત", notes: "દહનશીલ/અદહનશીલ. LPG સ્વચ્છ.", questions: [
-        { type: "MCQ", text: "દહનશીલ પદાર્થ?", answer: "કાગળ/લાકડું" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "LPG હિતાવહ?", answer: "સ્વચ્છ, વધુ કેલરી" }
-      ]},
-      { name: "5. સંરક્ષણ", notes: "અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન.", questions: [
-        { type: "તફાવત", text: "અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન", answer: "મર્યાદિત vs સંપૂર્ણ સુરક્ષિત" }
-      ]},
-      { name: "6. પ્રાણીઓમાં પ્રજનન", notes: "લિંગી/અલિંગી. IVF.", questions: [
-        { type: "MCQ", text: "નર અંગ નથી?", answer: "અંડપિંડ" },
-        { type: "તફાવત", text: "લિંગી vs અલિંગી", answer: "બે જનક vs એક જનક" }
-      ]},
-      { name: "7. કિશોરાવસ્થા", notes: "પિટ્યુટરી સર્વોપરી. આયોડિન થાઇરોઇડ માટે.", questions: [
-        { type: "MCQ", text: "થાઇરોઇડ માટે તત્ત્વ?", answer: "આયોડિન" },
-        { type: "વૈજ્ઞાનિક કારણ", text: "પિટ્યુટરી સર્વોપરી?", answer: "અન્ય ગ્રંથિ નિયંત્રિત કરે" }
-      ]},
-      { name: "8. બળ દબાણ", notes: "સંપર્ક/બિનસંપર્ક બળ. દબાણ = બળ/ક્ષેત્રફળ.", questions: [
-        { type: "તફાવત", text: "સંપર્ક vs બિનસંપર્ક", answer: "સ્પર્શથી vs સ્પર્શ વગર" }
-      ]},
-      { name: "9. ઘર્ષણ", notes: "લોટણ < સરકતું. મિત્ર અને શત્રુ બંને.", questions: [
-        { type: "તફાવત", text: "લોટણ vs સરકતું", answer: "ઓછું vs વધુ ઘર્ષણ" }
-      ]},
-      { name: "10. ધ્વનિ", notes: "ધ્વનિ માધ્યમ જોઈએ. ચંદ્ર પર ન સંભળાય.", questions: [
-        { type: "વૈજ્ઞાનિક કારણ", text: "ચંદ્ર પર ધ્વનિ નથી?", answer: "વાતાવરણ નથી" }
-      ]},
-      { name: "11. વિદ્યુત રાસાયણિક અસરો", notes: "ઇલેક્ટ્રોપ્લેટિંગ. નિસ્પંદિત પાણી અવાહક.", questions: [
-        { type: "ટૂંકા જવાબ", text: "ઇલેક્ટ્રોપ્લેટિંગ?", answer: "વીજથી ધાતુનું પડ ચઢાવવું" }
-      ]},
-      { name: "12. કુદરતી ઘટનાઓ", notes: "વીજળી વાલક, ભૂકંપ, સિસ્મીક ઝોન.", questions: [
-        { type: "વૈજ્ઞાનિક કારણ", text: "વીજળી વાલક?", answer: "વીજળી જમીનમાં સુરક્ષિત લઈ જાય" }
-      ]},
-      { name: "13. પ્રકાશ", notes: "પરાવર્તન, વિભાજન (7 રંગ).", questions: [
-        { type: "MCQ", text: "સમતલ અરીસો મૂકતાં?", answer: "નિયમિત પરાવર્તન" }
-      ]}
-    ]
-  },
-  "8-math": {
-    title: "ધોરણ 8 ગણિત",
-    color: "from-fuchsia-500 to-purple-700",
-    chapters: [
-      { name: "1. પરિમેયિક સંખ્યાઓ", notes: "√16=4", questions: [{ type: "MCQ", text: "√16=?", answer: "4" }] },
-      { name: "2. રેખીય સમીકરણો", notes: "ax+b=c", questions: [{ type: "HOTS", text: "2x+5=15", answer: "x=5" }] },
-      { name: "3. ચતુષ્કોણ", notes: "ચોરસ, લંબચોરસ, સમાંતરબાજુ.", questions: [{ type: "ટૂંકા જવાબ", text: "ચતુષ્કોણ પ્રકારો", answer: "ચોરસ લંબચોરસ સમાંતરબાજુ વજ્ર" }] },
-      { name: "4. પ્રાયોગિક ભૂમિતિ", notes: "ભૂમિતિ રચના.", questions: [{ type: "પ્રવૃત્તિ", text: "ચોરસ બનાવો", answer: "વિદ્યાર્થી" }] },
-      { name: "5. માહિતી નિરૂપણ", notes: "હિસ્ટોગ્રામ, પાઈ.", questions: [{ type: "પ્રવૃત્તિ", text: "હિસ્ટોગ્રામ", answer: "વિદ્યાર્થી" }] },
-      { name: "6. વર્ગ વર્ગમૂળ", notes: "√25=5", questions: [{ type: "MCQ", text: "√25", answer: "5" }] },
-      { name: "7. ઘન ઘનમૂળ", notes: "∛27=3", questions: [{ type: "MCQ", text: "∛27", answer: "3" }] },
-      { name: "8. તુલનાત્મક", notes: "% ગણતરી", questions: [{ type: "HOTS", text: "15% of 200", answer: "30" }] },
-      { name: "9. બીજગણિત ઓળખ", notes: "(a+b)²=a²+2ab+b²", questions: [{ type: "ટૂંકા જવાબ", text: "(a+b)²", answer: "a²+2ab+b²" }] },
-      { name: "10. માપન", notes: "નળાકાર ક્ષેત્રફળ 2πr(h+r)", questions: [{ type: "MCQ", text: "નળાકાર ક્ષેત્રફળ સૂત્ર", answer: "2πr(h+r)" }] },
-      { name: "11. ઘાતાંક", notes: "aᵐ×aⁿ=aᵐ⁺ⁿ", questions: [{ type: "MCQ", text: "2⁴×2³", answer: "128" }] },
-      { name: "12. પ્રમાણ", notes: "સીધો/વ્યસ્ત પ્રમાણ", questions: [{ type: "ટૂંકા જવાબ", text: "સીધો vs વ્યસ્ત", answer: "વધે-વધે vs વધે-ઘટે" }] },
-      { name: "13. કારક", notes: "x²-5x+6=(x-2)(x-3)", questions: [{ type: "HOTS", text: "x²-5x+6 કારક", answer: "(x-2)(x-3)" }] },
-      { name: "14. આલેખન", notes: "રેખીય સમીકરણ આલેખ", questions: [{ type: "પ્રવૃત્તિ", text: "આલેખ દોરો", answer: "વિદ્યાર્થી" }] },
-      { name: "15. માહિતી વ્યવસ્થા", notes: "મધ્યક, મધ્યસ્થ, બહુલક", questions: [{ type: "ટૂંકા જવાબ", text: "મધ્યક મધ્યસ્થ બહુલક", answer: "સરેરાશ, મધ્ય કિંમત, સૌથી વધુ વાર" }] }
-    ]
-  }
+  "6-sci": { title: "ધોરણ 6 વિજ્ઞાન", color: "#059669", chapters: [
+    { name: "1. વિજ્ઞાનની અદ્ભુત દુનિયા", notes: "વિજ્ઞાન = અવલોકન + પ્રયોગ + તારણ", questions: [
+      { type: "ટૂંકા જવાબ", text: "પાણી ક્યારે ઉકળવા લાગે છે?", answer: "100°C" },
+      { type: "MCQ", text: "સૂર્ય આપે છે?\n(A) પ્રકાશ (B) ગરમી (C) બંને (D) કંઈ નહીં", answer: "(C) બંને" },
+      { type: "HOTS", text: "બીજમાંથી છોડ કેવી રીતે ઉગાડશો?", answer: "પલાળી, વાવી, પાણી+સૂર્યપ્રકાશ" }
+    ]},
+    { name: "2. સજીવ સૃષ્ટિમાં વિવિધતા", notes: "સજીવોમાં વિવિધતા", questions: [
+      { type: "MCQ", text: "સજીવ કયું?\n(A) પથ્થર (B) છોડ (C) પાણી", answer: "(B) છોડ" },
+      { type: "ખાલી જગ્યા", text: "વનસ્પતિના મુખ્ય ભાગો ____, ____, ____", answer: "મૂળ, થડ, પાંદડા" }
+    ]},
+    { name: "3. ઉચિત આહાર", notes: "સંતુલિત આહાર", questions: [
+      { type: "MCQ", text: "ઊર્જા આપનાર તત્ત્વ?", answer: "કાર્બોહાઇડ્રેટ" },
+      { type: "ખાલી જગ્યા", text: "વિટામિન C ની ઉણપથી ____", answer: "સ્કર્વી" }
+    ]},
+    { name: "4. ચુંબકને જાણીએ", notes: "ઉત્તર-દક્ષિણ ધ્રુવ", questions: [
+      { type: "MCQ", text: "ચુંબકના ધ્રુવો?", answer: "ઉત્તર અને દક્ષિણ" },
+      { type: "ખાલી જગ્યા", text: "સમાન ધ્રુવો ____", answer: "ધકેલે" }
+    ]},
+    { name: "5. લંબાઈનું માપન અને ગતિ", notes: "SI: મીટર", questions: [
+      { type: "MCQ", text: "લંબાઈનો SI એકમ?", answer: "મીટર (m)" },
+      { type: "HOTS", text: "120 કિમી 2 કલાકમાં ઝડપ?", answer: "60 કિમી/કલાક" }
+    ]},
+    { name: "6. આપણી આસપાસની સામગ્રી", notes: "ઘન, પ્રવાહી, વાયુ", questions: [
+      { type: "MCQ", text: "પારદર્શક પદાર્થ?", answer: "કાચ / પાણી" }
+    ]},
+    { name: "7. તાપમાન અને તેનું માપન", notes: "થર્મોમીટર, 37°C", questions: [
+      { type: "MCQ", text: "તાપમાન માપવાનું સાધન?", answer: "થર્મોમીટર" },
+      { type: "ખાલી જગ્યા", text: "માનવ શરીર ____ °C", answer: "37" }
+    ]},
+    { name: "8. પાણીની વિવિધ અવસ્થાઓ", notes: "ઘન-પ્રવાહી-વાયુ", questions: [
+      { type: "MCQ", text: "પાણીની ત્રણ અવસ્થાઓ?", answer: "ઘન, પ્રવાહી, વાયુ" }
+    ]},
+    { name: "9. અલગીકરણની પદ્ધતિઓ", notes: "ગાળણ, બાષ્પીભવન", questions: [
+      { type: "MCQ", text: "મીઠું+રેતી અલગ કરવાની પદ્ધતિ?", answer: "ઓગાળી ગાળણ + બાષ્પીભવન" }
+    ]},
+    { name: "10. સજીવોની લાક્ષણિકતાઓ", notes: "વૃદ્ધિ, પ્રજનન, શ્વસન", questions: [
+      { type: "ટૂંકા જવાબ", text: "સજીવોની મુખ્ય લાક્ષણિકતાઓ?", answer: "વૃદ્ધિ, પ્રજનન, શ્વસન, ચયાપચય" }
+    ]},
+    { name: "11. કુદરતનો અમૂલ્ય ખજાનો", notes: "પુનઃપ્રાપ્ય / અપ્રાપ્ય", questions: [
+      { type: "ટૂંકા જવાબ", text: "કુદરતી સંસાધનો?", answer: "પાણી, હવા, જંગલ, કોલસો" }
+    ]},
+    { name: "12. પૃથ્વીને પાર", notes: "પોપડો, પ્રવર, કેન્દ્ર", questions: [
+      { type: "ટૂંકા જવાબ", text: "પૃથ્વીના મુખ્ય સ્તરો?", answer: "પોપડો, પ્રવર, કેન્દ્ર" }
+    ]}
+  ]},
+  "6-math": { title: "ધોરણ 6 ગણિત", color: "#2563eb", chapters: [
+    { name: "1. પેટર્ન્સ", notes: "પેટર્ન = પુનરાવર્તિત ક્રમ", questions: [{ type: "HOTS", text: "પેટર્ન બનાવો", answer: "વિદ્યાર્થી" }] },
+    { name: "2. સંખ્યાઓ સાથે રમત", notes: "સૌથી નાની 3 અંકની = 100", questions: [{ type: "ટૂંકા જવાબ", text: "સૌથી નાની 3 અંકની સંખ્યા?", answer: "100" }] },
+    { name: "3. મૂળભૂત ક્રિયાઓ", notes: "સરવાળો-બાદબાકી", questions: [{ type: "MCQ", text: "456+789=?", answer: "1245" }] },
+    { name: "4. પૂર્ણાંકો", notes: "ધન-ઋણ", questions: [{ type: "MCQ", text: "−5 અને 3 માં મોટું?", answer: "3" }] },
+    { name: "5. અપૂર્ણાંકો", notes: "1/2+1/3=5/6", questions: [{ type: "MCQ", text: "1/2+1/3=?", answer: "5/6" }] },
+    { name: "6. દશાંશ", notes: "0.5=1/2", questions: [{ type: "MCQ", text: "0.5 ને અપૂર્ણાંકમાં?", answer: "1/2" }] },
+    { name: "7. બીજગણિત", notes: "x+5=12 → x=7", questions: [{ type: "MCQ", text: "x+5=12 → x=?", answer: "7" }] },
+    { name: "8. ગુણોત્તર", notes: "સમપ્રમાણ", questions: [{ type: "MCQ", text: "2:3 અને 4:6 સમપ્રમાણ?", answer: "હા" }] },
+    { name: "9. માહિતી નિરૂપણ", notes: "બાર ગ્રાફ", questions: [{ type: "પ્રવૃત્તિ", text: "આલેખ બનાવો", answer: "વિદ્યાર્થી" }] },
+    { name: "10. માપન", notes: "1m=100cm", questions: [{ type: "MCQ", text: "1 મીટર = ? સે.મી.", answer: "100" }] },
+    { name: "11. પરિમિતિ ક્ષેત્રફળ", notes: "ચોરસ = બાજુ²", questions: [{ type: "HOTS", text: "5 સે.મી. ચોરસ ક્ષેત્રફળ?", answer: "25 સે.મી.²" }] },
+    { name: "12. વ્યવહારિક ભૂમિતિ", notes: "કોણ માપો", questions: [{ type: "પ્રવૃત્તિ", text: "કોણ માપો", answer: "વિદ્યાર્થી" }] }
+  ]},
+  "7-sci": { title: "ધોરણ 7 વિજ્ઞાન", color: "#7c3aed", chapters: [
+    { name: "1. વનસ્પતિમાં પોષણ", notes: "પ્રકાશસંશ્લેષણ, રાઇઝોબિયમ", questions: [
+      { type: "MCQ", text: "ઊર્જાનો મુખ્ય સ્ત્રોત?\n(A) સૂર્ય (B) ચંદ્ર (C) પવન", answer: "(A) સૂર્ય" },
+      { type: "ખાલી જગ્યા", text: "નાઇટ્રોજન સ્થાપન ____ બેક્ટેરિયા", answer: "રાઇઝોબિયમ" },
+      { type: "HOTS", text: "પ્રકાશસંશ્લેષણ સમીકરણ", answer: "6CO₂+6H₂O→C₆H₁₂O₆+6O₂" }
+    ]},
+    { name: "2. પ્રાણીઓમાં પોષણ", notes: "પાચનતંત્ર", questions: [
+      { type: "MCQ", text: "શોષણ સપાટી વધારો ક્યાં?", answer: "નાના આંતરડામાં" }
+    ]},
+    { name: "3. ઉષ્મા", notes: "વહન, સંવહન, વિકિરણ", questions: [
+      { type: "વૈજ્ઞાનિક કારણ", text: "ઉનાળામાં હલકા રંગના કપડાં?", answer: "ઓછી ઉષ્મા શોષે" }
+    ]},
+    { name: "4. એસિડ બેઈઝ ક્ષાર", notes: "તટસ્થીકરણ", questions: [
+      { type: "MCQ", text: "લાલ લિટમસ વાદળી કોણ કરે?", answer: "બેઈઝ" }
+    ]},
+    { name: "5. ભૌતિક રાસાયણિક ફેરફારો", notes: "નવો પદાર્થ બને/ન બને", questions: [
+      { type: "તફાવત", text: "ભૌતિક vs રાસાયણિક", answer: "નવો પદાર્થ ન બને vs બને" }
+    ]},
+    { name: "6. શ્વસન", notes: "જારક / અજારક", questions: [
+      { type: "તફાવત", text: "જારક vs અજારક", answer: "O₂ સાથે vs વગર" }
+    ]},
+    { name: "7. વહન", notes: "હૃદય, ઝાયલેમ", questions: [
+      { type: "MCQ", text: "રૂધિર ફેરવનાર?", answer: "હૃદય" }
+    ]},
+    { name: "8. વનસ્પતિમાં પ્રજનન", notes: "પુષ્પ", questions: [
+      { type: "MCQ", text: "મુખ્ય પ્રજનન અંગ?", answer: "પુષ્પ" }
+    ]},
+    { name: "9. ગતિ અને સમય", notes: "ઝડપ=અંતર/સમય", questions: [
+      { type: "HOTS", text: "100m 20s ઝડપ?", answer: "5 m/s = 18 km/h" }
+    ]},
+    { name: "10. વિદ્યુતપ્રવાહ", notes: "તંતુ", questions: [
+      { type: "ખાલી જગ્યા", text: "બલ્બનો પાતળો તાર ____", answer: "તંતુ" }
+    ]},
+    { name: "11. પ્રકાશ", notes: "સમતલ અરીસો", questions: [
+      { type: "MCQ", text: "સમતલ અરીસાના પ્રતિબિંબની લાક્ષણિકતા?", answer: "સમાન કદ, આભાસી" }
+    ]},
+    { name: "12. જંગલો", notes: "ધોવાણ અટકાવે", questions: [
+      { type: "વૈજ્ઞાનિક કારણ", text: "જંગલો ધોવાણ અટકાવે?", answer: "મૂળ જમીન પકડે" }
+    ]},
+    { name: "13. દૂષિત પાણી", notes: "તેલ ગટરમાં ન નાખો", questions: [
+      { type: "વૈજ્ઞાનિક કારણ", text: "તેલ ગટરમાં ન નાખો?", answer: "ગટર બંધ થાય" }
+    ]}
+  ]},
+  "7-math": { title: "ધોરણ 7 ગણિત", color: "#e11d48", chapters: [
+    { name: "1. પૂર્ણાંકો", notes: "", questions: [{ type: "MCQ", text: "−7+5=?", answer: "−2" }] },
+    { name: "2. અપૂર્ણાંક દશાંશ", notes: "", questions: [{ type: "MCQ", text: "2/5 દશાંશ?", answer: "0.4" }] },
+    { name: "3. માહિતી નિરૂપણ", notes: "", questions: [{ type: "પ્રવૃત્તિ", text: "ગ્રાફ બનાવો", answer: "વિદ્યાર્થી" }] },
+    { name: "4. સરળ સમીકરણો", notes: "", questions: [{ type: "HOTS", text: "3x+5=20", answer: "x=5" }] },
+    { name: "5. રેખાઓ કોણ", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "સમાંતર કોણો", answer: "અનુરૂપ=સમાન" }] },
+    { name: "6. ત્રિકોણ", notes: "", questions: [{ type: "MCQ", text: "ત્રિકોણ કોણ સરવાળો?", answer: "180°" }] },
+    { name: "7. સર્વસમતા", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "સર્વસમતા નિયમો", answer: "SSS SAS ASA RHS" }] },
+    { name: "8. તુલનાત્મક", notes: "", questions: [{ type: "MCQ", text: "20% of 150", answer: "30" }] },
+    { name: "9. પરિમેય ક્ષેત્રફળ", notes: "", questions: [{ type: "HOTS", text: "12×8 ક્ષેત્રફળ", answer: "96" }] },
+    { name: "10. બીજગણિતીય રાશિઓ", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "બીજગણિતીય રાશિ?", answer: "સંખ્યા+ચલ" }] },
+    { name: "11. ઘાત", notes: "", questions: [{ type: "MCQ", text: "2³×2²", answer: "32" }] },
+    { name: "12. સમમિતિ", notes: "", questions: [{ type: "પ્રવૃત્તિ", text: "સમમિત આકાર", answer: "વિદ્યાર્થી" }] },
+    { name: "13. વિઝ્યુઅલાઈઝેશન", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "ડબલ બાર ગ્રાફ", answer: "બે ડેટા તુલના" }] }
+  ]},
+  "8-sci": { title: "ધોરણ 8 વિજ્ઞાન", color: "#ea580c", chapters: [
+    { name: "1. પાક ઉત્પાદન", notes: "રવિ-ખરીફ", questions: [
+      { type: "MCQ", text: "ખેતીની ક્રમ?", answer: "જમીન→વાવણી→સિંચાઈ→લણણી" },
+      { type: "મને ઓળખો", text: "નાઇટ્રોજન સ્થાપન બેક્ટેરિયા", answer: "રાઇઝોબિયમ" }
+    ]},
+    { name: "2. સૂક્ષ્મજીવો", notes: "મિત્ર-શત્રુ", questions: [
+      { type: "MCQ", text: "મેલેરિયા કારક?", answer: "પ્લાઝમોડિયમ" }
+    ]},
+    { name: "3. કોલસો પેટ્રોલિયમ", notes: "કાળું સોનું", questions: [
+      { type: "તફાવત", text: "પુનઃપ્રાપ્ય vs અપ્રાપ્ય", answer: "સૂર્ય vs કોલસો" }
+    ]},
+    { name: "4. દહન જ્યોત", notes: "LPG સ્વચ્છ", questions: [
+      { type: "MCQ", text: "દહનશીલ?", answer: "કાગળ/લાકડું" }
+    ]},
+    { name: "5. સંરક્ષણ", notes: "અભયારણ્ય", questions: [
+      { type: "તફાવત", text: "અભયારણ્ય vs રાષ્ટ્રીય ઉદ્યાન", answer: "મર્યાદિત vs સંપૂર્ણ" }
+    ]},
+    { name: "6. પ્રાણીઓમાં પ્રજનન", notes: "લિંગી/અલિંગી", questions: [
+      { type: "MCQ", text: "નર અંગ નથી?", answer: "અંડપિંડ" }
+    ]},
+    { name: "7. કિશોરાવસ્થા", notes: "આયોડિન, પિટ્યુટરી", questions: [
+      { type: "MCQ", text: "થાઇરોઇડ માટે?", answer: "આયોડિન" }
+    ]},
+    { name: "8. બળ દબાણ", notes: "સંપર્ક/બિનસંપર્ક", questions: [
+      { type: "તફાવત", text: "સંપર્ક vs બિનસંપર્ક", answer: "સ્પર્શથી vs વગર" }
+    ]},
+    { name: "9. ઘર્ષણ", notes: "લોટણ < સરકતું", questions: [
+      { type: "તફાવત", text: "લોટણ vs સરકતું", answer: "ઓછું vs વધુ" }
+    ]},
+    { name: "10. ધ્વનિ", notes: "માધ્યમ જોઈએ", questions: [
+      { type: "વૈજ્ઞાનિક કારણ", text: "ચંદ્ર પર ધ્વનિ નથી?", answer: "વાતાવરણ નથી" }
+    ]},
+    { name: "11. વિદ્યુત રાસાયણિક", notes: "ઇલેક્ટ્રોપ્લેટિંગ", questions: [
+      { type: "ટૂંકા જવાબ", text: "ઇલેક્ટ્રોપ્લેટિંગ?", answer: "વીજથી ધાતુનું પડ" }
+    ]},
+    { name: "12. કુદરતી ઘટનાઓ", notes: "વીજળી વાલક", questions: [
+      { type: "વૈજ્ઞાનિક કારણ", text: "વીજળી વાલક?", answer: "વીજળી જમીનમાં લઈ જાય" }
+    ]},
+    { name: "13. પ્રકાશ", notes: "પરાવર્તન", questions: [
+      { type: "MCQ", text: "સમતલ અરીસો મૂકતાં?", answer: "નિયમિત પરાવર્તન" }
+    ]}
+  ]},
+  "8-math": { title: "ધોરણ 8 ગણિત", color: "#c026d3", chapters: [
+    { name: "1. પરિમેયિક સંખ્યાઓ", notes: "", questions: [{ type: "MCQ", text: "√16=?", answer: "4" }] },
+    { name: "2. રેખીય સમીકરણો", notes: "", questions: [{ type: "HOTS", text: "2x+5=15", answer: "x=5" }] },
+    { name: "3. ચતુષ્કોણ", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "ચતુષ્કોણ પ્રકારો", answer: "ચોરસ, લંબચોરસ, વજ્ર" }] },
+    { name: "4. પ્રાયોગિક ભૂમિતિ", notes: "", questions: [{ type: "પ્રવૃત્તિ", text: "ચોરસ બનાવો", answer: "વિદ્યાર્થી" }] },
+    { name: "5. માહિતી નિરૂપણ", notes: "", questions: [{ type: "પ્રવૃત્તિ", text: "હિસ્ટોગ્રામ", answer: "વિદ્યાર્થી" }] },
+    { name: "6. વર્ગ વર્ગમૂળ", notes: "", questions: [{ type: "MCQ", text: "√25", answer: "5" }] },
+    { name: "7. ઘન ઘનમૂળ", notes: "", questions: [{ type: "MCQ", text: "∛27", answer: "3" }] },
+    { name: "8. તુલનાત્મક", notes: "", questions: [{ type: "HOTS", text: "15% of 200", answer: "30" }] },
+    { name: "9. બીજગણિત ઓળખ", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "(a+b)²", answer: "a²+2ab+b²" }] },
+    { name: "10. માપન", notes: "", questions: [{ type: "MCQ", text: "નળાકાર સૂત્ર", answer: "2πr(h+r)" }] },
+    { name: "11. ઘાતાંક", notes: "", questions: [{ type: "MCQ", text: "2⁴×2³", answer: "128" }] },
+    { name: "12. પ્રમાણ", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "સીધો vs વ્યસ્ત", answer: "વધે-વધે vs વધે-ઘટે" }] },
+    { name: "13. કારક", notes: "", questions: [{ type: "HOTS", text: "x²-5x+6", answer: "(x-2)(x-3)" }] },
+    { name: "14. આલેખન", notes: "", questions: [{ type: "પ્રવૃત્તિ", text: "આલેખ દોરો", answer: "વિદ્યાર્થી" }] },
+    { name: "15. માહિતી વ્યવસ્થા", notes: "", questions: [{ type: "ટૂંકા જવાબ", text: "મધ્યક મધ્યસ્થ બહુલક", answer: "સરેરાશ, મધ્ય, સૌથી વધુ" }] }
+  ]}
 };
 
-/* ===================== STATE ===================== */
 let currentStd = "6", currentSub = "sci";
 let clickCount = 0;
-let isUnlocked = localStorage.getItem(unlockKey) === "true";
+let isUnlocked = localStorage.getItem(UNLOCK) === "true";
 let editingIndex = null;
-let currentTest = null; // {key, ci, questions, answers}
+let currentTest = null;
 
 function loadAll() {
-  const saved = localStorage.getItem(storeKey);
-  if (saved) try { Object.assign(data, JSON.parse(saved)); } catch(e) {}
-  const names = JSON.parse(localStorage.getItem("gseb_names") || "{}");
-  if (names.title) document.getElementById("siteTitle").textContent = names.title;
-  if (names.subtitle) document.getElementById("siteSubtitle").textContent = names.subtitle;
-  if (names.footer) document.getElementById("footerTitle").textContent = names.footer;
-  if (names.footerSub) document.getElementById("footerSub").textContent = names.footerSub;
+  try {
+    const s = localStorage.getItem(STORE);
+    if (s) Object.assign(data, JSON.parse(s));
+  } catch(e) {}
+  try {
+    const n = JSON.parse(localStorage.getItem("gseb_names") || "{}");
+    if (n.title) document.getElementById("siteTitle").textContent = n.title;
+    if (n.subtitle) document.getElementById("siteSubtitle").textContent = n.subtitle;
+    if (n.footer) document.getElementById("footerTitle").textContent = n.footer;
+    if (n.footerSub) document.getElementById("footerSub").textContent = n.footerSub;
+  } catch(e) {}
 }
-loadAll();
-function saveData() { localStorage.setItem(storeKey, JSON.stringify(data)); }
+function saveData() {
+  try { localStorage.setItem(STORE, JSON.stringify(data)); } catch(e) {}
+}
 
-/* ===================== UNLOCK ===================== */
-document.getElementById("mainHeader").addEventListener("click", () => {
+document.getElementById("mainHeader").addEventListener("click", function() {
   if (isUnlocked) return;
   clickCount++;
-  if (clickCount >= CLICKS_NEEDED) {
+  if (clickCount >= CLICKS) {
     clickCount = 0;
     document.getElementById("passModal").classList.remove("hidden");
     document.getElementById("passInput").value = "";
     document.getElementById("passError").classList.add("hidden");
-    setTimeout(() => document.getElementById("passInput").focus(), 80);
   }
 });
-function closePassModal() { document.getElementById("passModal").classList.add("hidden"); }
+
+function closePassModal() {
+  document.getElementById("passModal").classList.add("hidden");
+}
 function checkPassword() {
-  if (document.getElementById("passInput").value === CORRECT_PASSWORD) {
+  if (document.getElementById("passInput").value === PASSWORD) {
     isUnlocked = true;
-    localStorage.setItem(unlockKey, "true");
+    localStorage.setItem(UNLOCK, "true");
     applyUnlock();
     closePassModal();
   } else {
     document.getElementById("passError").classList.remove("hidden");
-    document.getElementById("passInput").value = "";
   }
 }
-document.getElementById("passInput").addEventListener("keydown", e => { if (e.key === "Enter") checkPassword(); });
+document.getElementById("passInput").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") checkPassword();
+});
+
 function applyUnlock() {
   document.getElementById("appBody").classList.remove("locked");
-  document.getElementById("statusBadge").textContent = "🔓 Edit Mode ON";
-  document.getElementById("statusBadge").classList.add("bg-green-500/80");
-  document.getElementById("editNameBtn").classList.remove("hidden");
-  document.getElementById("infoBanner").innerHTML = `<strong>Edit Mode!</strong> પ્રશ્નો, જવાબો, Notes એડિટ કરી શકો છો.`;
+  document.getElementById("statusBadge").textContent = "🔓 Edit Mode";
+  document.getElementById("statusBadge").style.background = "#16a34a";
+  document.getElementById("editNameBtn").style.display = "inline-block";
+  document.getElementById("infoBanner").innerHTML = "<b>Edit Mode!</b> પ્રશ્નો અને Notes એડિટ કરી શકો છો.";
   render();
 }
 if (isUnlocked) applyUnlock();
 
-/* ===================== NAME ===================== */
 function openNameModal() {
   if (!isUnlocked) return;
   document.getElementById("editTitle").value = document.getElementById("siteTitle").textContent;
@@ -463,7 +524,9 @@ function openNameModal() {
   document.getElementById("editFooterSub").value = document.getElementById("footerSub").textContent;
   document.getElementById("nameModal").classList.remove("hidden");
 }
-function closeNameModal() { document.getElementById("nameModal").classList.add("hidden"); }
+function closeNameModal() {
+  document.getElementById("nameModal").classList.add("hidden");
+}
 function saveNames() {
   const t = document.getElementById("editTitle").value.trim() || "GSEB TOPPER";
   const s = document.getElementById("editSubtitle").value.trim();
@@ -473,270 +536,204 @@ function saveNames() {
   document.getElementById("siteSubtitle").textContent = s;
   document.getElementById("footerTitle").textContent = f;
   document.getElementById("footerSub").textContent = fs;
-  localStorage.setItem("gseb_names", JSON.stringify({ title: t, subtitle: s, footer: f, footerSub: fs }));
+  localStorage.setItem("gseb_names", JSON.stringify({title:t, subtitle:s, footer:f, footerSub:fs}));
   closeNameModal();
 }
-document.getElementById("editNameBtn").onclick = openNameModal;
 
-/* ===================== NOTES ===================== */
 function getNotes(key, ci) {
-  const all = JSON.parse(localStorage.getItem(notesKey) || "{}");
-  return all[`\( {key}- \){ci}`] || (data[key]?.chapters[ci]?.notes || "");
+  try {
+    const all = JSON.parse(localStorage.getItem(NOTES) || "{}");
+    return all[key + "-" + ci] || (data[key] && data[key].chapters[ci] && data[key].chapters[ci].notes) || "";
+  } catch(e) { return ""; }
 }
 function saveNotes(key, ci, text) {
-  const all = JSON.parse(localStorage.getItem(notesKey) || "{}");
-  all[`\( {key}- \){ci}`] = text;
-  localStorage.setItem(notesKey, JSON.stringify(all));
-  if (data[key]?.chapters[ci]) data[key].chapters[ci].notes = text;
-  saveData();
+  try {
+    const all = JSON.parse(localStorage.getItem(NOTES) || "{}");
+    all[key + "-" + ci] = text;
+    localStorage.setItem(NOTES, JSON.stringify(all));
+  } catch(e) {}
 }
 
-/* ===================== 25 MARKS TEST ENGINE ===================== */
-function generate25Questions(chapterQs, chapterName) {
-  const pool = [...chapterQs];
-  // Pad to at least 25 by creating variations
-  const extras = [
-    { type: "MCQ", text: `${chapterName} સંબંધિત સાચું વિધાન કયું?`, answer: "પાઠ્યપુસ્તક મુજબ" },
-    { type: "સાચું-ખોટું", text: `${chapterName} મહત્વનું પ્રકરણ છે.`, answer: "સાચું" },
-    { type: "ટૂંકા જવાબ", text: `${chapterName} નું મુખ્ય પોઈન્ટ લખો.`, answer: "નોટ્સ જુઓ" },
-    { type: "MCQ", text: "આ પ્રકરણમાં શીખેલી મુખ્ય વાત?", answer: "વિદ્યાર્થી જવાબ આપે" }
-  ];
+function generate25(qs, name) {
+  const pool = (qs || []).slice();
   while (pool.length < 25) {
-    const base = chapterQs[pool.length % Math.max(chapterQs.length, 1)] || extras[0];
-    pool.push({
-      type: base.type || "MCQ",
-      text: base.text + (pool.length >= chapterQs.length ? ` (Q${pool.length + 1})` : ""),
-      answer: base.answer || "—"
-    });
+    const b = (qs && qs[pool.length % Math.max(qs.length,1)]) || {type:"MCQ", text: name + " સંબંધિત પ્રશ્ન", answer:"પાઠ્યપુસ્તક"};
+    pool.push({type: b.type||"MCQ", text: b.text + " (Q"+(pool.length+1)+")", answer: b.answer||"—"});
   }
-  // shuffle and take 25
-  for (let i = pool.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+  for (let i = pool.length-1; i > 0; i--) {
+    const j = Math.floor(Math.random()*(i+1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
-  return pool.slice(0, 25).map((q, idx) => ({
-    ...q,
-    id: idx,
-    // For MCQ try to make simple options if not present
-    options: q.type === "MCQ" ? makeOptions(q) : null
-  }));
+  return pool.slice(0,25).map(function(q,i) {
+    return {
+      type: q.type, text: q.text, answer: q.answer,
+      options: q.type === "MCQ" ? shuffle([q.answer||"સાચો", "વિકલ્પ A", "વિકલ્પ B", "વિકલ્પ C"]) : null
+    };
+  });
 }
-
-function makeOptions(q) {
-  const correct = q.answer || "સાચો જવાબ";
-  const opts = [correct, "ખોટો વિકલ્પ A", "ખોટો વિકલ્પ B", "ખોટો વિકલ્પ C"];
-  // shuffle
-  for (let i = opts.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [opts[i], opts[j]] = [opts[j], opts[i]];
-  }
-  return opts;
+function shuffle(a) {
+  for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
 }
-
 function startTest(key, ci) {
   const ch = data[key].chapters[ci];
-  const questions = generate25Questions(ch.questions || [], ch.name);
-  currentTest = { key, ci, questions, userAnswers: new Array(25).fill(null), submitted: false };
-  document.getElementById("testTitle").textContent = `📝 25 Marks Test – ${ch.name}`;
+  currentTest = {key, ci, questions: generate25(ch.questions, ch.name), userAnswers: new Array(25).fill(null), submitted: false};
+  document.getElementById("testTitle").textContent = "📝 25 Marks – " + ch.name;
   document.getElementById("testResult").classList.add("hidden");
   document.getElementById("testBody").classList.remove("hidden");
   document.getElementById("testActions").classList.remove("hidden");
   document.getElementById("submitBtn").classList.remove("hidden");
-  renderTestQuestions();
+  renderTest();
   document.getElementById("testModal").classList.remove("hidden");
 }
-
-function renderTestQuestions() {
-  const { questions, userAnswers } = currentTest;
+function renderTest() {
+  const qs = currentTest.questions;
   let html = "";
-  questions.forEach((q, i) => {
-    html += `<div class="mb-6 p-4 border border-slate-200 rounded-xl bg-slate-50">
-      <div class="flex gap-2 mb-2">
-        <span class="font-bold text-indigo-600">Q${i + 1}.</span>
-        <span class="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full">${q.type} • 1 ગુણ</span>
-      </div>
-      <p class="text-slate-800 mb-3 whitespace-pre-wrap">${q.text}</p>`;
+  qs.forEach(function(q, i) {
+    html += '<div style="margin-bottom:16px;padding:12px;border:1px solid #e2e8f0;border-radius:12px;background:#f8fafc;">';
+    html += '<div style="margin-bottom:8px;"><b style="color:#4f46e5;">Q'+(i+1)+'.</b> <span style="font-size:11px;background:#e0e7ff;padding:2px 8px;border-radius:999px;">'+q.type+' • 1 ગુણ</span></div>';
+    html += '<p style="margin-bottom:10px;white-space:pre-wrap;">'+q.text+'</p>';
     if (q.options) {
-      html += `<div class="space-y-2">`;
-      q.options.forEach((opt, oi) => {
-        const sel = userAnswers[i] === opt ? "selected" : "";
-        html += `<div class="test-option border border-slate-300 rounded-lg px-3 py-2 cursor-pointer \( {sel}" onclick="selectOption( \){i}, '\( {opt.replace(/'/g, "\\'")}')"> \){opt}</div>`;
+      q.options.forEach(function(opt) {
+        const sel = currentTest.userAnswers[i] === opt ? " selected" : "";
+        html += '<div class="test-option'+sel+'" onclick="selectOpt('+i+', this)">'+opt+'</div>';
       });
-      html += `</div>`;
     } else {
-      html += `<textarea class="w-full border rounded-lg p-2 text-sm" rows="2" placeholder="તમારો જવાબ લખો..." onchange="currentTest.userAnswers[\( {i}]=this.value"> \){userAnswers[i] || ""}</textarea>`;
+      html += '<textarea rows="2" style="width:100%;padding:8px;border:1px solid #cbd5e1;border-radius:8px;" placeholder="જવાબ લખો..." onchange="currentTest.userAnswers['+i+']=this.value">'+(currentTest.userAnswers[i]||"")+'</textarea>';
     }
-    html += `</div>`;
+    html += '</div>';
   });
   document.getElementById("testBody").innerHTML = html;
-  document.getElementById("testProgress").textContent = `કુલ 25 પ્રશ્નો • દરેક 1 ગુણ • કુલ 25 ગુણ`;
+  document.getElementById("testProgress").textContent = "કુલ 25 પ્રશ્નો • દરેક 1 ગુણ";
 }
-
-function selectOption(qi, opt) {
+function selectOpt(i, el) {
   if (currentTest.submitted) return;
-  currentTest.userAnswers[qi] = opt;
-  renderTestQuestions();
+  currentTest.userAnswers[i] = el.textContent;
+  renderTest();
 }
-
 function submitTest() {
   if (!currentTest || currentTest.submitted) return;
   currentTest.submitted = true;
   let score = 0;
-  const { questions, userAnswers } = currentTest;
-  questions.forEach((q, i) => {
-    const ua = (userAnswers[i] || "").toString().trim().toLowerCase();
-    const ca = (q.answer || "").toString().trim().toLowerCase();
-    // simple match
-    if (ua && (ua === ca || ca.includes(ua) || ua.includes(ca.split(" ")[0]))) score++;
+  currentTest.questions.forEach(function(q, i) {
+    const ua = (currentTest.userAnswers[i]||"").toString().trim().toLowerCase();
+    const ca = (q.answer||"").toString().trim().toLowerCase();
+    if (ua && (ua === ca || ca.indexOf(ua) >= 0 || ua.indexOf(ca.split(" ")[0]) >= 0)) score++;
   });
-
   document.getElementById("testBody").classList.add("hidden");
   document.getElementById("submitBtn").classList.add("hidden");
-  const resultDiv = document.getElementById("testResult");
-  resultDiv.classList.remove("hidden");
-
-  let message = "", color = "";
-  if (score >= 22) { message = "ઉત્તમ! 🌟"; color = "text-green-600"; fireConfetti(true); }
-  else if (score >= 18) { message = "ખૂબ સારું! 👍"; color = "text-emerald-600"; fireConfetti(false); }
-  else if (score >= 12) { message = "સારું, વધુ મહેનત કરો!"; color = "text-amber-600"; }
-  else { message = "ફરી અભ્યાસ કરો!"; color = "text-red-600"; }
-
-  resultDiv.innerHTML = `
-    <div class="text-6xl mb-4">${score >= 18 ? "🎉" : "📚"}</div>
-    <h3 class="text-3xl font-bold \( {color} mb-2"> \){score} / 25</h3>
-    <p class="text-xl font-semibold mb-4">${message}</p>
-    <p class="text-slate-600">તમારું પરિણામ સાચવાયું નથી (local). ફરી પ્રયાસ કરી શકો છો.</p>
-    <button onclick="startTest(currentTest.key, currentTest.ci)" class="btn bg-indigo-600 text-white mt-6">ફરી Test આપો</button>
-  `;
+  const res = document.getElementById("testResult");
+  res.classList.remove("hidden");
+  let msg = "", col = "";
+  if (score >= 22) { msg = "ઉત્તમ! 🌟"; col = "#16a34a"; fireConfetti(true); }
+  else if (score >= 18) { msg = "ખૂબ સારું! 👍"; col = "#059669"; fireConfetti(false); }
+  else if (score >= 12) { msg = "સારું!"; col = "#d97706"; }
+  else { msg = "ફરી અભ્યાસ કરો"; col = "#dc2626"; }
+  res.innerHTML = '<div style="font-size:48px;margin-bottom:12px;">'+(score>=18?"🎉":"📚")+'</div><h3 style="font-size:28px;color:'+col+';">'+score+' / 25</h3><p style="font-size:18px;margin:10px 0;">'+msg+'</p><button class="btn" style="background:#4f46e5;color:white;margin-top:16px;" onclick="startTest(currentTest.key,currentTest.ci)">ફરી Test</button>';
 }
-
 function fireConfetti(big) {
-  const duration = big ? 4000 : 2500;
-  const end = Date.now() + duration;
+  if (typeof confetti !== "function") return;
+  const end = Date.now() + (big ? 3500 : 2000);
   (function frame() {
-    confetti({ particleCount: big ? 7 : 4, angle: 60, spread: 100, origin: { x: 0 }, colors: ["#6366f1", "#8b5cf6", "#ec4899", "#10b981"] });
-    confetti({ particleCount: big ? 7 : 4, angle: 120, spread: 100, origin: { x: 1 }, colors: ["#6366f1", "#8b5cf6", "#ec4899", "#10b981"] });
+    confetti({particleCount: big?6:3, angle:60, spread:90, origin:{x:0}});
+    confetti({particleCount: big?6:3, angle:120, spread:90, origin:{x:1}});
     if (Date.now() < end) requestAnimationFrame(frame);
   })();
-  if (big) {
-    setTimeout(() => confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } }), 300);
-  }
 }
-
 function closeTest() {
   document.getElementById("testModal").classList.add("hidden");
   currentTest = null;
 }
 
-/* ===================== RENDER ===================== */
 function render() {
-  if (currentSub === "key") { renderAnswerKey(); return; }
+  if (currentSub === "key") {
+    renderKey();
+    return;
+  }
+  const key = currentStd + "-" + currentSub;
+  const section = data[key] || {title: "મટિરિયલ", chapters: []};
+  let html = '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">';
+  html += '<h2 style="font-size:20px;font-weight:700;color:'+(section.color||"#4f46e5")+'">'+section.title+'</h2>';
+  html += '<button class="edit-only btn" style="background:#4f46e5;color:white;" onclick="openAddModal()">➕ નવો પ્રશ્ન</button></div>';
+  html += '<p style="font-size:13px;color:#64748b;margin-bottom:14px;">કુલ પ્રકરણો: <b>'+section.chapters.length+'</b></p>';
 
-  const key = `\( {currentStd}- \){currentSub}`;
-  const section = data[key] || { title: "મટિરિયલ", chapters: [], color: "from-slate-500 to-slate-700" };
-
-  let html = `
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-      <h2 class="text-2xl md:text-3xl font-bold bg-gradient-to-r \( {section.color} bg-clip-text text-transparent"> \){section.title}</h2>
-      <button onclick="openAddModal()" class="add-btn btn bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">➕ નવો પ્રશ્ન</button>
-    </div>
-    <p class="text-sm text-slate-500 mb-4">કુલ પ્રકરણો: <strong>${section.chapters.length}</strong> • દરેક પ્રકરણના અંતે 25 Marks Test</p>
-  `;
-
-  section.chapters.forEach((ch, ci) => {
+  section.chapters.forEach(function(ch, ci) {
     const notes = getNotes(key, ci);
-    html += `
-      <div class="card mb-5 overflow-hidden">
-        <div class="chapter-header px-5 py-4 flex justify-between items-center cursor-pointer font-semibold text-indigo-900 bg-gradient-to-r from-indigo-50 to-purple-50" onclick="toggleChap(this)">
-          <span class="text-base md:text-lg">${ch.name}</span>
-          <span class="text-indigo-500 text-xl transition-transform">▼</span>
-        </div>
-        <div class="questions hidden p-4 space-y-3 bg-white/70">
-          <!-- Questions -->
-          ${(ch.questions || []).map((q, qi) => {
-            const colors = { "MCQ": "bg-blue-100 text-blue-800", "ખાલી જગ્યા": "bg-emerald-100 text-emerald-800", "ટૂંકા જવાબ": "bg-violet-100 text-violet-800", "તફાવત": "bg-amber-100 text-amber-800", "વૈજ્ઞાનિક કારણ": "bg-rose-100 text-rose-800", "HOTS": "bg-fuchsia-100 text-fuchsia-800", "પ્રવૃત્તિ": "bg-cyan-100 text-cyan-800", "મને ઓળખો": "bg-lime-100 text-lime-800" };
-            const badge = colors[q.type] || "bg-slate-100 text-slate-700";
-            return `<div class="q-card p-4 rounded-xl border border-slate-200 bg-white shadow-sm">
-              <span class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full \( {badge} mb-2"> \){q.type}</span>
-              <div class="text-slate-700 whitespace-pre-wrap">${q.text}</div>
-              <div class="mt-2">
-                <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="text-sm text-emerald-700 font-medium hover:underline">🔑 જવાબ જુઓ</button>
-                <div class="answer-box hidden mt-2 p-3 rounded-lg text-sm text-emerald-900">${q.answer || "—"}</div>
-              </div>
-              <div class="edit-controls flex gap-2 mt-3">
-                <button class="btn bg-amber-400 text-white text-sm py-1.5" onclick="editExisting('\( {key}', \){ci},${qi})">✏️ Edit</button>
-                <button class="btn bg-red-500 text-white text-sm py-1.5" onclick="delQ('\( {key}', \){ci},${qi})">🗑️</button>
-              </div>
-            </div>`;
-          }).join("")}
+    html += '<div class="card chapter">';
+    html += '<div class="chapter-head" onclick="toggleChap(this)"><span>'+ch.name+'</span><span style="font-size:18px;">▼</span></div>';
+    html += '<div class="chapter-body hidden" style="padding:14px;">';
 
-          <!-- NOTES -->
-          <div class="mt-6 p-4 rounded-xl bg-amber-50 border border-amber-200">
-            <h4 class="font-bold text-amber-800 mb-2">📌 Notes / ટૂંકી નોંધ</h4>
-            <div class="text-sm text-slate-700 whitespace-pre-wrap mb-2" id="notes-view-\( {key}- \){ci}">${notes || "નોંધ ઉપલબ્ધ નથી."}</div>
-            <textarea class="edit-controls w-full border rounded-lg p-2 text-sm hidden" id="notes-edit-\( {key}- \){ci}" rows="3">${notes}</textarea>
-            <button class="edit-controls btn bg-amber-500 text-white text-sm mt-2" onclick="toggleNotesEdit('\( {key}', \){ci})">✏️ Notes એડિટ</button>
-            <button class="edit-controls btn bg-green-600 text-white text-sm mt-2 hidden" id="notes-save-\( {key}- \){ci}" onclick="saveNotesUI('\( {key}', \){ci})">💾 સાચવો</button>
-          </div>
+    (ch.questions||[]).forEach(function(q, qi) {
+      const colors = {"MCQ":"#dbeafe","ખાલી જગ્યા":"#d1fae5","ટૂંકા જવાબ":"#ede9fe","તફાવત":"#fef3c7","વૈજ્ઞાનિક કારણ":"#ffe4e6","HOTS":"#fce7f3","પ્રવૃત્તિ":"#cffafe","મને ઓળખો":"#ecfccb"};
+      const bg = colors[q.type] || "#f1f5f9";
+      html += '<div class="q-card"><span class="badge" style="background:'+bg+';">'+q.type+'</span>';
+      html += '<div style="white-space:pre-wrap;margin-bottom:6px;">'+q.text+'</div>';
+      html += '<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" style="font-size:13px;color:#059669;background:none;border:none;cursor:pointer;font-weight:600;">🔑 જવાબ જુઓ</button>';
+      html += '<div class="answer-box hidden">'+(q.answer||"—")+'</div>';
+      html += '<div class="edit-only" style="margin-top:8px;display:flex;gap:8px;">';
+      html += '<button class="btn" style="background:#fbbf24;font-size:12px;padding:6px 12px;" onclick="editQ(\''+key+'\','+ci+','+qi+')">✏️ Edit</button>';
+      html += '<button class="btn" style="background:#ef4444;color:white;font-size:12px;padding:6px 12px;" onclick="delQ(\''+key+'\','+ci+','+qi+')">🗑️</button>';
+      html += '</div></div>';
+    });
 
-          <!-- 25 MARKS TEST BUTTON -->
-          <div class="mt-6 p-5 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-center shadow-lg">
-            <h4 class="text-lg font-bold mb-1">📝 25 Marks Test</h4>
-            <p class="text-indigo-100 text-sm mb-3">કુલ 25 પ્રશ્નો • દરેક 1 ગુણ • વિવિધ પ્રકાર • Result + Confetti</p>
-            <button onclick="startTest('\( {key}', \){ci})" class="btn bg-white text-indigo-700 hover:bg-indigo-50 font-bold px-8 py-3 text-base">
-              Test શરૂ કરો →
-            </button>
-          </div>
-        </div>
-      </div>`;
+    html += '<div style="margin-top:16px;padding:12px;background:#fffbeb;border-radius:12px;border:1px solid #fcd34d;">';
+    html += '<h4 style="color:#92400e;margin-bottom:6px;">📌 Notes</h4>';
+    html += '<div id="nv-'+key+'-'+ci+'" style="font-size:13px;">'+(notes||"નોંધ નથી")+'</div>';
+    html += '<textarea id="ne-'+key+'-'+ci+'" class="edit-only hidden" rows="2" style="margin-top:6px;">'+notes+'</textarea>';
+    html += '<button class="edit-only btn" style="background:#f59e0b;color:white;font-size:12px;margin-top:6px;" onclick="editNotes(\''+key+'\','+ci+')">✏️ Notes</button>';
+    html += '<button id="ns-'+key+'-'+ci+'" class="edit-only btn hidden" style="background:#16a34a;color:white;font-size:12px;margin-top:6px;" onclick="saveNotesUI(\''+key+'\','+ci+')">💾 સાચવો</button>';
+    html += '</div>';
+
+    html += '<div style="margin-top:16px;padding:16px;background:linear-gradient(90deg,#4f46e5,#7c3aed);border-radius:14px;text-align:center;color:white;">';
+    html += '<h4 style="margin-bottom:4px;">📝 25 Marks Test</h4>';
+    html += '<p style="font-size:12px;opacity:0.9;margin-bottom:10px;">25 પ્રશ્ન × 1 ગુણ • Confetti</p>';
+    html += '<button class="btn" style="background:white;color:#4f46e5;font-weight:700;" onclick="startTest(\''+key+'\','+ci+')">Test શરૂ કરો →</button>';
+    html += '</div></div></div>';
   });
   document.getElementById("dynamicArea").innerHTML = html;
 }
 
-function renderAnswerKey() {
-  let html = `<h2 class="text-2xl font-bold bg-gradient-to-r from-green-500 to-emerald-600 bg-clip-text text-transparent mb-6">🔑 Answer Key – ધોરણ ${currentStd}</h2>`;
-  ["sci", "math"].forEach(sub => {
-    const k = `\( {currentStd}- \){sub}`;
-    const section = data[k];
-    if (!section) return;
-    html += `<h3 class="text-xl font-bold text-indigo-700 mt-6 mb-3">${section.title}</h3>`;
-    section.chapters.forEach(ch => {
-      html += `<div class="card mb-3 p-4"><h4 class="font-semibold mb-2">${ch.name}</h4><ol class="list-decimal list-inside space-y-2 text-sm">`;
-      (ch.questions || []).forEach(q => {
-        html += `<li><span class="text-slate-600">\( {q.text.substring(0, 60)}...</span><div class="answer-box mt-1 p-2 rounded ml-4"> \){q.answer || "—"}</div></li>`;
+function renderKey() {
+  let html = '<h2 style="font-size:20px;font-weight:700;color:#059669;margin-bottom:16px;">🔑 Answer Key – ધોરણ '+currentStd+'</h2>';
+  ["sci","math"].forEach(function(sub) {
+    const k = currentStd + "-" + sub;
+    const sec = data[k];
+    if (!sec) return;
+    html += '<h3 style="color:#4f46e5;margin:16px 0 8px;">'+sec.title+'</h3>';
+    sec.chapters.forEach(function(ch) {
+      html += '<div class="card" style="padding:12px;margin-bottom:10px;"><b>'+ch.name+'</b><ol style="margin:8px 0 0 18px;font-size:13px;">';
+      (ch.questions||[]).forEach(function(q) {
+        html += '<li style="margin-bottom:8px;"><span style="color:#64748b;">'+q.text.substring(0,60)+(q.text.length>60?"...":"")+'</span><div class="answer-box">'+(q.answer||"—")+'</div></li>';
       });
-      html += `</ol></div>`;
+      html += '</ol></div>';
     });
   });
   document.getElementById("dynamicArea").innerHTML = html;
 }
 
 function toggleChap(el) {
-  const q = el.nextElementSibling;
-  const arrow = el.querySelector("span:last-child");
-  q.classList.toggle("hidden");
-  arrow.style.transform = q.classList.contains("hidden") ? "rotate(0)" : "rotate(180deg)";
+  const body = el.nextElementSibling;
+  body.classList.toggle("hidden");
+  el.querySelector("span:last-child").textContent = body.classList.contains("hidden") ? "▼" : "▲";
 }
-
-function toggleNotesEdit(key, ci) {
-  document.getElementById(`notes-view-\( {key}- \){ci}`).classList.add("hidden");
-  document.getElementById(`notes-edit-\( {key}- \){ci}`).classList.remove("hidden");
-  document.getElementById(`notes-save-\( {key}- \){ci}`).classList.remove("hidden");
+function editNotes(key, ci) {
+  document.getElementById("nv-"+key+"-"+ci).classList.add("hidden");
+  document.getElementById("ne-"+key+"-"+ci).classList.remove("hidden");
+  document.getElementById("ns-"+key+"-"+ci).classList.remove("hidden");
 }
 function saveNotesUI(key, ci) {
-  const text = document.getElementById(`notes-edit-\( {key}- \){ci}`).value;
-  saveNotes(key, ci, text);
-  document.getElementById(`notes-view-\( {key}- \){ci}`).textContent = text || "નોંધ ઉપલબ્ધ નથી.";
-  document.getElementById(`notes-view-\( {key}- \){ci}`).classList.remove("hidden");
-  document.getElementById(`notes-edit-\( {key}- \){ci}`).classList.add("hidden");
-  document.getElementById(`notes-save-\( {key}- \){ci}`).classList.add("hidden");
+  const t = document.getElementById("ne-"+key+"-"+ci).value;
+  saveNotes(key, ci, t);
+  document.getElementById("nv-"+key+"-"+ci).textContent = t || "નોંધ નથી";
+  document.getElementById("nv-"+key+"-"+ci).classList.remove("hidden");
+  document.getElementById("ne-"+key+"-"+ci).classList.add("hidden");
+  document.getElementById("ns-"+key+"-"+ci).classList.add("hidden");
 }
-
-function editExisting(key, ci, qi) {
+function editQ(key, ci, qi) {
   if (!isUnlocked) return;
-  editingIndex = { key, ci, qi };
+  editingIndex = {key, ci, qi};
   const q = data[key].chapters[ci].questions[qi];
-  document.getElementById("modalTitle").textContent = "✏️ પ્રશ્ન એડિટ";
+  document.getElementById("modalTitle").textContent = "✏️ એડિટ";
   document.getElementById("newChap").value = data[key].chapters[ci].name;
   document.getElementById("newType").value = q.type;
   document.getElementById("newText").value = q.text;
@@ -745,14 +742,14 @@ function editExisting(key, ci, qi) {
 }
 function delQ(key, ci, qi) {
   if (!isUnlocked) return;
-  if (confirm("કાઢી નાખવો છે?")) {
+  if (confirm("કાઢી નાખવો?")) {
     data[key].chapters[ci].questions.splice(qi, 1);
     saveData();
     render();
   }
 }
 function openAddModal() {
-  if (!isUnlocked) return alert("Edit Mode માટે હેડર પર 5 ક્લિક + પાસવર્ડ");
+  if (!isUnlocked) { alert("હેડર પર 5 વાર ટચ કરી પાસવર્ડ નાખો"); return; }
   editingIndex = null;
   document.getElementById("modalTitle").textContent = "➕ નવો પ્રશ્ન";
   document.getElementById("newChap").value = "";
@@ -760,53 +757,51 @@ function openAddModal() {
   document.getElementById("newAnswer").value = "";
   document.getElementById("addModal").classList.remove("hidden");
 }
-function closeAddModal() { document.getElementById("addModal").classList.add("hidden"); editingIndex = null; }
+function closeAddModal() {
+  document.getElementById("addModal").classList.add("hidden");
+  editingIndex = null;
+}
 function saveQuestion() {
   if (!isUnlocked) return;
-  const chapName = document.getElementById("newChap").value.trim() || "નવું પ્રકરણ";
+  const chap = document.getElementById("newChap").value.trim() || "નવું પ્રકરણ";
   const type = document.getElementById("newType").value;
   const text = document.getElementById("newText").value.trim();
-  const answer = document.getElementById("newAnswer").value.trim();
-  if (!text) return alert("પ્રશ્ન લખો");
+  const ans = document.getElementById("newAnswer").value.trim();
+  if (!text) { alert("પ્રશ્ન લખો"); return; }
   if (editingIndex) {
-    const { key, ci, qi } = editingIndex;
-    data[key].chapters[ci].questions[qi] = { type, text, answer };
-    data[key].chapters[ci].name = chapName;
+    const {key, ci, qi} = editingIndex;
+    data[key].chapters[ci].questions[qi] = {type, text, answer: ans};
+    data[key].chapters[ci].name = chap;
   } else {
-    const key = `\( {currentStd}- \){currentSub === "key" ? "sci" : currentSub}`;
-    if (!data[key]) data[key] = { title: "નવું", chapters: [], color: "from-slate-500 to-slate-700" };
-    let ch = data[key].chapters.find(c => c.name === chapName);
-    if (!ch) { ch = { name: chapName, questions: [], notes: "" }; data[key].chapters.push(ch); }
-    ch.questions.push({ type, text, answer });
+    const key = currentStd + "-" + (currentSub === "key" ? "sci" : currentSub);
+    if (!data[key]) data[key] = {title:"નવું", chapters:[]};
+    let ch = data[key].chapters.find(c => c.name === chap);
+    if (!ch) { ch = {name: chap, questions: [], notes: ""}; data[key].chapters.push(ch); }
+    ch.questions.push({type, text, answer: ans});
   }
   saveData();
   closeAddModal();
   render();
 }
 
-/* Tabs */
-document.querySelectorAll(".tab").forEach(t => {
-  t.onclick = () => {
-    document.querySelectorAll(".tab").forEach(x => x.classList.remove("active", "bg-indigo-700"));
-    t.classList.add("active", "bg-indigo-700");
-    currentStd = t.dataset.std;
+document.querySelectorAll(".tab").forEach(function(t) {
+  t.onclick = function() {
+    document.querySelectorAll(".tab").forEach(function(x){ x.classList.remove("active"); });
+    t.classList.add("active");
+    currentStd = t.getAttribute("data-std");
     render();
   };
 });
-document.querySelectorAll(".subtab").forEach(t => {
-  t.onclick = () => {
-    document.querySelectorAll(".subtab").forEach(x => {
-      x.classList.remove("active", "bg-indigo-600", "text-white");
-      x.classList.add("bg-slate-100", "text-slate-600");
-    });
-    t.classList.add("active", "bg-indigo-600", "text-white");
-    t.classList.remove("bg-slate-100", "text-slate-600");
-    currentSub = t.dataset.sub;
+document.querySelectorAll(".subtab").forEach(function(t) {
+  t.onclick = function() {
+    document.querySelectorAll(".subtab").forEach(function(x){ x.classList.remove("active"); });
+    t.classList.add("active");
+    currentSub = t.getAttribute("data-sub");
     render();
   };
 });
-document.querySelector('.tab[data-std="6"]').classList.add("bg-indigo-700");
-document.querySelector('.subtab[data-sub="sci"]').classList.add("bg-indigo-600", "text-white");
+
+loadAll();
 render();
 </script>
 </body>
